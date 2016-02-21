@@ -25,15 +25,9 @@ class IterationDateTestCase(TestCase):
         p.save()
         title = "title"
         description = "description"
-        start_date = datetime.date.today() - datetime.timedelta(days=-1)
+        start_date = datetime.date.today() - datetime.timedelta(days=1)
         earliest_possible_start_date = datetime.date.today()
         end_date = datetime.date.max
-        #debug statements
-        #print("\n")
-        #print(start_date)
-        #print(earliest_possible_start_date)
-        #print(end_date)
-        #print("\n")
         iteration = models.project_api.add_iteration_to_project(
             title,
             description,
@@ -42,4 +36,5 @@ class IterationDateTestCase(TestCase):
             p.id)
         
         #Asserting whether iteration was created successfully with an invalid start date of yesterday
+        #Expected action will be that a date of today will automatically be inserted
         self.assertEqual(iteration.start_date, earliest_possible_start_date)
