@@ -84,10 +84,15 @@ class TestProjects(unittest.TestCase):
         driver.find_element_by_id("id_description").send_keys(
             "Created Another Project via test")
         driver.find_element_by_link_text("Create Project").click()
+        
+        #Error happens here, cannot find element from element inspect but could find it 
+        #by showing the source code of the webpage. 
+        
         driver.find_element_by_xpath(
             "//a[contains(@data-open-proj, 'Another Selenium Generated Project')]").click()
         driver.find_element_by_xpath(
             "//div[@id='page-wrapper']/div[2]/div[2]/div/div/div/h2/a[2]/i").click()
+        #print len(ele)
         # add user administrator as a developer
         driver.find_element_by_xpath("//li[contains(.,'administrator')]/span/a").click()
         time.sleep(1)
@@ -148,6 +153,8 @@ class TestProjects(unittest.TestCase):
         driver.find_element_by_id("username").send_keys("admin")
         driver.find_element_by_id("password").clear()
         driver.find_element_by_id("password").send_keys("pass")
+        
+        
         driver.find_element_by_xpath("//button[@type='submit']").click()
         driver.find_element_by_xpath(
             "//a[contains(@data-open-proj, 'Another Selenium Generated Project')]").click()
@@ -157,11 +164,35 @@ class TestProjects(unittest.TestCase):
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         time.sleep(1)
         driver.find_element_by_link_text("Dashboard").click()
+        
+        #Cannot locate the element from here
+        #So the next step launches errors
+        # If no more user available, here will raise error
+        print 'Here I suppose to be wrong'
+                
+        #open the project
         driver.find_element_by_xpath(
             "//a[contains(@data-open-proj, 'Another Selenium Generated Project')]").click()
+            
         driver.find_element_by_xpath(
             "//div[@id='page-wrapper']/div[2]/div[2]/div/div/div/h2/a[2]/i").click()
-        driver.find_element_by_link_text("Add").click()
+            
+        # This is to delete, not add
+        #------previous
+        
+        try:
+            ele = driver.find_element_by_link_text("Add")
+            ele.click()
+            driver.find_element_by_link_text("Add").click()
+        except NoSuchElementException:
+            print 'No more user could be add'
+            
+        
+        
+        #
+        #print 'Here is my change'
+        #driver.find_element_by_link_text("Delete").click()
+        
         time.sleep(1)
         driver.find_element_by_link_text("Close").click()
         time.sleep(1)
