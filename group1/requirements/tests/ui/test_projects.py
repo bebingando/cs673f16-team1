@@ -88,8 +88,8 @@ class TestProjects(unittest.TestCase):
             "//a[contains(@data-open-proj, 'Another Selenium Generated Project')]").click()
         driver.find_element_by_xpath(
             "//div[@id='page-wrapper']/div[2]/div[2]/div/div/div/h2/a[2]/i").click()
-        # add user bob
-        driver.find_element_by_xpath("//li[contains(.,'bob')]/span/a").click()
+        # add user administrator as a developer
+        driver.find_element_by_xpath("//li[contains(.,'administrator')]/span/a").click()
         time.sleep(1)
         driver.find_element_by_link_text("Close").click()
         driver.find_element_by_link_text("admin").click()
@@ -132,13 +132,13 @@ class TestProjects(unittest.TestCase):
             time.sleep(1)
         else:
             self.fail("time out")
-        driver.find_element_by_xpath("//tr[5]/td[4]").click()
+        driver.find_element_by_xpath("//tr[3]/td[3]").click()
         driver.find_element_by_xpath(
             "//div[@id='id_end_date_popover']/div/span").click()
         driver.find_element_by_xpath(
-            "//div[5]/div[3]/table/tbody/tr[2]/td[5]").click()
+            "//div[5]/div[3]/table/tbody/tr[3]/td[4]").click()
         driver.find_element_by_link_text("Create").click()
-        time.sleep(1)
+        time.sleep(3)
         driver.find_element_by_link_text("admin").click()
         driver.find_element_by_link_text("Logout").click()
         driver.find_element_by_link_text("Home").click()
@@ -151,7 +151,7 @@ class TestProjects(unittest.TestCase):
         driver.find_element_by_xpath("//button[@type='submit']").click()
         driver.find_element_by_xpath(
             "//a[contains(@data-open-proj, 'Another Selenium Generated Project')]").click()
-        driver.find_element_by_link_text("bob").click()
+        driver.find_element_by_link_text("administrator").click()
         Select(driver.find_element_by_id("id_user_role")).select_by_visible_text(
             "Developer")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
