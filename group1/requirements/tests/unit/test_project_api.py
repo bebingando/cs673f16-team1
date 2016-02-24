@@ -1,7 +1,7 @@
 import datetime
 
 from django.contrib.auth.models import User
-from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.files.uploadedfile import SimpleUploadedFile, UploadedFile
 from django.http import HttpRequest
 from django.test import Client
 from django.test import RequestFactory
@@ -19,6 +19,8 @@ from requirements.models.project import Project
 from requirements.models.story import Story
 from requirements.models.user_association import UserAssociation
 from requirements.views.projects import upload_attachment
+from django.core.files.base import File
+from django.test import Client
 
 
 class Obj():
@@ -369,5 +371,32 @@ class ProjectTestCase(TestCase):
             else:
                 # reraise the exception, as it's an unexpected error
                 raise
-
+    
+    #test_attachments_file_too_large
+    #created by Chris Willis (willisc@bu.edu)
+    #tests attachment function response when a file over the 10 MB limit is uploaded
+    def test_attachments_file_too_large(self):
+        p = Project(title="title", description="desc")
+        p.save()
+        models.project_api.add_user_to_project(
+           p.id,
+            self.__admin.username,
+            models.user_association.ROLE_DEVELOPER)
+        c = Client()
+        
+        # Create a 20 MB file (larger than the allowed attachment size)
+        f = create('test.txt',"rw")
+        f.seek(20971520-1)
+        f.write("\0")
+        f.close()
+        
+        try:
+            c.post('/uploadprojectattachment/'+str(p.id), 
+                   {'name': 'administrator', 'passwd': 'admin', 'attachment' : f})
+        except IOError, e:
+            if e.args[0] == 'File too large':
+                pass
+            else:
+                # reraise the exception, as it's an unexpected error
+                raise
         
