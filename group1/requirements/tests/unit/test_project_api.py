@@ -1,4 +1,7 @@
 import datetime
+import os
+import shutil
+import subprocess
 
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile, UploadedFile
@@ -376,27 +379,35 @@ class ProjectTestCase(TestCase):
     #created by Chris Willis (willisc@bu.edu)
     #tests attachment function response when a file over the 10 MB limit is uploaded
     def test_attachments_file_too_large(self):
+        
+        # Create a 20 MB file (larger than the allowed attachment size)
+        upload_file = open('test.txt',"w+")
+        upload_file.seek(20971520-1)
+        upload_file.write("\0")
+        upload_file.close()
+        
         p = Project(title="title", description="desc")
         p.save()
         models.project_api.add_user_to_project(
            p.id,
             self.__admin.username,
             models.user_association.ROLE_DEVELOPER)
-        c = Client()
         
-        # Create a 20 MB file (larger than the allowed attachment size)
-        f = create('test.txt',"rw")
-        f.seek(20971520-1)
-        f.write("\0")
-        f.close()
+        request = self.factory.post('/uploadprojectattachment/'+str(p.id))
+        request.user = self.__admin
+        request.FILES['file'] = File(upload_file)
         
         try:
-            c.post('/uploadprojectattachment/'+str(p.id), 
-                   {'name': 'administrator', 'passwd': 'admin', 'attachment' : f})
+            response = upload_attachment(request, p.id)
         except IOError, e:
             if e.args[0] == 'File too large':
                 pass
             else:
                 # reraise the exception, as it's an unexpected error
                 raise
+        
+        # Clean up file created during open() and file created during upload
+        os.remove('./test.txt')
+        git_root = subprocess.check_output("git rev-parse --show-toplevel", shell=True)
+        shutil.rmtree(git_root.rstrip() + '/project_files')
         
