@@ -126,6 +126,8 @@ class TestProjects(unittest.TestCase):
         driver.find_element_by_id("id_description").clear()
         driver.find_element_by_id("id_description").send_keys(
             "1st Iteration created by selenium")
+        
+        ## Clicking the start date using the GUI pop-over calendar display
         driver.find_element_by_xpath(
             "//div[@id='id_start_date_popover']/div/span/i").click()
         for i in range(60):
@@ -138,6 +140,8 @@ class TestProjects(unittest.TestCase):
         else:
             self.fail("time out")
         driver.find_element_by_xpath("//tr[3]/td[3]").click()
+        
+        ## Clicking an end start that is located one day to the right of the start date, using the GUI pop-over calendar display
         driver.find_element_by_xpath(
             "//div[@id='id_end_date_popover']/div/span").click()
         driver.find_element_by_xpath(
