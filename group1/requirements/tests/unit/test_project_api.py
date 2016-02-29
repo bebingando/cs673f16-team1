@@ -49,6 +49,10 @@ class ProjectTestCase(TestCase):
 
     def tearDown(self):
         self.__clear()
+        # Clean up file created during open() and file created during upload
+        git_root = subprocess.check_output("git rev-parse --show-toplevel", shell=True)
+        if (os.path.exists(git_root.rstrip() + '/group1/project_files')):
+            shutil.rmtree(git_root.rstrip() + '/group1/project_files')
 
     def __clear(self):
         UserAssociation.objects.all().delete
@@ -336,9 +340,7 @@ class ProjectTestCase(TestCase):
         p.save()
         self.assertEqual(models.project_api.get_all_projects().count(), 1)
         f = ProjectFile(
-            project=p,
-            file=None,
-            name=file.name)
+            project=p)
         f.save()
         file_count = ProjectFile.does_attachment_exist(f)
         self.assertFalse(file_count, "File attachment exists and should not")
@@ -368,7 +370,7 @@ class ProjectTestCase(TestCase):
         
         try:
             response = upload_attachment(request, p.id)
-        except IOError, e:
+        except IOError as e:
             if e.args[0] == 'Missing file':
                 pass
             else:
@@ -399,15 +401,14 @@ class ProjectTestCase(TestCase):
         
         try:
             response = upload_attachment(request, p.id)
-        except IOError, e:
+        except IOError as e:
             if e.args[0] == 'File too large':
                 pass
             else:
                 # reraise the exception, as it's an unexpected error
                 raise
-        
+                
         # Clean up file created during open() and file created during upload
         os.remove('./test.txt')
-        git_root = subprocess.check_output("git rev-parse --show-toplevel", shell=True)
-        shutil.rmtree(git_root.rstrip() + '/project_files')
+        
         
