@@ -53,5 +53,6 @@ class IterationDateTestCase(TestCase):
             start_date,
             end_date,
             p.id)
-
+	#Asserting whether iteration was created successfully with an invalid end date earlier than start date
+        #Expected action will be that the function automatically returns an end date that is the same as the start date
         self.assertEqual(iteration.end_date, earliest_possible_end_date)
