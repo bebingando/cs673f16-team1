@@ -1,16 +1,29 @@
-from django.test import TestCase
+import datetime
+import os
+import shutil
+import subprocess
+
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile, UploadedFile
+from django.http import HttpRequest
+from django.test import Client
+from django.test import RequestFactory
+from django.test import TestCase
+
 from requirements import models
 from requirements.models import project
 from requirements.models import project_api
+from requirements.models import story
 from requirements.models import user_association
 from requirements.models import user_manager
-from requirements.models import story
-from requirements.models.project import Project
-from requirements.models.user_association import UserAssociation
+from requirements.models.files import ProjectFile
 from requirements.models.iteration import Iteration
+from requirements.models.project import Project
 from requirements.models.story import Story
-import datetime
+from requirements.models.user_association import UserAssociation
+from requirements.views.projects import upload_attachment
+from django.core.files.base import File
+from django.test import Client
 
 
 class Obj():
@@ -24,9 +37,22 @@ class ProjectTestCase(TestCase):
 
         self.__user = User(username="testUser", password="pass")
         self.__user.save()
+        
+         # Every test needs access to the request factory.
+        self.factory = RequestFactory()
+        self.__admin = User.objects.create_superuser(
+            username='admin', email='admin@bu.edu', password='pass')
+        self.__admin.save()
+
+
+        
 
     def tearDown(self):
         self.__clear()
+        # Clean up file created during open() and file created during upload
+        git_root = subprocess.check_output("git rev-parse --show-toplevel", shell=True)
+        if (os.path.exists(git_root.rstrip() + '/group1/project_files')):
+            shutil.rmtree(git_root.rstrip() + '/group1/project_files')
 
     def __clear(self):
         UserAssociation.objects.all().delete
@@ -308,3 +334,81 @@ class ProjectTestCase(TestCase):
         self.assertEqual(description, iteration.description)
         iterations = models.project_api.get_iterations_for_project(p)
         self.assertEqual(1, iterations.count())
+        
+    def test_attachments_no_file_attached(self):
+        p = Project(title="title", description="desc")
+        p.save()
+        self.assertEqual(models.project_api.get_all_projects().count(), 1)
+        f = ProjectFile(
+            project=p)
+        f.save()
+        file_count = ProjectFile.does_attachment_exist(f)
+        self.assertFalse(file_count, "File attachment exists and should not")
+        
+    def test_attachments_file_attached(self):
+        p = Project(title="title", description="desc")
+        p.save()
+        self.assertEqual(models.project_api.get_all_projects().count(), 1)
+        f = ProjectFile(
+            project=p,
+            file=SimpleUploadedFile('test.txt', 'This is some text to add to the file'),
+            name=file.name)
+        f.save()
+        file_count = ProjectFile.does_attachment_exist(f)
+        self.assertTrue(file_count, "File attachment should exist")
+        
+    def test_attachments_view_upload_attachment(self):
+        p = Project(title="title", description="desc")
+        p.save()
+        models.project_api.add_user_to_project(
+            p.id,
+            self.__admin.username,
+            models.user_association.ROLE_DEVELOPER)
+         # Create an instance of a GET request.
+        request = self.factory.get('/uploadprojectattachment/'+str(p.id))
+        request.user = self.__admin
+        
+        try:
+            response = upload_attachment(request, p.id)
+        except IOError as e:
+            if e.args[0] == 'Missing file':
+                pass
+            else:
+                # reraise the exception, as it's an unexpected error
+                raise
+    
+    #test_attachments_file_too_large
+    #created by Chris Willis (willisc@bu.edu)
+    #tests attachment function response when a file over the 10 MB limit is uploaded
+    def test_attachments_file_too_large(self):
+        
+        # Create a 20 MB file (larger than the allowed attachment size)
+        upload_file = open('test.txt',"w+")
+        upload_file.seek(20971520-1)
+        upload_file.write("\0")
+        upload_file.close()
+        
+        p = Project(title="title", description="desc")
+        p.save()
+        models.project_api.add_user_to_project(
+           p.id,
+            self.__admin.username,
+            models.user_association.ROLE_DEVELOPER)
+        
+        request = self.factory.post('/uploadprojectattachment/'+str(p.id))
+        request.user = self.__admin
+        request.FILES['file'] = File(upload_file)
+        
+        try:
+            response = upload_attachment(request, p.id)
+        except IOError as e:
+            if e.args[0] == 'File too large':
+                pass
+            else:
+                # reraise the exception, as it's an unexpected error
+                raise
+                
+        # Clean up file created during open() and file created during upload
+        os.remove('./test.txt')
+        
+        
