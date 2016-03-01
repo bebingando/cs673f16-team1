@@ -172,7 +172,6 @@ class TestProjects(unittest.TestCase):
         #Cannot locate the element from here
         #So the next step launches errors
         # If no more user available, here will raise error
-        print 'Here I suppose to be wrong'
                 
         #open the project
         driver.find_element_by_xpath(
@@ -189,7 +188,7 @@ class TestProjects(unittest.TestCase):
             ele.click()
             driver.find_element_by_link_text("Add").click()
         except NoSuchElementException:
-            print 'No more user could be add'
+            print 'No more users could be added as a role'
             
         
         
