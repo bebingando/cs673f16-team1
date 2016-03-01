@@ -25,18 +25,18 @@ class TestUserProjectAndIterationPermission(unittest.TestCase):
         driver.get(self.base_url + "/")
         driver.find_element_by_link_text("Sign In").click()
         driver.find_element_by_id("username").clear()
-        driver.find_element_by_id("username").send_keys("george")
+        driver.find_element_by_id("username").send_keys("admin")
         driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys("1234")
+        driver.find_element_by_id("password").send_keys("pass")
         driver.find_element_by_xpath("//button[@type='submit']").click()
-        driver.find_element_by_link_text("george").click()
+        driver.find_element_by_link_text("admin").click()
         driver.find_element_by_link_text("Logout").click()
         driver.find_element_by_link_text("Return to Home").click()
         driver.find_element_by_link_text("Sign In").click()
         driver.find_element_by_id("username").clear()
-        driver.find_element_by_id("username").send_keys("SamuelLJackson")
+        driver.find_element_by_id("username").send_keys("administrator")
         driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys("snakes")
+        driver.find_element_by_id("password").send_keys("admin")
         driver.find_element_by_xpath("//button[@type='submit']").click()
         driver.find_element_by_xpath(
             "//a[@onclick=\"showDialog('/req/newproject');\"]").click()
@@ -53,7 +53,7 @@ class TestUserProjectAndIterationPermission(unittest.TestCase):
         driver.find_element_by_id("id_title").send_keys("New Project")
         driver.find_element_by_id("id_description").clear()
         driver.find_element_by_id("id_description").send_keys(
-            "This project shows that only a project manager permission will allow a user to make projects and iterations and add users to the project.  Samuel L Jackson has this permission.  George does not.")
+            "This project shows that only a project manager permission will allow a user to make projects and iterations and add users to the project.  Samuel L Jackson has this permission.  admin does not.")
         driver.find_element_by_link_text("Create Project").click()
         driver.find_element_by_link_text("Open").click()
         driver.find_element_by_xpath(
@@ -70,7 +70,7 @@ class TestUserProjectAndIterationPermission(unittest.TestCase):
         Select(driver.find_element_by_id("id_user_role")).select_by_visible_text(
             "Developer")
         driver.find_element_by_xpath(
-            "//a[contains(@data-user-name, 'george')]").click()
+            "//a[contains(@data-user-name, 'admin')]").click()
         time.sleep(1)
         driver.find_element_by_link_text("Close").click()
         driver.find_element_by_link_text("Iterations").click()
@@ -117,37 +117,37 @@ class TestUserProjectAndIterationPermission(unittest.TestCase):
             "//div[5]/div[3]/table/tbody/tr[2]/td[4]").click()
         driver.find_element_by_link_text("Create").click()
         time.sleep(1)
-        driver.find_element_by_link_text("SamuelLJackson").click()
+        driver.find_element_by_link_text("administrator").click()
         driver.find_element_by_link_text("Logout").click()
         driver.find_element_by_link_text("Return to Home").click()
         driver.find_element_by_link_text("Sign In").click()
         driver.find_element_by_id("username").clear()
-        driver.find_element_by_id("username").send_keys("george")
+        driver.find_element_by_id("username").send_keys("admin")
         driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys("1234")
+        driver.find_element_by_id("password").send_keys("pass")
         driver.find_element_by_xpath("//button[@type='submit']").click()
         driver.find_element_by_link_text("Open").click()
         time.sleep(1)
-        driver.find_element_by_link_text("george").click()
+        driver.find_element_by_link_text("admin").click()
         driver.find_element_by_link_text("Logout").click()
         driver.find_element_by_link_text("Return to Home").click()
         driver.find_element_by_link_text("Sign In").click()
         driver.find_element_by_id("username").clear()
-        driver.find_element_by_id("username").send_keys("SamuelLJackson")
+        driver.find_element_by_id("username").send_keys("administrator")
         driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys("snakes")
+        driver.find_element_by_id("password").send_keys("admin")
         driver.find_element_by_xpath("//button[@type='submit']").click()
         driver.find_element_by_link_text("Open").click()
         for i in range(60):
             try:
-                if self.is_element_present(By.LINK_TEXT, "george"):
+                if self.is_element_present(By.LINK_TEXT, "admin"):
                     break
             except:
                 pass
             time.sleep(1)
         else:
             self.fail("time out")
-        driver.find_element_by_link_text("george").click()
+        driver.find_element_by_link_text("admin").click()
         for i in range(60):
             try:
                 if self.is_element_present(By.ID, "id_user_role"):
@@ -160,7 +160,7 @@ class TestUserProjectAndIterationPermission(unittest.TestCase):
         Select(driver.find_element_by_id("id_user_role")).select_by_visible_text(
             "Developer")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
-        driver.find_element_by_link_text("george").click()
+        driver.find_element_by_link_text("admin").click()
         for i in range(60):
             try:
                 if self.is_element_present(By.LINK_TEXT, "Close"):
@@ -186,23 +186,23 @@ class TestUserProjectAndIterationPermission(unittest.TestCase):
         time.sleep(1)
         driver.find_element_by_link_text("Close").click()
         time.sleep(1)
-        driver.find_element_by_link_text("SamuelLJackson").click()
+        driver.find_element_by_link_text("administrator").click()
         driver.find_element_by_link_text("Logout").click()
         driver.find_element_by_link_text("Return to Home").click()
         driver.find_element_by_link_text("Sign In").click()
         driver.find_element_by_id("username").clear()
-        driver.find_element_by_id("username").send_keys("george")
+        driver.find_element_by_id("username").send_keys("admin")
         driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys("1234")
+        driver.find_element_by_id("password").send_keys("pass")
         driver.find_element_by_xpath("//button[@type='submit']").click()
-        driver.find_element_by_link_text("george").click()
+        driver.find_element_by_link_text("admin").click()
         driver.find_element_by_link_text("Logout").click()
         driver.find_element_by_link_text("Return to Home").click()
         driver.find_element_by_link_text("Sign In").click()
         driver.find_element_by_id("username").clear()
-        driver.find_element_by_id("username").send_keys("SamuelLJackson")
+        driver.find_element_by_id("username").send_keys("administrator")
         driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys("snakes")
+        driver.find_element_by_id("password").send_keys("admin")
         driver.find_element_by_xpath("//button[@type='submit']").click()
         driver.find_element_by_link_text("Delete").click()
         for i in range(60):
@@ -216,7 +216,7 @@ class TestUserProjectAndIterationPermission(unittest.TestCase):
             self.fail("time out")
         driver.find_element_by_link_text("Delete Project").click()
         time.sleep(1)
-        driver.find_element_by_link_text("SamuelLJackson").click()
+        driver.find_element_by_link_text("administrator").click()
         driver.find_element_by_link_text("Logout").click()
         driver.find_element_by_link_text("Return to Home").click()
 

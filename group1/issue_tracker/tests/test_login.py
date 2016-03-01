@@ -1,13 +1,23 @@
+from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from app.tests import base_testcase
+import unittest
 
+#A test case to make sure a user can log directly into the Issue Tracker directly
 
-class LoginTestCase(base_testcase.CommonLiveServerTestCase):
+class LoginTestCase(unittest.TestCase):
 
+    def setUp(self):
+        self.driver = webdriver.Firefox()
+        
     def test_login(self):
-        """Verify login for a normal user works."""
-        self.driver.get("localhost:8081/issue/create")
-        self.driver.find_element_by_id("id_username").send_keys(self.user_name)
-        self.driver.find_element_by_id("id_password").send_keys(self.user_pw)
-        self.driver.find_element_by_id("id_password").send_keys(Keys.ENTER)
-        self.pause()
+        #Verify login for a normal user works.
+        self.driver.get("localhost:8000/issue_tracker/issue/create")
+        self.driver.find_element_by_id("username").clear()
+        self.driver.find_element_by_id("username").send_keys("admin")
+        self.driver.find_element_by_id("password").clear()
+        self.driver.find_element_by_id("password").send_keys("pass")
+        self.driver.find_element_by_xpath("//button[@type='submit']").click()
+        self.assertEqual(
+            "Create Issue",
+            self.driver.find_element_by_link_text("Create Issue").text)
+        self.driver.find_element_by_link_text("Logout").click()
