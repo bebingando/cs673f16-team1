@@ -28,23 +28,29 @@ class CreateIssueTestCase(unittest.TestCase):
         driver.find_element_by_id("password").clear()
         driver.find_element_by_id("password").send_keys("pass")
         driver.find_element_by_xpath("//button[@type='submit']").click()
-        
+        """Find the element project id and issue type to start entering data"""
         driver.find_element_by_xpath(
             '//*[@id="id_project"]/option[2]').click()
         driver.find_element_by_xpath(
             '//*[@id="id_issue_type"]/option[2]').click()   
         if with_title:
+            """Enter the title of issue"""
             driver.find_element_by_id('id_title').send_keys(
                 'Sample Title')
+            """Enter the description"""
             driver.find_element_by_id('id_description').send_keys(
             'This is sample description')
+            """Enter the priority value """
             driver.find_element_by_xpath(
             '//*[@id="id_priority"]/option[2]').click()
+            """Enter the assignee value"""
             driver.find_element_by_xpath(
             '//*[@id="id_assignee"]/option[2]').click()
+            """Click on create button"""
             driver.find_element_by_css_selector(
             '.btn-primary[value="Create"]').click()
             time.sleep(1)
+            """Locate logout and click on it"""
             driver.find_element_by_link_text("Logout").click()
             
 
