@@ -38,12 +38,12 @@
     </div><!-- /.modal-dialog -->
 
     <script type="text/javascript">
-    
-        fileTooLarge = false;
+    	fileTooLarge = false;
         // detect submit button event to use ajax method to post the form
-        // and retrive the return data back if there is error object in form object.
-        $('#{{modalID}}').on('submit',function(e){
-        if($('#id_file').val()==""){
+        //	and retrive the return data back if there is error object in form object.
+        
+    	$('#attachmentForm').on('submit',function(e){
+        	if($('#id_file').val()==""){
             e.preventDefault();
             alert("Please provide a file");
         }else if(fileTooLarge == true){
@@ -78,5 +78,4 @@
         function downloadProjectFile(fileName){
             window.location.assign('/req/downprojectattach/{{projectID}}/?file=' + fileName);
         }
-        
     </script>
