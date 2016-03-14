@@ -27,6 +27,9 @@ def get_tasks_for_story(story):
         return None
     return Task.objects.filter(story__id=story.id)
 
+def get_all_tasks():
+    return Task.objects.all()
+
 
 def create_task(story, fields):
     if story is None or fields is None:

@@ -210,7 +210,16 @@
 								                <div class="panel-body">
                                                     {% if story.last_updated != None %}
                                                     Last Updated: {{story.last_updated }}
-                                                    </br></br>
+                                                    </br></<br>
+                                                    
+                                                    {% for task in tasks%}
+                                                    	{% if task.story = story %}
+                                                    		<br>
+                                                    		Task: {{task}}
+                                                    		</br>
+                                                    	{% endif %}
+                                                    {% endfor %}
+                                                    
                                                     {% endif %}
 								                    {{ story.description|linebreaks }}
 								                </div>

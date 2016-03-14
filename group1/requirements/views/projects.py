@@ -3,6 +3,7 @@ from requirements import models
 from requirements.models import project_api
 from requirements.models import user_manager, user_association
 from requirements.models import story as mdl_story
+from requirements.models import task as mdl_task
 from requirements.models import iteration as mdl_iteration
 from requirements.models.user_association import UserAssociation
 from django.http import HttpResponse, HttpResponseRedirect
@@ -55,6 +56,7 @@ def project(request, projectID):
     context = {'projects': project_api.get_projects_for_user(request.user.id),
                'project': project,
                'stories': mdl_story.get_stories_for_project(project),
+               'tasks': mdl_task.get_all_tasks(),
                'iterations': iterations,
                'association': association,
                'canOwnProject': request.user.has_perm(PERMISSION_OWN_PROJECT),
