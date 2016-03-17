@@ -1,47 +1,88 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from app.tests import base_testcase
+from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoAlertPresentException
+import unittest
+import time
+import re
 
 
-class CreateIssueTestCase(base_testcase.CommonLiveServerTestCase):
+class CreateIssueTestCase(unittest.TestCase):
     """Tests for the create issue page."""
-
-    def create_issue(self, with_title=True):
+    def setUp(self):
+        self.driver = webdriver.Firefox()
+        self.driver.implicitly_wait(30)
+        self.base_url = "http://127.0.0.1:8000"
+        self.verificationErrors = []
+        self.accept_next_alert = True
+        
+    def test_create_issue(self, with_title=True):
         """Common test paths for the create issue page tests.
-
-        Arg:
-          with_title: boolean for determine whether to populate a title.
         """
-        self.driver.get('localhost:8081/issue/create')
-        self.driver.find_element_by_id(
-            'id_username').send_keys(self.super_user_name)
-        self.driver.find_element_by_id(
-            'id_password').send_keys(self.super_user_pw)
-        self.driver.find_element_by_id('id_password').send_keys(Keys.ENTER)
-        self.driver.find_element_by_xpath(
+        driver = self.driver
+        driver.get(self.base_url + "/issue_tracker/issue/create/")
+        driver.find_element_by_id("username").clear()
+        driver.find_element_by_id("username").send_keys("admin")
+        driver.find_element_by_id("password").clear()
+        driver.find_element_by_id("password").send_keys("pass")
+        driver.find_element_by_xpath("//button[@type='submit']").click()
+        """Find the element project id and issue type to start entering data"""
+        driver.find_element_by_xpath(
             '//*[@id="id_project"]/option[2]').click()
-        self.driver.find_element_by_xpath(
-            '//*[@id="id_issue_type"]/option[2]').click()
+        driver.find_element_by_xpath(
+            '//*[@id="id_issue_type"]/option[2]').click()   
         if with_title:
-            self.driver.find_element_by_id('id_title').send_keys(
+            """Enter the title of issue"""
+            driver.find_element_by_id('id_title').send_keys(
                 'Sample Title')
-        self.driver.find_element_by_id('id_description').send_keys(
-            'Luke, I am your father')
-        self.driver.find_element_by_xpath(
+            """Enter the description"""
+            driver.find_element_by_id('id_description').send_keys(
+            'This is sample description')
+            """Enter the priority value """
+            driver.find_element_by_xpath(
             '//*[@id="id_priority"]/option[2]').click()
-        self.driver.find_element_by_xpath(
+            """Enter the assignee value"""
+            driver.find_element_by_xpath(
             '//*[@id="id_assignee"]/option[2]').click()
-        self.driver.find_element_by_css_selector(
+            """Click on create button"""
+            driver.find_element_by_css_selector(
             '.btn-primary[value="Create"]').click()
-        self.pause()
+            time.sleep(1)
+            """Locate logout and click on it"""
+            driver.find_element_by_link_text("Logout").click()
+            
 
-    def test_create_issue(self):
-        """Positive test case for creating a new issue."""
-        self.create_issue(with_title=True)
-        self.assertEquals('http://localhost:8081/issue/view/11/',
-                          self.driver.current_url)
+    def is_element_present(self, how, what):
+        try:
+            self.driver.find_element(by=how, value=what)
+        except NoSuchElementException as e:
+            return False
+        return True
 
-    def test_create_issue_validation(self):
-        """Create an invalid issue without a title."""
-        self.create_issue(with_title=False)
-        self.assertTrue(self.driver.find_element_by_class_name(
-            'errorlist').is_displayed())
+    def is_alert_present(self):
+        try:
+            self.driver.switch_to_alert()
+        except NoAlertPresentException as e:
+            return False
+        return True
+
+    def close_alert_and_get_its_text(self):
+        try:
+            alert = self.driver.switch_to_alert()
+            alert_text = alert.text
+            if self.accept_next_alert:
+                alert.accept()
+            else:
+                alert.dismiss()
+            return alert_text
+        finally:
+            self.accept_next_alert = True
+
+    def tearDown(self):
+        self.driver.quit()
+        self.assertEqual([], self.verificationErrors)
+
+if __name__ == "__main__":
+    unittest.main()

@@ -8,3 +8,7 @@ class ProjectFile(models.Model):
     name = models.CharField(max_length=255)
     file = models.FileField(upload_to='project_files')
     project = models.ForeignKey(Project)
+
+        
+    def does_attachment_exist(self):
+        return bool(self.file)
