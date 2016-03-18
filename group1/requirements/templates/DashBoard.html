@@ -30,7 +30,7 @@
 					        <div class="panel panel-default">
 					            <div class="panel-heading">
 							        <h4 class="panel-title">
-							        	<a data-toggle="collapse" data-target="#{{ theProject.id }}" href="#{{ theProject.id }}" aria-expanded="true" class=""><i class="fa fa-briefcase fa-fw"></i>
+							        	<a data-toggle="collapse" data-target="#{{ theProject.id }}" href="/req/projectdetail/{{ aProject.id }}" aria-expanded="true" class=""><i class="fa fa-briefcase fa-fw"></i>
 								             {{ aProject.title}}
 								            <!-- <div id="panelbar-{{ theProject.id }}" class="pull-right"> -->
                                             {% for anAssociation in associationsWithUser %}
@@ -53,12 +53,6 @@
                                                     </a>
                                                 {% endif %}
                                             {% endfor %}
-							           		<a  class="btn btn-link pull-right" 
-							           		    href="/req/projectdetail/{{ aProject.id }}"
-							           		    data-open-proj="{{ aProject.title }}">
-							           			<i class="glyphicon glyphicon-folder-open fa-fw"></i>
-							           			 Open
-							           		</a>
 							           		<!-- </div> -->
 								        </a>
 							        </h4>
