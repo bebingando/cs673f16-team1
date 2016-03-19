@@ -20,3 +20,5 @@ class Project(ProjMgmtBase):
         )
 
         app_label = 'requirements'
+
+
