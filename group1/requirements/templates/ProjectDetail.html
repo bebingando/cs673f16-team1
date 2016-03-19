@@ -43,7 +43,7 @@
 								                        href="#story_{{ story.id }}" 
 								                        aria-expanded="true" 
 								                        class="">
-								                    	{{ story.title }}
+								                    	{{ story.title }} - {{ story.get_status_display }}
 								                    </a>
 
 								                    {% check_permission association project "MoveStoryToIteration" as can_move_story %}
