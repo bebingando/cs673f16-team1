@@ -16,6 +16,7 @@ class TestLoginFail(unittest.TestCase):
         self.driver = webdriver.Firefox()
         self.driver.implicitly_wait(30)
         self.base_url = "http://localhost:8000"
+        print 'move on'
         self.verificationErrors = []
         self.accept_next_alert = True
 
