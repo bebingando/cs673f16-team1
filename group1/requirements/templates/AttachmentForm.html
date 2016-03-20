@@ -1,0 +1,35 @@
+{% load staticfiles %}
+<div class="panel-body">
+	<div class="list_group">
+
+		{% if newform %}
+		<div class="list-group-item">
+			<div class="list-group-item-text">
+				<form id="newattachment_form_{{ story.id }}" class="form-horizontal">
+					{% csrf_token %}
+					<div class="row">
+						<!-- <div class="row"> -->
+						<label class="col-xs-12 col-md-2 control-label" for="{{ newform.description.id_for_label }}">Attachment:</label>
+						<div class="col-xs-12 col-md-10">
+							{{ newform.name }}
+							<a class="btn btn-link" href="javascript:void(0);" onclick="addTaskIntoList({{ story.id }});">
+								<i class="fa fa-plus fa-fw"></i>
+								Add
+							</a>
+						</div>
+						<!-- </div> -->
+					</div>
+				</form>
+				</div>
+		</div>
+		{% endif %}
+		{% for attachmentitem in attachments %}
+		<div class="list-group-item">
+				<h4 class="list-group-item-heading">
+					{{ attachmentitem.name }}
+					<h6> {{ attachmentitem.last_updated }}<h6>
+				</h4>
+		</div>
+		{% endfor %}
+	</div>
+</div>
