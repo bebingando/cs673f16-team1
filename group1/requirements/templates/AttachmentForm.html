@@ -5,22 +5,14 @@
 		{% if newform %}
 		<div class="list-group-item">
 			<div class="list-group-item-text">
-				<form id="newattachment_form_{{ story.id }}" class="form-horizontal">
-					{% csrf_token %}
-					<div class="row">
-						<!-- <div class="row"> -->
-						<label class="col-xs-12 col-md-2 control-label" for="{{ newform.description.id_for_label }}">Attachment:</label>
-						<div class="col-xs-12 col-md-10">
-							{{ newform.name }}
-							<a class="btn btn-link" href="javascript:void(0);" onclick="addTaskIntoList({{ story.id }});">
-								<i class="fa fa-plus fa-fw"></i>
-								Add
-							</a>
-						</div>
-						<!-- </div> -->
-					</div>
-				</form>
-				</div>
+			<form id="attachmentForm" class="form-horizontal" href="javascript:void(0);" action="/req/uploadattachmentsTolist/{{ story.id }}" method="post"
+                enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h4>Upload File (max size 10m) </h4>
+                    <p>{{ newform.file }}</p>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+			</div>
 		</div>
 		{% endif %}
 		{% for attachmentitem in attachments %}
@@ -33,3 +25,47 @@
 		{% endfor %}
 	</div>
 </div>
+<script type="text/javascript">
+fileTooLarge = false;
+// detect submit button event to use ajax method to post the form
+//	and retrive the return data back if there is error object in form object.
+
+$('#attachmentForm').on('submit',function(e){
+	if($('#id_file').val()==""){
+    e.preventDefault();
+    alert("Please provide a file");
+}else if(fileTooLarge == true){
+    alert("Please provide a file smaller than 10 megabytes");
+    e.preventDefault();
+}else{
+	var formID = "#newattachment_" + {{ story.id }};
+	var listID = "#attachment_" + {{ story.id }}
+	$.ajax({
+        type : "POST",
+        cache : false,
+        url : $(this).attr('action'),
+        data : $(formID).serialize(),
+        success : function(data) {
+            $(listID).html(data);
+        },
+        async:false
+	}).submit();
+    e.stopPropagation();
+    }
+});
+
+//binds to onchange event of your input field
+$('#id_file').bind('change', function() {
+
+    if(this.files[0].size > 1100000){
+        fileTooLarge = true;
+        alert("Please provide a file smaller than 10 megabytes");
+    }else{
+        fileTooLarge = false;
+    }
+});
+
+function downloadProjectFile(fileName){
+    window.location.assign('/req/downprojectattach/{{projectID}}/?file=' + fileName);
+}
+</script>

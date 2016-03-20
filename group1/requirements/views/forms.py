@@ -232,20 +232,15 @@ TaskFormSet = inlineformset_factory(
     extra=0)
 
 
-class AttachmentForm(forms.ModelForm):
+class AttachmentForm(FileForm):
 
     def __init__(self, *args, ** kwargs):
         super(AttachmentForm, self).__init__(*args, **kwargs)
-        for name, field in self.fields.items():
-            if 'class' in field.widget.attrs:
-                field.widget.attrs['class'] += ' form-control'
-            else:
-                field.widget.attrs.update({'class': 'form-control'})
-
+        file = forms.FileField(widget=ClearableFileInput(attrs={'class': 'form-control'}))
     class Meta:
         model = StoryAttachment
         fields = ('name',)
         widgets = {
             'name': forms.Textarea(attrs={'rows': 1}),
+            'file.form' : file,
         }
-

@@ -1,5 +1,6 @@
 from django.db import models
 from story import Story
+from story import *
 
 
 class StoryAttachment(models.Model):
@@ -31,14 +32,15 @@ def get_attachment(attachmentID):
         return None
 
     
-def create(story, fields):
-    if story is None:
+def create(story_id, file):
+    if story_id is None:
         return None
-    if fields is None:
+    if file is None:
         return None
 
-    name = fields.get('name', '')
-    file = fields.get('file', '')
+    name = file.name
+    file = file
+    story = get_story(story_id)
 
     newAttachment = StoryAttachment(
         story=story,

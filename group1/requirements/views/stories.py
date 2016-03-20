@@ -481,27 +481,26 @@ def remove_comment_from_list(request, storyID, commentID):
     context = {
         'story': story,
         'comments': comments,
-        'newform': form
+        'form': form
     }
 
     return render(request, 'CommentList.html', context)
 
 
 @login_required(login_url='/signin')
-def upload_attachments_into_list (request, storyID, attachmentfileName):
+def upload_attachments_into_list (request, storyID):
     story = mdl_story.get_story(storyID)
+    file = request.FILES['file']
     if request.method == 'POST':
-        form = AttachmentForm(request.POST)
-        if form.is_valid():
-            mdl_attachment.create(storyID, attachmentfileName, request.POST)
-            story.last_updated = datetime.datetime.now()
-            story.save()
-    else:
-        form = AttachmentForm()
+        mdl_attachment.create(storyID, file)
+        story.last_updated = datetime.datetime.now()
+        story.save()
+    form = AttachmentForm()
     attachments = mdl_attachment.get_attachments_for_story(story)
     context = {
         'attachments': attachments,
-        'newform': form
+        'newform': form,
+        'story' : story
     }
 
     return render(request, 'AttachmentForm.html', context)
@@ -514,7 +513,8 @@ def list_attachments(request, storyID):
     form = AttachmentForm()
     context = {
         'attachments': attachments,
-        'newform': form
+        'newform': form,
+        'story' : story
     }
     return render(request, 'AttachmentForm.html', context)
 
