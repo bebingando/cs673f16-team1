@@ -9,6 +9,7 @@ from requirements.models.story import Story
 from requirements.models.task import Task
 from requirements.models.iteration import Iteration
 from requirements.models.story_comment import StoryComment
+from requirements.models.story_attachment import StoryAttachment
 from django.forms.models import inlineformset_factory
 
 
@@ -229,3 +230,22 @@ TaskFormSet = inlineformset_factory(
     ),
     form=TaskForm,
     extra=0)
+
+
+class AttachmentForm(forms.ModelForm):
+
+    def __init__(self, *args, ** kwargs):
+        super(AttachmentForm, self).__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            if 'class' in field.widget.attrs:
+                field.widget.attrs['class'] += ' form-control'
+            else:
+                field.widget.attrs.update({'class': 'form-control'})
+
+    class Meta:
+        model = StoryAttachment
+        fields = ('name',)
+        widgets = {
+            'name': forms.Textarea(attrs={'rows': 1}),
+        }
+
