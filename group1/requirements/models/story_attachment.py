@@ -9,7 +9,7 @@ class StoryAttachment(models.Model):
     uuid = models.CharField(max_length=255,null=True)
     story = models.ForeignKey(Story)
     # original uploaded file name
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255,null=True)
     # will be uploaded to MEDIA_ROOT/story_attachments directory
     file = models.FileField(upload_to='story_attachments') 
     # timestamp to display when the file was uploaded
