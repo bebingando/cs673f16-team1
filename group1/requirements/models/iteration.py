@@ -28,9 +28,15 @@ def create_iteration(project, fields):
     description = fields.get('description', '')
 
     str_start_date = fields.get('start_date', '')
+    # Verifying that start date is not null
     if str_start_date == '':
-        str_start_date = datetime.today().strftime("%m/%d/%Y")
+        #str_start_date = datetime.today().strftime("%m/%d/%Y")
+        str_start_date = datetime.datetime.strftime(datetime.datetime.today(),"%m/%d/%Y")
     start_date = datetime.datetime.strptime(str_start_date, "%m/%d/%Y").date()
+    
+    # Verifying that start date is not earlier than today
+    if start_date < datetime.date.today():
+        start_date = datetime.date.today()
 
     str_end_date = fields.get('end_date', '')
     if str_end_date == '':
