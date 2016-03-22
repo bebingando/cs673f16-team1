@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from story import Story
 from story import *
@@ -37,12 +38,17 @@ def create(story_id, file):
         return None
     if file is None:
         return None
-
-    name = file.name
-    file = file
+    
+    fileUUID = str(uuid.uuid4())
     story = get_story(story_id)
-
+    name = file.name    
+    file = file
+    
+    #rename file object to have UUID as name to avoid conflicts when retrieving files
+    file.name=fileUUID
+    
     newAttachment = StoryAttachment(
+        uuid=fileUUID,
         story=story,
         name=name,
         file=file,
