@@ -495,16 +495,12 @@ def upload_attachments_into_list (request, storyID):
         mdl_attachment.create(storyID, file)
         story.last_updated = datetime.datetime.now()
         story.save()
-    form = AttachmentForm()
     attachments = mdl_attachment.get_attachments_for_story(story)
     context = {
         'attachments': attachments,
-        'newform': form,
         'story' : story
     }
-
-    return render(request, 'AttachmentForm.html', context)
-
+    return redirect(request.META['HTTP_REFERER'])
 
 @login_required(login_url='/signin')
 def list_attachments(request, storyID):
