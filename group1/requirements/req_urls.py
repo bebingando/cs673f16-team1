@@ -30,7 +30,13 @@ urlpatterns = patterns('',
                        
                        url(r'^backlog/(?P<projectID>\d+)',
                            backlogs.show_backlog),
+                       url(r'^newbacklog/(?P<projectID>\d+)',
+                           backlogs.create_backlog),
                        
+                       url(r'^deletebacklog/(?P<projectID>\d+)/(?P<backlogID>\d+)',
+                            backlogs.delete_backlog),
+                       url(r'^editbacklog/(?P<projectID>\d+)/(?P<backlogID>\d+)',
+                            backlogs.edit_backlog),                       
                        url(r'^newiteration/(?P<projectID>\d+)',
                            iterations.new_iteration),
                        url(r'^edititeration/(?P<projectID>\d+)/(?P<iterationID>\d+)',

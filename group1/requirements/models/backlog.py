@@ -10,6 +10,7 @@ class Backlog(ProjMgmtBase):
     storyTitle = models.CharField(default='',max_length=30)
     project = models.ForeignKey(Project)
     backlogContent = models.CharField(default='', max_length=512)
+    storyStatus = models.CharField(default='Not Start', max_length=128)
     
     def __str__(self):
         return self.title
