@@ -50,14 +50,20 @@ class IterationDateTestCase(TestCase):
         title = "title"
         description = "description"
         start_date = datetime.date.today() + datetime.timedelta(days=1)
-        end_date = datetime.date.today()
+        str_start_date = datetime.datetime.strftime(start_date,"%m/%d/%Y")
         earliest_possible_end_date = start_date
-        iteration = models.project_api.add_iteration_to_project(
-            title,
-            description,
-            start_date,
-            end_date,
-            p.id)
-	#Asserting whether iteration was created successfully with an invalid end date earlier than start date
+        end_date = datetime.date.today()
+        str_end_date = datetime.datetime.strftime(end_date,"%m/%d/%Y")
+        fields = {'title': title, 'description': description, 'start_date': str_start_date, 'end_date': str_end_date}
+        iteration = mdl_iteration.create_iteration(p, fields)
+        
+        #iteration = models.project_api.add_iteration_to_project(
+        #    title,
+        #    description,
+        #    start_date,
+        #    end_date,
+        #    p.id)
+        
+	    #Asserting whether iteration was created successfully with an invalid end date earlier than start date
         #Expected action will be that the function automatically returns an end date that is the same as the start date
         self.assertEqual(iteration.end_date, earliest_possible_end_date)
