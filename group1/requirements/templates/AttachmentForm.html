@@ -1,0 +1,71 @@
+{% load staticfiles %}
+<div class="panel-body">
+	<div class="list_group">
+
+		{% if newform %}
+		<div class="list-group-item">
+			<div class="list-group-item-text">
+			<form id="attachmentForm" class="form-horizontal" href="javascript:void(0);" action="/req/uploadattachmentsTolist/{{ story.id }}" method="post"
+                enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h4>Upload File (max size 10m) </h4>
+                    <p>{{ newform.file }}</p>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+			</div>
+		</div>
+		{% endif %}
+		{% for attachmentitem in attachments %}
+		<div class="list-group-item">
+				<h4 class="list-group-item-heading">
+					{{ attachmentitem.name }}
+					<h6> {{ attachmentitem.last_updated }}<h6>
+				</h4>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+<script type="text/javascript">
+fileTooLarge = false;
+// detect submit button event to use ajax method to post the form
+//	and retrive the return data back if there is error object in form object.
+
+$('#attachmentForm').on('submit',function(e){
+	if($('#id_file').val()==""){
+    e.preventDefault();
+    alert("Please provide a file");
+}else if(fileTooLarge == true){
+    alert("Please provide a file smaller than 10 megabytes");
+    e.preventDefault();
+}else{
+	var formID = "#newattachment_" + {{ story.id }};
+	var listID = "#attachment_" + {{ story.id }}
+	$.ajax({
+        type : "POST",
+        cache : false,
+        url : $(this).attr('action'),
+        data : $(formID).serialize(),
+        success : function(data) {
+            $(listID).html(data);
+        },
+        async:false
+	});
+    e.stopPropagation();
+    }
+});
+
+//binds to onchange event of your input field
+$('#id_file').bind('change', function() {
+
+    if(this.files[0].size > 1100000){
+        fileTooLarge = true;
+        alert("Please provide a file smaller than 10 megabytes");
+    }else{
+        fileTooLarge = false;
+    }
+});
+
+function downloadProjectFile(fileName){
+    window.location.assign('/req/downprojectattach/{{projectID}}/?file=' + fileName);
+}
+</script>

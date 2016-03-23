@@ -10,6 +10,7 @@ from requirements.models.task import Task
 from requirements.models.backlog import Backlog
 from requirements.models.iteration import Iteration
 from requirements.models.story_comment import StoryComment
+from requirements.models.story_attachment import StoryAttachment
 from django.forms.models import inlineformset_factory
 
 
@@ -252,3 +253,17 @@ TaskFormSet = inlineformset_factory(
     ),
     form=TaskForm,
     extra=0)
+
+
+class AttachmentForm(FileForm):
+
+    def __init__(self, *args, ** kwargs):
+        super(AttachmentForm, self).__init__(*args, **kwargs)
+        file = forms.FileField(widget=ClearableFileInput(attrs={'class': 'form-control'}))
+    class Meta:
+        model = StoryAttachment
+        fields = ('name',)
+        widgets = {
+            'name': forms.Textarea(attrs={'rows': 1}),
+            'file.form' : file,
+        }

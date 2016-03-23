@@ -8,8 +8,9 @@ from requirements.models import iteration as mdl_iteration
 from requirements.models import story as mdl_story
 from requirements.models import task as mdl_task
 from requirements.models import story_comment as mdl_comment
+from requirements.models import story_attachment as mdl_attachment
 from forms import StoryForm, TaskFormSet
-from forms import TaskForm, CommentForm
+from forms import TaskForm, CommentForm, AttachmentForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login, logout
@@ -480,10 +481,39 @@ def remove_comment_from_list(request, storyID, commentID):
     context = {
         'story': story,
         'comments': comments,
-        'newform': form
+        'form': form
     }
 
     return render(request, 'CommentList.html', context)
+
+
+@login_required(login_url='/signin')
+def upload_attachments_into_list (request, storyID):
+    story = mdl_story.get_story(storyID)
+    file = request.FILES['file']
+    if request.method == 'POST':
+        mdl_attachment.create(storyID, file)
+        story.last_updated = datetime.datetime.now()
+        story.save()
+    attachments = mdl_attachment.get_attachments_for_story(story)
+    context = {
+        'attachments': attachments,
+        'story' : story
+    }
+    return redirect(request.META['HTTP_REFERER'])
+
+@login_required(login_url='/signin')
+def list_attachments(request, storyID):
+    story = mdl_story.get_story(storyID)
+    attachments = mdl_attachment.get_attachments_for_story(story)
+    form = AttachmentForm()
+    context = {
+        'attachments': attachments,
+        'newform': form,
+        'story' : story
+    }
+    return render(request, 'AttachmentForm.html', context)
+
 
 # @login_required(login_url='/signin')
 # def delete_comment(request, projectID, iterationID, storyID, commentID):

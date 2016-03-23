@@ -213,3 +213,36 @@ function removeCommentFromList(storyID, commentID) {
 	});
 }
 
+
+function loadAttachments(storyID) {
+	var attachmentUrl = "/req/loadattachments/" + storyID;
+	var jquerySearchID = "#attachment_" + storyID;
+	$.ajax({
+		url: attachmentUrl,
+		success: function(result) {
+			$(jquerySearchID).html(result);
+		},
+		async: true
+	});
+}
+
+
+function uploadAttachmentsIntoList(storyID) {
+	var attachmentUrl = "/req/uploadattachmentsTolist/" + storyID;
+	var formID = "#newattachment_" + storyID;
+	var listID = "#attachment_" + storyID
+	$.ajax({
+        type : "POST",
+        cache : false,
+        url : attachmentUrl,
+        data : $(formID).serialize(),
+        success : function(data) {
+            $(listID).html(data);
+        },
+        async:true
+	});
+}
+
+function DownloadattachmentInList (storyID) {
+	alert("Function DownloadattachmentInList() is not implemented.");
+}

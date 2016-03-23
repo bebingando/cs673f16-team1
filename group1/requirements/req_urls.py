@@ -96,5 +96,9 @@ urlpatterns = patterns('',
                            projects.upload_attachment),
                        url(r'^downprojectattach/(?P<projectID>\d+)/?',
                            projects.download_file),
-
+                       url(r'^uploadattachmentsTolist/(?P<storyID>\d+)',
+                           stories.upload_attachments_into_list),
+                        url(r'^loadattachments/(?P<storyID>\d+)',
+                           stories.list_attachments),
                        )
+                       
