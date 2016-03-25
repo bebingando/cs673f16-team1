@@ -227,22 +227,38 @@ function loadAttachments(storyID) {
 }
 
 
-function uploadAttachmentsIntoList(storyID) {
+function uploadAttachmentsIntoList(e, storyID, csrf_token) {
 	var attachmentUrl = "/req/uploadattachmentsTolist/" + storyID;
-	var formID = "#newattachment_" + storyID;
-	var listID = "#attachment_" + storyID
-	$.ajax({
-        type : "POST",
-        cache : false,
-        url : attachmentUrl,
-        data : $(formID).serialize(),
-        success : function(data) {
-            $(listID).html(data);
-        },
-        async:true
-	});
+	
+	if($('#id_file_'+storyID).val() == ""){
+		alert("Please provide a file");
+	}else if ( $('#id_file_'+storyID)[0].files[0].size > 1100000 ){
+		alert("Please provide a file smaller than 10 megabytes");
+	}else{
+		var formID = "#newattachment_" + storyID;
+		var listID = "#attachment_" + storyID
+		$.ajax({
+	        type : "POST",
+	        cache : false,
+	        url : attachmentUrl,
+	        data : $(formID).serialize(),
+	        CsrfViewMiddleware : csrf_token,
+	        success : function(data) {
+	            $(listID).html(data);
+	        },
+	        error : function(data) {
+	        	console.log(data.status);
+	        },
+	        async:true
+		});
+	  }
 }
+
 
 function DownloadattachmentInList (storyID) {
 	alert("Function DownloadattachmentInList() is not implemented.");
+}
+
+function deleteAttachmentInList(fileName) {
+	alert("Called from requieTracker.js : deleting file"+fileName);
 }
