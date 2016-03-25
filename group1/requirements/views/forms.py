@@ -259,11 +259,9 @@ class AttachmentForm(FileForm):
 
     def __init__(self, *args, ** kwargs):
         super(AttachmentForm, self).__init__(*args, **kwargs)
-        file = forms.FileField(widget=ClearableFileInput(attrs={'class': 'form-control'}))
     class Meta:
         model = StoryAttachment
         fields = ('name',)
         widgets = {
             'name': forms.Textarea(attrs={'rows': 1}),
-            'file.form' : file,
         }

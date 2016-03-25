@@ -5,13 +5,19 @@
 		{% if newform %}
 		<div class="list-group-item">
 			<div class="list-group-item-text">
-			<form id="attachmentForm" class="form-horizontal" href="javascript:void(0);" onsubmit="uploadAttachmentsIntoList(event,'{{ story.id }}','{{ csrf_token }}')" method="post"
-                enctype="multipart/form-data">
+			<form id="newattachment_{{ story.id }}" class="form-horizontal" href="javascript:void(0);" action="/req/uploadattachmentsTolist/{{ story.id }}" onsubmit="uploadAttachmentsIntoList(event,'{{ story.id }}')" method="post"
+				enctype="multipart/form-data">
+				{% csrf_token %}
                     <h4>Upload File (max size 10m) </h4>
-                    <p><input class="form-control" id="id_file_{{ story.id }}" name="file" type="file"></p>
-                    	{% csrf_token %}
-                    	<button type="submit" class="btn btn-primary">Upload</button>
-                </form>
+                    
+                    <input type="file" id="id_file_{{ story.id }}" name="file_{{ story.id }}"\>
+                    	<p><button type="submit" class="btn btn-link" href="javascript:void(0);" action="#">
+                    		<i class="fa fa-cloud-upload"></i>
+                    		Upload
+        				</button></p>
+                    <!--	<button type="submit" class="btn btn-primary">Upload</button> -->
+                    	
+              </form>
 			</div>
 		</div>
 		{% endif %}

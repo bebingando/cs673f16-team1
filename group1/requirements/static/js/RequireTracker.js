@@ -227,12 +227,13 @@ function loadAttachments(storyID) {
 }
 
 
-function uploadAttachmentsIntoList(e, storyID, csrf_token) {
-	var attachmentUrl = "/req/uploadattachmentsTolist/" + storyID;
-	
+function uploadAttachmentsIntoList(event, storyID) {
+	// validate the a file exists and size is less that the limit.
 	if($('#id_file_'+storyID).val() == ""){
+		event.preventDefault();
 		alert("Please provide a file");
 	}else if ( $('#id_file_'+storyID)[0].files[0].size > 1100000 ){
+		event.preventDefault();
 		alert("Please provide a file smaller than 10 megabytes");
 	}else{
 		var formID = "#newattachment_" + storyID;
@@ -240,9 +241,8 @@ function uploadAttachmentsIntoList(e, storyID, csrf_token) {
 		$.ajax({
 	        type : "POST",
 	        cache : false,
-	        url : attachmentUrl,
+	        url : $(this).attr('action'),
 	        data : $(formID).serialize(),
-	        CsrfViewMiddleware : csrf_token,
 	        success : function(data) {
 	            $(listID).html(data);
 	        },
@@ -252,6 +252,7 @@ function uploadAttachmentsIntoList(e, storyID, csrf_token) {
 	        async:true
 		});
 	  }
+	//event.preventDefault();
 }
 
 
