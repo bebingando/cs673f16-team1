@@ -40,6 +40,12 @@
                 {% endifequal %}
                         <a href="/req/projectdetail/{{ aproject.id }}"><i class="fa fa-fw fa-list-alt"></i> Project Detail</a>
                     </li>
+                    <li>
+                    	<a href="/req/iterationdetail/{{ project.id }}/0">
+    						<i class="fa fa-fw fa-calendar"></i>
+    						 Ice Box
+    					</a>
+   					</li>
                     <li> 
                     	<a href="/req/backlog/{{ aproject.id }}"><i class="fa fa-fw fa-inbox"></i> Backlog</a>
                     </li>
@@ -51,11 +57,7 @@
                             <i class="fa fa-fw fa-tasks"></i> Iterations <i class="fa fa-fw fa-caret-down"></i>
                         </a> 
                         {% if iteration == None %}
-                        {% if isIceBox %}
-                        <ul id="proj_{{ aproject.id }}_iters" class="collapse in" aria-expanded="true">
-                        {% else %}
                         <ul id="proj_{{ aproject.id }}_iters" class="collapse" aria-expanded="false">
-                        {% endif %}
                         {% else %}
                         <ul id="proj_{{ aproject.id }}_iters" class="collapse in" aria-expanded="true">
                         {% endif %}

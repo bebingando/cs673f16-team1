@@ -176,19 +176,19 @@ class TestProjects(unittest.TestCase):
         #open the project
         driver.find_element_by_xpath(
             "//a[contains(@data-open-proj, 'Another Selenium Generated Project')]").click()
-            
+        #   
         driver.find_element_by_xpath(
             "//div[@id='page-wrapper']/div[2]/div[2]/div/div/div/h2/a[2]/i").click()
-            
+        #    
         # This is to delete, not add
         #------previous
         
-        try:
-            ele = driver.find_element_by_link_text("Add")
-            ele.click()
-            driver.find_element_by_link_text("Add").click()
-        except NoSuchElementException:
-            print 'No more users could be added as a role'
+        #try:
+        #    ele = driver.find_element_by_link_text("Add")
+        #    ele.click()
+        #    driver.find_element_by_link_text("Add").click()
+        #except NoSuchElementException:
+        #    print 'No more users could be added as a role'
             
         
         
