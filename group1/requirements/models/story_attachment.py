@@ -1,4 +1,5 @@
 import uuid
+import os
 from django.db import models
 from story import Story
 from story import *
@@ -19,6 +20,15 @@ class StoryAttachment(models.Model):
     def __str__(self):
         return self.name
     
+def delete(attachmentUUID):
+    try:
+        attachment = StoryAttachment.objects.filter(uuid=attachmentUUID)
+        attachment.delete()
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        os.remove(os.path.join(BASE_DIR, '../../story_attachments/'+attachmentUUID))
+    except Exception as e:
+        return None
+    
     
 def get_attachments_for_story(story):
     if story is None:
@@ -32,7 +42,6 @@ def get_attachment(attachmentUUID):
     except Exception as e:
         return None
 
-    
 def create(story_id, file):
     if story_id is None:
         return None
