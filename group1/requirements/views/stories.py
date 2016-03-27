@@ -521,8 +521,7 @@ def delete_attachment(request, storyID):
     uuid=request.GET.get(
             'file',
             '')
-    deleteAttachment = mdl_attachment.get_attachment(uuid)
-    deleteAttachment.delete()
+    mdl_attachment.delete(uuid)
 
     return redirect(request.META['HTTP_REFERER'])
 
