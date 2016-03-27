@@ -22,10 +22,10 @@
 		{% for attachmentitem in attachments %}
 		<div class="list-group-item">
 				<h4 class="list-group-item-heading">
-				<a class="btn btn-link" href="javascript:void(0);" onclick="downloadAttachmentInList('{{ story.id }}','{{ attachmentitem.name }}');">
+				<a class="btn btn-link" href="javascript:void(0);" onclick="downloadAttachmentInList('{{ story.id }}','{{ attachmentitem.uuid }}');">
 					<i class="fa fa-cloud-download fa-fw"></i>{{ attachmentitem.name }}</a>
 					<h6> {{ attachmentitem.last_updated }}
-					<a class="btn btn-link pull-right" href="javascript:void(0);" onclick="deleteAttachmentInList('{{ story.id }}','{{ attachmentitem.name }}');">
+					<a class="btn btn-link pull-right" href="javascript:void(0);" onclick="deleteAttachmentInList('{{ story.id }}','{{ attachmentitem.uuid }}');">
 						<i class="fa fa-trash fa-fw"></i>Delete</a>
 					</h6>
 				</h4>
