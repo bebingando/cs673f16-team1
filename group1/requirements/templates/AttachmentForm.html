@@ -15,22 +15,22 @@
                     		<i class="fa fa-cloud-upload"></i>
                     		Upload
         				</button></p>
-                    <!--	<button type="submit" class="btn btn-primary">Upload</button> -->
-                    	
+                    <!--	<button type="submit" class="btn btn-primary">Upload</button> -->   	
               </form>
 			</div>
 		</div>
 		{% endif %}
 		{% for attachmentitem in attachments %}
 		<div class="list-group-item">
-				<h4 class="list-group-item-heading">
-					{{ attachmentitem.name }}
-					<h6> {{ attachmentitem.last_updated }}
-					<a class="btn btn-link pull-right" href="javascript:void(0);" onclick="deleteAttachmentInList('{{ attachmentitem.name }}');">
-						<i class="fa fa-trash fa-fw"></i>Delete
+			<h4 class="list-group-item-heading">
+				{{ attachmentitem.name }}
+				<h6> {{ attachmentitem.last_updated }}
+					<a class="btn btn-link pull-right" href="javascript:void(0);" onclick="deleteAttachmentInList({{ story.id }},{{ attachmentitem.uuid }});">
+						<i class="fa fa-trash fa-fw"></i>
+						Delete
 					</a>
-						</h6>
-				</h4>
+				</h6>
+			</h4>
 		</div>
 		{% endfor %}
 	</div>

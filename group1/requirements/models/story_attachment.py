@@ -26,9 +26,9 @@ def get_attachments_for_story(story):
     return StoryAttachment.objects.filter(story_id=story.id) 
 
 
-def get_attachment(attachmentID):
+def get_attachment(attachmentUUID):
     try:
-        return StoryAttachment.objects.get(id=attachmentID)
+        return StoryAttachment.objects.get(uuid=attachmentUUID)
     except Exception as e:
         return None
 

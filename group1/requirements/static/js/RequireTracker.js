@@ -256,10 +256,25 @@ function uploadAttachmentsIntoList(event, storyID) {
 }
 
 
-function DownloadattachmentInList (storyID) {
+function DownloadattachmentInList(storyID) {
 	alert("Function DownloadattachmentInList() is not implemented.");
 }
 
-function deleteAttachmentInList(fileName) {
+function deleteAttachmentInList(storyID, attachmentUUID) {
 	alert("Called from requieTracker.js : deleting file"+fileName);
+	/*
+	var delAttachmentUrl = "/req/deleteattachment/" + storyID + "/" + attachmentUUID;
+	var formID = "#remove_attachment_" + attachmentUUID;
+	var listID = "#attachment_" + attachmentUUID;
+	$.ajax({
+		type: "POST",
+		cache: false,
+		url: delAttachmentUrl,
+		data: $(formID).serialize(),
+		success: function(data) {
+			$(listID).html(data);
+		},
+		async: true
+	});
+	*/
 }

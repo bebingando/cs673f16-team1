@@ -514,6 +514,22 @@ def list_attachments(request, storyID):
     }
     return render(request, 'AttachmentForm.html', context)
 
+@login_required(login_url='/signin')
+def delete_attachment(request, storyID, attachmentUUID):
+    #Delete the attachment
+    deleteAttachment = mdl_attachment.get_attachment(attachmentUUID)
+    deleteAttachment.delete()
+    
+    story = mdl_story.get_story(storyID)
+    attachments = mdl_attachment.get_attachments_for_story(story)
+    form = AttachmentForm()
+    context = {
+        'attachments': attachments,
+        'newform': form,
+        'story' : story
+    }
+    return render(request, 'AttachmentForm.html', context)
+
 
 # @login_required(login_url='/signin')
 # def delete_comment(request, projectID, iterationID, storyID, commentID):
