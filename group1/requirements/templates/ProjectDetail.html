@@ -97,6 +97,14 @@
                                                     </br></br>
                                                     {% endif %}
 								                    {{ story.description|linebreaks }}
+								                    
+								                    {% for task in tasks%}
+                                                    	{% if task.story = story %}
+                                                    		Task: {{task}}
+                                                    		<br>
+                                                    	{% endif %}
+                                                    {% endfor %}
+                                                    
 								                </div>
 								            </div>
 								        </div>
@@ -210,18 +218,17 @@
 								                <div class="panel-body">
                                                     {% if story.last_updated != None %}
                                                     Last Updated: {{story.last_updated }}
-                                                    </br></<br>
+                                                    {% endif %}
+                                                    </br></br>
+                                                    {{ story.description|linebreaks }}
                                                     
                                                     {% for task in tasks%}
                                                     	{% if task.story = story %}
-                                                    		<br>
                                                     		Task: {{task}}
-                                                    		</br>
+                                                    		<br>
                                                     	{% endif %}
                                                     {% endfor %}
                                                     
-                                                    {% endif %}
-								                    {{ story.description|linebreaks }}
 								                </div>
 								            </div>
 								        </div>
