@@ -523,16 +523,7 @@ def delete_attachment(request, storyID):
             '')
     deleteAttachment = mdl_attachment.get_attachment(uuid)
     deleteAttachment.delete()
-    
-    #story = mdl_story.get_story(storyID)
-    #attachments = mdl_attachment.get_attachments_for_story(story)
-    #form = AttachmentForm()
-    #context = {
-    #    'attachments': attachments,
-    #    'newform': form,
-    #    'story' : story
-    #}
-    #return render(request, 'AttachmentForm.html', context)
+
     return redirect(request.META['HTTP_REFERER'])
 
 def download_attachment(request, storyID):
