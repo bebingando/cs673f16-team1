@@ -255,13 +255,15 @@ function uploadAttachmentsIntoList(event, storyID) {
 	//event.preventDefault();
 }
 
-
-function DownloadattachmentInList(storyID) {
-	alert("Function DownloadattachmentInList() is not implemented.");
+function downloadAttachmentInList(storyID, attachmentUUID) {
+	alert('/req/downloadattachment/' + storyID + '/?file=' + attachmentUUID);
+    window.location.assign('/req/downloadattachment/' + storyID + '/?file=' + attachmentUUID);
 }
 
 function deleteAttachmentInList(storyID, attachmentUUID) {
-	alert("Called from requieTracker.js : deleting file"+fileName);
+	alert("Called from requieTracker.js : deleting file" + attachmentUUID);
+    window.location.assign('/req/deleteattachment/' + storyID + '/?file=' + attachmentUUID);
+
 	/*
 	var delAttachmentUrl = "/req/deleteattachment/" + storyID + "/" + attachmentUUID;
 	var formID = "#remove_attachment_" + attachmentUUID;

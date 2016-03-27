@@ -100,7 +100,9 @@ urlpatterns = patterns('',
                            stories.upload_attachments_into_list),
                        url(r'^loadattachments/(?P<storyID>\d+)',
                            stories.list_attachments),
-                       url(r'^deleteattachment/(?P<storyID>\d+)/(?P<attachmentUUID>\d+)',
-                           stories.delete_attachment)
+                       url(r'^deleteattachment/(?P<storyID>\d+)',
+                           stories.delete_attachment),
+                       url(r'^downloadattachment/(?P<storyID>\d+)',
+                           stories.download_attachment)
                        )
                        

@@ -9,6 +9,7 @@ from requirements.models import story as mdl_story
 from requirements.models import task as mdl_task
 from requirements.models import story_comment as mdl_comment
 from requirements.models import story_attachment as mdl_attachment
+from requirements.models.story_attachment import StoryAttachment
 from forms import StoryForm, TaskFormSet
 from forms import TaskForm, CommentForm, AttachmentForm
 from django.http import HttpResponse, HttpResponseRedirect
@@ -515,20 +516,36 @@ def list_attachments(request, storyID):
     return render(request, 'AttachmentForm.html', context)
 
 @login_required(login_url='/signin')
-def delete_attachment(request, storyID, attachmentUUID):
+def delete_attachment(request, storyID):
     #Delete the attachment
-    deleteAttachment = mdl_attachment.get_attachment(attachmentUUID)
+    uuid=request.GET.get(
+            'file',
+            '')
+    deleteAttachment = mdl_attachment.get_attachment(uuid)
     deleteAttachment.delete()
     
-    story = mdl_story.get_story(storyID)
-    attachments = mdl_attachment.get_attachments_for_story(story)
-    form = AttachmentForm()
-    context = {
-        'attachments': attachments,
-        'newform': form,
-        'story' : story
-    }
-    return render(request, 'AttachmentForm.html', context)
+    #story = mdl_story.get_story(storyID)
+    #attachments = mdl_attachment.get_attachments_for_story(story)
+    #form = AttachmentForm()
+    #context = {
+    #    'attachments': attachments,
+    #    'newform': form,
+    #    'story' : story
+    #}
+    #return render(request, 'AttachmentForm.html', context)
+    return redirect(request.META['HTTP_REFERER'])
+
+def download_attachment(request, storyID):
+
+    file = StoryAttachment.objects.get(
+        #story__id=storyID,
+        story=storyID,
+        uuid=request.GET.get(
+            'file',
+            ''))
+    response = HttpResponse(file.file)
+    response['Content-Disposition'] = 'attachment; filename=' + file.name
+    return response
 
 
 # @login_required(login_url='/signin')

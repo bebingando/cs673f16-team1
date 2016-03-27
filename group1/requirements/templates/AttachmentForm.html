@@ -25,10 +25,13 @@
 			<h4 class="list-group-item-heading">
 				{{ attachmentitem.name }}
 				<h6> {{ attachmentitem.last_updated }}
-					<a class="btn btn-link pull-right" href="javascript:void(0);" onclick="deleteAttachmentInList({{ story.id }},{{ attachmentitem.uuid }});">
+					<a class="btn btn-link pull-right" href="javascript:void(0);" onclick="deleteAttachmentInList('{{ story.id }}','{{ attachmentitem.uuid }}')">
 						<i class="fa fa-trash fa-fw"></i>
 						Delete
 					</a>
+					<a class="btn btn-link pull-right" href="javascript:void(0);" onclick="downloadAttachmentInList('{{story.id}}','{{attachmentitem.uuid}}')">
+                            <i class="glyphicon glyphicon-download-alt"></i>
+                    </a>
 				</h6>
 			</h4>
 		</div>
