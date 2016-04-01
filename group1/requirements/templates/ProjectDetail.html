@@ -43,7 +43,7 @@
 								                        href="#story_{{ story.id }}" 
 								                        aria-expanded="true" 
 								                        class="">
-								                    	{{ story.title }}
+								                    	{{ story.title }} - {{ story.get_status_display }}
 								                    </a>
 
 								                    {% check_permission association project "MoveStoryToIteration" as can_move_story %}
@@ -97,6 +97,14 @@
                                                     </br></br>
                                                     {% endif %}
 								                    {{ story.description|linebreaks }}
+								                    
+								                    {% for task in tasks%}
+                                                    	{% if task.story = story %}
+                                                    		Task: {{task}}
+                                                    		<br>
+                                                    	{% endif %}
+                                                    {% endfor %}
+                                                    
 								                </div>
 								            </div>
 								        </div>
@@ -156,7 +164,7 @@
 								                        data-parent="" 
 								                        href="#story_{{ story.id }}" 
 								                        aria-expanded="true" 
-								                        class="">{{ story.title }}
+								                        class="">{{ story.title }} - {{ story.get_status_display }}
 								                    </a>
 
 								                    {% check_permission association project "MoveStoryToIteration" as can_move_story %}
@@ -210,9 +218,17 @@
 								                <div class="panel-body">
                                                     {% if story.last_updated != None %}
                                                     Last Updated: {{story.last_updated }}
-                                                    </br></br>
                                                     {% endif %}
-								                    {{ story.description|linebreaks }}
+                                                    </br></br>
+                                                    {{ story.description|linebreaks }}
+                                                    
+                                                    {% for task in tasks%}
+                                                    	{% if task.story = story %}
+                                                    		Task: {{task}}
+                                                    		<br>
+                                                    	{% endif %}
+                                                    {% endfor %}
+                                                    
 								                </div>
 								            </div>
 								        </div>

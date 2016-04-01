@@ -1,14 +1,4 @@
-	
-	{% if iteration == None and isIceBox %}
-	<li class="active">
-	{% else %}
-	<li>
-	{% endif %}
-    	<a href="/req/iterationdetail/{{ project.id }}/0">
-    		<i class="fa fa-fw fa-calendar"></i>
-    		 Ice Box
-    	</a>
-    </li>
+
     {% for aiteration in iterations %}
     {% if iteration == aiteration %}
     <li class="active">

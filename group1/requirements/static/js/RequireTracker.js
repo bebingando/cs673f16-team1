@@ -213,3 +213,52 @@ function removeCommentFromList(storyID, commentID) {
 	});
 }
 
+
+function loadAttachments(storyID) {
+	var attachmentUrl = "/req/loadattachments/" + storyID;
+	var jquerySearchID = "#attachment_" + storyID;
+	$.ajax({
+		url: attachmentUrl,
+		success: function(result) {
+			$(jquerySearchID).html(result);
+		},
+		async: true
+	});
+}
+
+
+function uploadAttachmentsIntoList(event, storyID) {
+	// validate the a file exists and size is less that the limit.
+	if($('#id_file_'+storyID).val() == ""){
+		event.preventDefault();
+		alert("Please provide a file");
+	}else if ( $('#id_file_'+storyID)[0].files[0].size > 1100000 ){
+		event.preventDefault();
+		alert("Please provide a file smaller than 10 megabytes");
+	}else{
+		var formID = "#newattachment_" + storyID;
+		var listID = "#attachment_" + storyID
+		$.ajax({
+	        type : "POST",
+	        cache : false,
+	        url : $(this).attr('action'),
+	        data : $(formID).serialize(),
+	        success : function(data) {
+	            $(listID).html(data);
+	        },
+	        error : function(data) {
+	        	console.log(data.status);
+	        },
+	        async:true
+		});
+	  }
+	//event.preventDefault();
+}
+
+function downloadAttachmentInList(storyID, attachmentUUID) {
+    window.location.assign('/req/downloadattachment/' + storyID + '/?file=' + attachmentUUID);
+}
+
+function deleteAttachmentInList(storyID, attachmentUUID) {
+    window.location.assign('/req/deleteattachment/' + storyID + '/?file=' + attachmentUUID);
+}

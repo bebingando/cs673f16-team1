@@ -136,9 +136,6 @@
 														<a data-toggle="collapse" data-parent="" href="#task_{{ story.id }}" aria-expanded="true" class="">
 															<i class="fa fa-tasks fa-fw"></i> Tasks
 														</a>
-<!-- 														<a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/req/newtask/{{ project.id }}/0/{{ story.id }}');">
-															<i class="glyphicon glyphicon-plus"></i>
-														</a> -->
 													</h4>
                                 				</div>
                                 				<div id="task_{{ story.id }}" class="panel-collapse collapse in" aria-expanded="true">
@@ -155,9 +152,6 @@
 														<a data-toggle="collapse" data-parent="" href="#comment_{{ story.id }}" aria-expanded="true" class="">
 															<i class="fa fa-comments fa-fw"></i> Comments
 														</a>
-<!-- 														<a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/req/newcomment/{{ project.id }}/0/{{ story.id }}');">
-															<i class="glyphicon glyphicon-plus"></i>
-														</a> -->
 													</h4>
                                 				</div>
                                 				<div id="comment_{{ story.id }}" class="panel-collapse collapse in" aria-expanded="true">
@@ -166,6 +160,24 @@
                                 			</div>
                                 		</div>
                                 	</div>
+                                </div>
+    							<div class="row">
+                                	<div class="col-sm-12 col-md-6">
+	                            		<div class="panel-group">
+	                            			<div class="panel panel-green">
+	                            				<div class="panel-heading">
+	                            					<h4 class="panel-title">
+														<a data-toggle="collapse" data-parent="" href="#attachment_{{ story.id }}" aria-expanded="true" class="">
+															<i class="fa fa-paperclip fa-fw"></i> Attachments
+														</a>
+													</h4>
+	                            				</div>
+	                            				<div id="attachment_{{ story.id }}" class="panel-collapse collapse in" aria-expanded="true">
+	                            					<!-- Load Attachments through ajax -->
+	                            				</div>
+	                            			</div>
+	                            		</div>
+	                            	</div>
                                 </div>
 			                </div>
 			            </div>
@@ -285,10 +297,7 @@
 														<a data-toggle="collapse" data-parent="" href="#task_{{ story.id }}" aria-expanded="true" class="">
 															<i class="fa fa-tasks fa-fw"></i> Tasks
 														</a>
-<!-- 														<a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/req/newtask/{{ project.id }}/{{ iteration.id }}/{{ story.id }}');">
-															<i class="glyphicon glyphicon-plus"></i>
-														</a> -->
-													</h4>
+												</h4>
                                 				</div>
                                 				<div id="task_{{ story.id }}" class="panel-collapse collapse in" aria-expanded="true">
                                 					<!-- Load Tasks through ajax -->
@@ -304,9 +313,6 @@
 														<a data-toggle="collapse" data-parent="" href="#comment_{{ story.id }}" aria-expanded="true" class="">
 															<i class="fa fa-comments fa-fw"></i> Comments
 														</a>
-<!-- 														<a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/req/newcomment/{{ project.id }}/{{ iteration.id }}/{{ story.id }}');">
-															<i class="glyphicon glyphicon-plus"></i>
-														</a> -->
 													</h4>
                                 				</div>
                                 				<div id="comment_{{ story.id }}" class="panel-collapse collapse in" aria-expanded="true">
@@ -316,7 +322,27 @@
                                 		</div>
                                 	</div>
                                 </div>
-			                </div>
+                              <div class="row">
+								<!-- Row for attachments -->
+                            	<div class="col-sm-12 col-md-6">
+									<!-- Column for attachments -->
+                            		<div class="panel-group">
+                            			<div class="panel panel-green">
+                            				<div class="panel-heading">
+                            					<h4 class="panel-title">
+													<a data-toggle="collapse" data-parent="" href="#attachment_{{ story.id }}" aria-expanded="true" class="">
+														<i class="fa fa-paperclip fa-fw"></i> Attachments
+													</a>
+												</h4>
+                            				</div>
+                            				<div id="attachment_{{ story.id }}" class="panel-collapse collapse in" aria-expanded="true">
+                            					<!-- Load Attachments through ajax -->
+                            				</div>
+                            			</div>
+									</div>	
+                            	  </div>
+                              </div>
+                            </div>
 			            </div>
 			        </div>
 	    	        {% endif %}
@@ -339,6 +365,7 @@
 
 		loadTasks({{ story.id }});
 		loadComments({{ story.id }});
+		loadAttachments({{ story.id }});
 
 		{% endfor %}
 	});

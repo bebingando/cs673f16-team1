@@ -7,8 +7,10 @@ from requirements.models import user_association
 from requirements.models.project import Project
 from requirements.models.story import Story
 from requirements.models.task import Task
+from requirements.models.backlog import Backlog
 from requirements.models.iteration import Iteration
 from requirements.models.story_comment import StoryComment
+from requirements.models.story_attachment import StoryAttachment
 from django.forms.models import inlineformset_factory
 
 
@@ -66,6 +68,28 @@ class UserProfileForm(UserChangeForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email', 'username', 'password')
+
+
+class BacklogForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(BacklogForm,self).__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            if 'class' in field.widget.attrs:
+                field.widget.attrs['class'] += ' form-control'
+            else:
+                field.widget.attrs.update({'class': 'form-control'})
+    class Meta:
+        model = Backlog
+        fields = {'storyTitle', 'project','backlogContent'}
+        widgets = {
+            'storyTitle' : forms.TextInput(),
+            'project' : forms.TextInput(attrs={'readonly': 'readonly'}),
+            'backlogContent' : forms.Textarea(attrs={'row': 4})
+        }
+
+
+
+
 
 
 class IterationForm(forms.ModelForm):
@@ -229,3 +253,15 @@ TaskFormSet = inlineformset_factory(
     ),
     form=TaskForm,
     extra=0)
+
+
+class AttachmentForm(FileForm):
+
+    def __init__(self, *args, ** kwargs):
+        super(AttachmentForm, self).__init__(*args, **kwargs)
+    class Meta:
+        model = StoryAttachment
+        fields = ('name',)
+        widgets = {
+            'name': forms.Textarea(attrs={'rows': 1}),
+        }

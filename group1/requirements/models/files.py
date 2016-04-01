@@ -5,10 +5,14 @@ from project import Project
 
 
 class ProjectFile(models.Model):
-    name = models.CharField(max_length=255)
     file = models.FileField(upload_to='project_files')
     project = models.ForeignKey(Project)
-
+    
+    #name = original uploaded file name
+    name = models.CharField(max_length=255,null=True)
+    
+    #UUID = name of the file when it is stored in project_files (avoids conflicts)
+    UUID = models.CharField(max_length=255,null=True)
         
     def does_attachment_exist(self):
         return bool(self.file)

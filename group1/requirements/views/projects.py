@@ -3,6 +3,7 @@ from requirements import models
 from requirements.models import project_api
 from requirements.models import user_manager, user_association
 from requirements.models import story as mdl_story
+from requirements.models import task as mdl_task
 from requirements.models import iteration as mdl_iteration
 from requirements.models.user_association import UserAssociation
 from django.http import HttpResponse, HttpResponseRedirect
@@ -20,8 +21,9 @@ from requirements.models.user_manager import user_owns_project
 from requirements.models.user_manager import user_can_access_project
 from requirements.models.files import ProjectFile
 from django.utils.encoding import smart_str
-PERMISSION_OWN_PROJECT = 'requirements.own_project'
+import uuid
 
+PERMISSION_OWN_PROJECT = 'requirements.own_project'
 
 @login_required(login_url='/signin')
 def list_projects(request):
@@ -55,6 +57,7 @@ def project(request, projectID):
     context = {'projects': project_api.get_projects_for_user(request.user.id),
                'project': project,
                'stories': mdl_story.get_stories_for_project(project),
+               'tasks': mdl_task.get_all_tasks(),
                'iterations': iterations,
                'association': association,
                'canOwnProject': request.user.has_perm(PERMISSION_OWN_PROJECT),
@@ -269,16 +272,26 @@ def upload_attachment(request, projectID):
 
     if 'file' not in request.FILES:
         raise IOError("Missing file")
-    if request.FILES['file'].size > 1100000:
+    if request.FILES['file'].size > 10*1024*1024:
         raise IOError("File too large")
 
     form = FileForm(request.POST, request.FILES)
+    
     if(form.is_valid()):
-        file = request.FILES['file']
-        f = ProjectFile(
-            project=project_api.get_project(projectID),
-            file=file,
-            name=file.name)
+        
+        #set up parameters for database insert
+        fileObj = request.FILES['file']
+        projID = project_api.get_project(projectID)
+        fname = fileObj.name
+        fileUUID = str(uuid.uuid4())
+        
+        #rename file object to have UUID as name to avoid conflicts when retrieving files
+        fileObj.name=fileUUID
+        
+        f = ProjectFile(file=fileObj,
+                        project=projID,
+                        name=fname,
+                        UUID=fileUUID)
         f.save()
     return redirect(request.POST['referer'])
 
