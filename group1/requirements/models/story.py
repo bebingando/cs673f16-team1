@@ -33,8 +33,17 @@ class Story(ProjMgmtBase):
         (POINTS_FOUR, "4 Points"),
         (POINTS_FIVE, "5 Points"),
     )
-
+    
+    STORY_BELONGS_ICEBOX = 'ICEBOX'
+    
+    STORY_BELONGS_ITERATION = 'ITERATION'
+    
+    STORY_BELONGS_BACKLOG = 'BACKLOG'
+    
     project = models.ForeignKey(Project)
+    
+    # 'ICEBOX', 'ITERATION', 'BACKLOG'
+    belong = models.CharField(default='ICEBOX', max_length=128, blank=True)
     iteration = models.ForeignKey(
         Iteration,
         blank=True,
@@ -103,7 +112,6 @@ def create_story(project, fields):
     status = fields.get('status', Story.STATUS_UNSTARTED)
     points = fields.get('points', Story.POINTS_NONE)
     pause = fields.get('pause', False)
-
     if owner is None or owner == '':
         owner = None
     else:
@@ -121,7 +129,8 @@ def create_story(project, fields):
                   owner=owner,
                   status=status,
                   points=points,
-                  pause=pause
+                  pause=pause,
+                  belongs = 'ICEBOX'
                   )
     story.save()
     return story

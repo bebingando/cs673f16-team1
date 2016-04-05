@@ -1,7 +1,7 @@
 from django.db import models
 from base import ProjMgmtBase
 from project import Project
-
+from story import Story
 import datetime
 
 
@@ -72,11 +72,19 @@ def move_story_to_iteration(story, iteration):
     if story is None or iteration is None or story.project != iteration.project:
         return None
     story.iteration = iteration
+    story.belongs = Story.STORY_BELONGS_ITERATION
     story.save()
 
+def move_story_to_backlog(story):
+    if story is None:
+        return None
+    story.iteration = None
+    story.belongs = Story.STORY_BELONGS_BACKLOG
+    story.save()    
 
 def move_story_to_icebox(story):
     if story is None:
         return None
     story.iteration = None
+    story.belongs = Story.STORY_BELONGS_ICEBOX
     story.save()

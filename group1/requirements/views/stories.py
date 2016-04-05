@@ -48,15 +48,7 @@ def new_story(request, projectID):
         else:
             formset = TaskFormSet(request.POST, instance=story)
             # formset.extra = 1
-# =======
-            # story = mdl_story.create_story(project, request.POST)
-            # story = form.save(commit=False)
-            # if not 'next' in request.POST:
-            #     return redirect('/req/projectdetail/' + projectID)
-            # else:
-            #     next = request.POST['next']
-            #     return redirect(next)
-# >>>>>>> newfeature-additerationdetail
+
     else:
         form = StoryForm(project=project)
         formset = TaskFormSet(instance=story)
@@ -67,13 +59,7 @@ def new_story(request, projectID):
                'form': form,
                'project': project,
                'association': association,
-               # <<<<<<< HEAD
-               #                # 'formset' : formset,
-               #                'action' : '/req/newstory/' + projectID ,
-               #                'button_desc' : 'Create User Story',
-               #                 }
-               #     return render(request, 'StorySummary.html', context )
-               # =======
+
                'formset': formset,
                'initTasks': formset.initial_form_count(),
                'numTasks': formset.total_form_count(),
@@ -110,29 +96,11 @@ def edit_story(request, projectID, storyID):
                 # return redirect('/req/projects/' + projectID)
                 # return empty string and do the redirect stuff in front-end
                 return HttpResponse('')
-# =======
-            # story = form.save(commit=True)
 
-            # if not 'next' in request.POST:
-            #     return redirect('/req/projectdetail/' + projectID)
-            # else:
-            #     next = request.POST['next']
-            #     return redirect(next)
         else:
             formset = TaskFormSet(request.POST, instance=story)
-# >>>>>>> newfeature-additerationdetail
     else:
-        # <<<<<<< HEAD
-        #         form = StoryForm(instance=story, project=project)
-        # formset = TaskFormSet(instance=story)
-        # if story.task_set.count() == 0: formset.extra = 1
 
-        # test that association and permissions are working
-        # print "UserID "+str(request.user.id)+" and ProjectID "+projectID+" and storyID "+storyID
-        # can_edit_hours = association.get_permission("EditHours") # should become unnecessary
-        # str_edit_hours = str(can_edit_hours)
-        # print "In association of user and project, permission EditHours is "+str_edit_hours
-        # =======
         form = StoryForm(instance=story, project=project)
         formset = TaskFormSet(instance=story)
         numTasks = initTasks = mdl_task.get_tasks_for_story(
@@ -143,24 +111,17 @@ def edit_story(request, projectID, storyID):
             numTasks = numTasks + 1
         formset.extra = 1
 
-# >>>>>>> newfeature-TasksFormset
 
     context = {'title': 'Edit User Story',
                'project': project,
                'association': association,
                'title': 'Edit User Story',
                'form': form,
-               # <<<<<<< HEAD
-               #                # 'formset' : formset,
-               #                'action' : '/req/editstory/' + projectID + '/' + storyID,
-               #                'button_desc' : 'Save Changes'}
-               # =======
                'formset': formset,
                'initTasks': formset.initial_form_count(),
                'numTasks': formset.total_form_count(),
                'action': '/req/editstory/' + projectID + '/' + storyID,
                'button_desc': 'Save Changes'}
-# >>>>>>> newfeature-TasksFormset
 
     return render(request, 'StorySummary.html', context)
 
@@ -212,10 +173,19 @@ def move_story_to_iteration(request, projectID, storyID, iterationID):
 
 @login_required(login_url='/signin')
 @user_owns_project()
-def move_story_to_icebox(request, projectID, storyID):
+def move_story_out_iteration(request, projectID, storyID, place):
     story = mdl_story.get_story(storyID)
-    mdl_iteration.move_story_to_icebox(story)
+    
+    
+    
+    if place == Story.STORY_BELONGS_ICEBOX:
+    
+        mdl_iteration.move_story_to_icebox(story)
+    else:
+        mdl.iteration.move_story_to_backlog(story)
     return redirect('/req/projectdetail/' + projectID)
+
+
 
 
 @login_required(login_url='/signin')
