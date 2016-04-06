@@ -1,7 +1,6 @@
 from django.db import models
 from base import ProjMgmtBase
 from project import Project
-from story import Story
 import datetime
 
 
