@@ -173,16 +173,16 @@ def move_story_to_iteration(request, projectID, storyID, iterationID):
 
 @login_required(login_url='/signin')
 @user_owns_project()
-def move_story_out_iteration(request, projectID, storyID, place):
+def move_story_to_icebox(request, projectID, storyID):
     story = mdl_story.get_story(storyID)
+    mdl_iteration.move_story_to_icebox(story)
+    return redirect('/req/projectdetail/' + projectID)
     
-    
-    
-    if place == Story.STORY_BELONGS_ICEBOX:
-    
-        mdl_iteration.move_story_to_icebox(story)
-    else:
-        mdl.iteration.move_story_to_backlog(story)
+@login_required(login_url='/signin')
+@user_owns_project()
+def move_story_to_backlog(request, projectID, storyID):
+    story = mdl_story.get_story(storyID)
+    mdl_iteration.move_story_to_backlog(story)
     return redirect('/req/projectdetail/' + projectID)
 
 

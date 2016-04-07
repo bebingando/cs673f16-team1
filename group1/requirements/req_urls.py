@@ -56,8 +56,10 @@ urlpatterns = patterns('',
                        url(r'^deletestory/(?P<projectID>\d+)/(?P<storyID>\d+)',
                            stories.delete_story),
                        
-                       url(r'^movestorytoicebox/(?P<projectID>\d+)/(?P<storyID>\d)/(?P<place>\d)',
-                           stories.move_story_out_iteration),
+                       url(r'^movestorytoicebox/(?P<projectID>\d+)/(?P<storyID>\d+)',
+                           stories.move_story_to_icebox),
+                       url(r'^movestorytobacklog/(?P<projectID>\d+)/(?P<storyID>\d+)',
+                           stories.move_story_to_backlog),
                        
                        url(r'^movestorytoiter/(?P<projectID>\d+)/(?P<storyID>\d+)/(?P<iterationID>\d+)',
                            stories.move_story_to_iteration),

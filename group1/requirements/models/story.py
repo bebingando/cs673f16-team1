@@ -34,16 +34,16 @@ class Story(ProjMgmtBase):
         (POINTS_FIVE, "5 Points"),
     )
     
-    STORY_BELONGS_ICEBOX = 'ICEBOX'
+    STORY_BELONGS_ICEBOX = "ICEBOX"
     
-    STORY_BELONGS_ITERATION = 'ITERATION'
+    STORY_BELONGS_ITERATION = "ITERATION"
     
-    STORY_BELONGS_BACKLOG = 'BACKLOG'
+    STORY_BELONGS_BACKLOG = "BACKLOG"
     
     project = models.ForeignKey(Project)
     
     # 'ICEBOX', 'ITERATION', 'BACKLOG'
-    belong = models.CharField(default='ICEBOX', max_length=128, blank=True)
+    belong = models.CharField(default="ICEBOX", max_length=128, blank=True)
     iteration = models.ForeignKey(
         Iteration,
         blank=True,
@@ -130,7 +130,7 @@ def create_story(project, fields):
                   status=status,
                   points=points,
                   pause=pause,
-                  belongs = 'ICEBOX'
+                  belongs = "ICEBOX"
                   )
     story.save()
     return story
