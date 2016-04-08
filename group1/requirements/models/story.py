@@ -130,7 +130,7 @@ def create_story(project, fields):
                   status=status,
                   points=points,
                   pause=pause,
-                  belongs = "ICEBOX"
+                  belong = "ICEBOX"
                   )
     story.save()
     return story
@@ -139,3 +139,4 @@ def create_story(project, fields):
 def delete_story(storyID):
     story = Story.objects.filter(id=storyID)
     story.delete()
+

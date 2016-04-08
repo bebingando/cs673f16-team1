@@ -71,19 +71,19 @@ def move_story_to_iteration(story, iteration):
     if story is None or iteration is None or story.project != iteration.project:
         return None
     story.iteration = iteration
-    story.belongs = Story.STORY_BELONGS_ITERATION
+    story.belong = "ITERATION"
     story.save()
 
 def move_story_to_backlog(story):
     if story is None:
         return None
     story.iteration = None
-    story.belongs = Story.STORY_BELONGS_BACKLOG
+    story.belong = "BACKLOG"
     story.save()    
 
 def move_story_to_icebox(story):
     if story is None:
         return None
     story.iteration = None
-    story.belongs = Story.STORY_BELONGS_ICEBOX
+    story.belong = "ICEBOX"
     story.save()
