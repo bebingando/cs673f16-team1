@@ -97,11 +97,32 @@
                                                     Last Updated: {{story.last_updated }}
                                                     </br></br>
                                                     {% endif %}
-								                    {{ story.description|linebreaks }}
-								                    
-								                    {% for task in tasks%}
+								                     </br>
+                                                    Owner: {{story.owner }}
+                                                    </br></br>
+                                                    Description: {{ story.description }}
+                                                    </br>
+                                                    Hours: {{story.hours }}
+                                                    </br>
+                                                    Points: {{story.points }}
+                                                    </br></br>
+                                                    {% for task in tasks%}
                                                     	{% if task.story = story %}
                                                     		Task: {{task}}
+                                                    		<br>
+                                                    	{% endif %}
+                                                    {% endfor %}
+                                                    </br>
+                                                    {% for comment in comments%}
+                                                    	{% if comment.story = story %}
+                                                    		Comment: {{comment}}
+                                                    		<br>
+                                                    	{% endif %}
+                                                    {% endfor %}
+                                                     </br>
+                                                    {% for attachment in attachments%}
+                                                    	{% if attachment.story = story %}
+                                                    		Attachment: {{attachment}}
                                                     		<br>
                                                     	{% endif %}
                                                     {% endfor %}
@@ -199,11 +220,32 @@
                                                     Last Updated: {{story.last_updated }}
                                                     </br></br>
                                                     {% endif %}
-								                    {{ story.description|linebreaks }}
-								                    
-								                    {% for task in tasks%}
+								                     </br>
+                                                    Owner: {{story.owner }}
+                                                    </br></br>
+                                                    Description: {{ story.description }}
+                                                    </br>
+                                                    Hours: {{story.hours }}
+                                                    </br>
+                                                    Points: {{story.points }}
+                                                    </br></br>
+                                                    {% for task in tasks%}
                                                     	{% if task.story = story %}
                                                     		Task: {{task}}
+                                                    		<br>
+                                                    	{% endif %}
+                                                    {% endfor %}
+                                                    </br>
+                                                    {% for comment in comments%}
+                                                    	{% if comment.story = story %}
+                                                    		Comment: {{comment}}
+                                                    		<br>
+                                                    	{% endif %}
+                                                    {% endfor %}
+                                                     </br>
+                                                    {% for attachment in attachments%}
+                                                    	{% if attachment.story = story %}
+                                                    		Attachment: {{attachment}}
                                                     		<br>
                                                     	{% endif %}
                                                     {% endfor %}
