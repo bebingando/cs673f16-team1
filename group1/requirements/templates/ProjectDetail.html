@@ -324,12 +324,32 @@
                                                     {% if story.last_updated != None %}
                                                     Last Updated: {{story.last_updated }}
                                                     {% endif %}
+                                                    </br>
+                                                    Owner: {{story.owner }}
                                                     </br></br>
-                                                    {{ story.description|linebreaks }}
-                                                    
+                                                    Description: {{ story.description }}
+                                                    </br>
+                                                    Hours: {{story.hours }}
+                                                    </br>
+                                                    Points: {{story.points }}
+                                                    </br></br>
                                                     {% for task in tasks%}
                                                     	{% if task.story = story %}
                                                     		Task: {{task}}
+                                                    		<br>
+                                                    	{% endif %}
+                                                    {% endfor %}
+                                                    </br>
+                                                    {% for comment in comments%}
+                                                    	{% if comment.story = story %}
+                                                    		Comment: {{comment}}
+                                                    		<br>
+                                                    	{% endif %}
+                                                    {% endfor %}
+                                                     </br>
+                                                    {% for attachment in attachments%}
+                                                    	{% if attachment.story = story %}
+                                                    		Attachment: {{attachment}}
                                                     		<br>
                                                     	{% endif %}
                                                     {% endfor %}

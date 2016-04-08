@@ -35,6 +35,9 @@ def get_attachments_for_story(story):
         return None
     return StoryAttachment.objects.filter(story_id=story.id) 
 
+def get_all_attachments():
+    return StoryAttachment.objects.all() 
+
 
 def get_attachment(attachmentUUID):
     try:

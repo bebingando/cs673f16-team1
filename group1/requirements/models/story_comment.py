@@ -28,7 +28,9 @@ def get_comment(commentID):
         return StoryComment.objects.get(id=commentID)
     except Exception as e:
         return None
-
+    
+def get_all_comments():
+    return StoryComment.objects.all()
 
 def create_comment(story, fields):
     if story is None:
