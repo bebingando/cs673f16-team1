@@ -4,6 +4,8 @@ from requirements.models import project_api
 from requirements.models import user_manager, user_association
 from requirements.models import story as mdl_story
 from requirements.models import task as mdl_task
+from requirements.models import story_comment as mdl_story_comment
+from requirements.models import story_attachment as mdl_story_attachment
 from requirements.models import iteration as mdl_iteration
 from requirements.models.user_association import UserAssociation
 from django.http import HttpResponse, HttpResponseRedirect
@@ -58,6 +60,8 @@ def project(request, projectID):
                'project': project,
                'stories': mdl_story.get_stories_for_project(project),
                'tasks': mdl_task.get_all_tasks(),
+               'comments': mdl_story_comment.get_all_comments(),
+               'attachments': mdl_story_attachment.get_all_attachments(),
                'iterations': iterations,
                'association': association,
                'canOwnProject': request.user.has_perm(PERMISSION_OWN_PROJECT),
