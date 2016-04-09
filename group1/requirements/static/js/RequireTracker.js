@@ -264,6 +264,8 @@ function deleteAttachmentInList(storyID, attachmentUUID) {
 }
 
 function deleteProjectAttachment(projectID, fileUUID) {
-	//alert(projectID + " " + fileUUID);
 	window.location.assign('/req/deleteprojectattachment/' + projectID + '/?file=' + fileUUID);
+}
+function downloadProjectAttachment(projectID, fileUUID){
+	window.location.assign('/req/downloadprojectattachment/' + projectID + '/?file=' + fileUUID);
 }
