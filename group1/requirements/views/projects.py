@@ -313,3 +313,30 @@ def download_file(request, projectID):
     response = HttpResponse(file.file)
     response['Content-Disposition'] = 'attachment; filename=' + file.name
     return response
+
+@login_required(login_url='/signin')
+def issues(request, projectID):
+    # Loads the IssueList template, which contains a list of the issues the user is
+    # associated with, within a project
+    project = project_api.get_project(projectID)
+    if project is None:
+        return redirect('/req/projects')
+
+    iterations = mdl_iteration.get_iterations_for_project(project)
+    association = UserAssociation.objects.get(
+        user=request.user,
+        project=project)
+
+    context = {'projects': project_api.get_projects_for_user(request.user.id),
+               'project': project,
+               'stories': mdl_story.get_stories_for_project(project),
+               'tasks': mdl_task.get_all_tasks(),
+               'comments': mdl_story_comment.get_all_comments(),
+               'attachments': mdl_story_attachment.get_all_attachments(),
+               'issues': mdl_issue.get_all_issues(),
+               'iterations': iterations,
+               'association': association,
+               'canOwnProject': request.user.has_perm(PERMISSION_OWN_PROJECT),
+    }
+    return render(request, 'IssueList.html', context)
+    

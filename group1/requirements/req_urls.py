@@ -81,6 +81,8 @@ urlpatterns = patterns('',
                            iterations.iteration),
                        url(r'^backlogdetail/(?P<projectID>\d+)/(?P<iterationID>\d+)',
                            iterations.backlog),
+                       url(r'^bugdetail/(?P<projectID>\d+)',
+                           projects.issues),
 
                        url(r'^userprojectaccess/(?P<projectID>\d+)/(?P<userID>\d+)',
                            projects.manage_user_association),
