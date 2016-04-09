@@ -4,7 +4,6 @@ from requirements.views import projects
 from requirements.views import stories
 from requirements.views import iterations
 from requirements.views import users
-from requirements.views import backlogs
 
 urlpatterns = patterns('',
                        url(r'^changepasswd', users.changepasswd),
@@ -27,16 +26,7 @@ urlpatterns = patterns('',
                            projects.edit_project),
                        url(r'^deleteproject/(?P<projectID>\d+)',
                            projects.delete_project),
-                       
-                       url(r'^backlog/(?P<projectID>\d+)',
-                           backlogs.show_backlog),
-                       url(r'^newbacklog/(?P<projectID>\d+)',
-                           backlogs.create_backlog),
-                       
-                       url(r'^deletebacklog/(?P<projectID>\d+)/(?P<backlogID>\d+)',
-                            backlogs.delete_backlog),
-                       url(r'^editbacklog/(?P<projectID>\d+)/(?P<backlogID>\d+)',
-                            backlogs.edit_backlog),                       
+                      
                        url(r'^newiteration/(?P<projectID>\d+)',
                            iterations.new_iteration),
                        url(r'^edititeration/(?P<projectID>\d+)/(?P<iterationID>\d+)',
