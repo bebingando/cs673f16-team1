@@ -490,6 +490,7 @@ def remove_comment_from_list(request, storyID, commentID):
 
 @login_required(login_url='/signin')
 def upload_attachments_into_list (request, storyID):
+    
     story = mdl_story.get_story(storyID)
     file = request.FILES['file_'+storyID]
     if request.method == 'POST':

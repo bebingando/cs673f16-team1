@@ -1,6 +1,7 @@
 from django import forms
 from requirements import models
 from requirements.models import project_api
+from requirements.models import files as mdl_attachment
 from requirements.models import user_manager, user_association
 from requirements.models import story as mdl_story
 from requirements.models import task as mdl_task
@@ -269,7 +270,7 @@ def get_attachments(request, projectID):
 
 @user_can_access_project()
 def upload_attachment(request, projectID):
-
+    
     if 'file' not in request.FILES:
         raise IOError("Missing file")
     if request.FILES['file'].size > 10*1024*1024:
@@ -291,7 +292,7 @@ def upload_attachment(request, projectID):
         f = ProjectFile(file=fileObj,
                         project=projID,
                         name=fname,
-                        UUID=fileUUID)
+                        uuid=fileUUID)
         f.save()
     return redirect(request.POST['referer'])
 
@@ -307,3 +308,14 @@ def download_file(request, projectID):
     response = HttpResponse(file.file)
     response['Content-Disposition'] = 'attachment; filename=' + file.name
     return response
+
+@user_can_access_project()
+def delete_attachment(request, projectID):
+    
+    #Delete the attachment
+    uuid=request.GET.get(
+            'file',
+            '')
+    mdl_attachment.delete(uuid)
+
+    return redirect(request.META['HTTP_REFERER'])

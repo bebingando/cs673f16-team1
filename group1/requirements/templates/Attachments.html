@@ -16,6 +16,9 @@
                         <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="downloadProjectFile('{{file.name}}')">
                             <i class="glyphicon glyphicon-download-alt"></i>
                         </a>
+                        <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="deleteProjectAttachment('{{projectID}}','{{file.uuid}}')">
+							<i class="fa fa-trash fa-fw"></i>
+						</a>
                         {{file.name}}
                     </li>
                 </ul>
