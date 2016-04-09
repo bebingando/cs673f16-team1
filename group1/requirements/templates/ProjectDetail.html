@@ -439,6 +439,26 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-lg-4 col-md-12">
+				<div class="col-md-12">
+					<div class="panel panel-primary" style="min-height: 200px">
+						<div class="panel-heading">
+							<h2 class="panel-title">
+								<i class="fa fa-list fa-fw"></i>
+								Project Issues from Issue Tracker
+							</h2>
+						</div>
+						<div id="issuelist_{{ project.id }}" class="panel-body">
+							{% for issue in issues%}
+                            {% if issue.project = project %}
+                                {{issue}}
+                             	<br>
+                            {% endif %}
+                            {% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
