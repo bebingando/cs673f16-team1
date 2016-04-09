@@ -25,6 +25,7 @@
 			    <div class="panel-group" id="iter_icebox">
 	    	        {% for story in stories %}
 	    	        {% if story.iteration == None %}
+	    	        {% if story.belong == "ICEBOX" %}
 			        <div class="panel panel-primary">
 			            <div class="panel-heading">
 			                <h4 class="panel-title">
@@ -182,7 +183,8 @@
 			                </div>
 			            </div>
 			        </div>
-	    	        {% endif %}					        
+	    	        {% endif %}					     
+	    	        {% endif %}   
 			        {% endfor %}
 				</div>
 				{% else %}
