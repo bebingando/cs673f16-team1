@@ -29,9 +29,8 @@
 								<div class="panel-body">
 								    <div class="panel-group" id="iter_issuelist">
             	    	    	        {% for issue in issues %}
-								       	<u>{{ issue }}</u>
+            	    	    	        <li><a href="/issue_tracker/issue/view/{{ issue.id }}/"><i class="fa fa-fw fa-road"></i> {{ issue }} </a></li>
 								       	</a>
-								       	<br>
 								       	Description: {{ issue.description }}
 								       	<br>
 								       	Status: {{ issue.status }}
