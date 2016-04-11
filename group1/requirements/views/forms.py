@@ -163,6 +163,7 @@ class StoryForm(forms.ModelForm):
             'test',
             'hours',
             'owner',
+            'type',
             'status',
             'points',
             'pause')

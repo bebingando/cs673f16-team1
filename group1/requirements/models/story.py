@@ -6,6 +6,18 @@ from iteration import Iteration
 
 
 class Story(ProjMgmtBase):
+    TYPE_FEATURE = 1
+    TYPE_BUG = 2
+    TYPE_CHORE = 3
+    TYPE_RELEASE = 4
+
+    TYPE_CHOICES = (
+        (TYPE_FEATURE, "Feature"),
+        (TYPE_BUG, "Bug"),
+        (TYPE_CHORE, "Chore"),
+        (TYPE_RELEASE, "Release")
+    )
+    
     STATUS_UNSTARTED = 1
     STATUS_STARTED = 2
     STATUS_COMPLETED = 3
@@ -58,6 +70,10 @@ class Story(ProjMgmtBase):
         null=True,
         default=None,
         on_delete=models.SET_NULL)
+    type = models.IntegerField(
+        choices=TYPE_CHOICES,
+        max_length=1,
+        default=TYPE_FEATURE)
     status = models.IntegerField(
         choices=STATUS_CHOICES,
         max_length=1,
@@ -109,6 +125,7 @@ def create_story(project, fields):
     test = fields.get('test', '')
     hours = fields.get('hours', 0)
     owner = fields.get('owner', None)
+    type = fields.get('type', Story.TYPE_FEATURE)
     status = fields.get('status', Story.STATUS_UNSTARTED)
     points = fields.get('points', Story.POINTS_NONE)
     pause = fields.get('pause', False)
@@ -127,6 +144,7 @@ def create_story(project, fields):
                   test=test,
                   hours=hours,
                   owner=owner,
+                  type=type,
                   status=status,
                   points=points,
                   pause=pause,
