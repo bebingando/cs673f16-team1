@@ -6,6 +6,8 @@ from requirements.models import project_api
 from requirements.models import user_association
 from requirements.models import user_manager
 from requirements.models import story
+from requirements.models import story_comment
+from requirements.models import story_attachment
 from requirements.models.project import Project
 from requirements.models.user_association import UserAssociation
 from requirements.models.iteration import Iteration
@@ -107,3 +109,81 @@ class ProjectTestCase(TestCase):
         self.assertEqual(1, self.__project.story_set.count())
         models.story.delete_story(s.id - 1)
         self.assertEqual(1, self.__project.story_set.count())
+        
+    def test_create_new_comment(self):
+        fields = {"title": "title",
+                  "description": "desc",
+                  "reason": "reason",
+                  "test": "test",
+                  "status": 1}
+        s = models.story.create_story(self.__project, fields)
+        self.assertEqual(1, self.__project.story_set.count())
+        comment = {'title': 'Test comment title', 'comment': 'Test comment body'} 
+        c = models.story_comment.create_comment(s, comment)
+        self.assertEqual('Test comment title', c.__str__())
+
+
+    def test_get_comment_from_story(self):
+        fields = {"title": "title",
+                  "description": "desc",
+                  "reason": "reason",
+                  "test": "test",
+                  "status": 1}
+        s = models.story.create_story(self.__project, fields)
+        self.assertEqual(1, self.__project.story_set.count())
+        comment = {'title': 'Test comment title', 'comment': 'Test comment body'} 
+        c = models.story_comment.create_comment(s, comment)
+        self.assertEqual('Test comment title', c.__str__())
+        self.assertIsNotNone(models.story_comment.get_comments_for_story(s))
+    
+    def test_get_comment_from_null_story(self):
+        comment = models.story_comment.get_comments_for_story(None)
+        self.assertIsNone(comment)
+    
+    def test_create_null_comment_from_story(self):
+        fields = {"title": "title",
+                  "description": "desc",
+                  "reason": "reason",
+                  "test": "test",
+                  "status": 1}
+        s = models.story.create_story(self.__project, fields)
+        self.assertEqual(1, self.__project.story_set.count()) 
+        c = models.story_comment.create_comment(s, None)
+        self.assertIsNone(c)
+        
+    def test_create_comment_from_null_story(self):
+        comment = {'title': 'Test comment title', 'comment': 'Test comment body'} 
+        c = models.story_comment.create_comment(None, comment)
+        self.assertIsNone(c)
+        
+    
+    def test_get_comment_from_id(self):
+        fields = {"title": "title",
+                  "description": "desc",
+                  "reason": "reason",
+                  "test": "test",
+                  "status": 1}
+        s = models.story.create_story(self.__project, fields)
+        self.assertEqual(1, self.__project.story_set.count())
+        comment = {'title': 'Test comment title', 'comment': 'Test comment body'} 
+        c = models.story_comment.create_comment(s, comment)
+        self.assertEqual('Test comment title', c.__str__())
+        self.assertIsNotNone(models.story_comment.get_comment(c.id))
+    
+    def test_get_comment_from_invalid_id(self):
+        self.assertIsNone(models.story_comment.get_comment(-1000000))
+    
+    def test_get_all_comments(self):
+        fields = {"title": "title",
+                  "description": "desc",
+                  "reason": "reason",
+                  "test": "test",
+                  "status": 1}
+        s = models.story.create_story(self.__project, fields)
+        self.assertEqual(1, self.__project.story_set.count())
+        comment = {'title': 'Test comment title', 'comment': 'Test comment body'} 
+        c = models.story_comment.create_comment(s, comment)
+        self.assertEqual('Test comment title', c.__str__())
+        self.assertEqual(1, models.story_comment.get_all_comments().count())
+    
+        
