@@ -53,6 +53,8 @@ class ProjectTestCase(TestCase):
         git_root = subprocess.check_output("git rev-parse --show-toplevel", shell=True)
         if (os.path.exists(git_root.rstrip() + '/group1/project_files')):
             shutil.rmtree(git_root.rstrip() + '/group1/project_files')
+        if (os.path.isfile(git_root.rstrip() + '/group1/test.txt')):
+            os.remove(git_root.rstrip() + '/group1/test.txt')
 
     def __clear(self):
         UserAssociation.objects.all().delete
@@ -396,5 +398,4 @@ class ProjectTestCase(TestCase):
         request = self.factory.post('/uploadprojectattachment/'+str(p.id))
         request.user = self.__admin
         request.FILES['file'] = File(upload_file)
-        
         

@@ -27,6 +27,15 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Use nose to run all tests
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# Tell nose to measure coverage on the 'foo' and 'bar' apps
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=requirements',
+    '--cover-html'
+]
 
 # Application definition
 
@@ -41,7 +50,8 @@ INSTALLED_APPS = (
     'requirements',
     'comm',
     'issue_tracker',
-    'corsheaders'
+    'corsheaders',
+    'django_nose'
 )
 
 MIDDLEWARE_CLASSES = (
