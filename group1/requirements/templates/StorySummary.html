@@ -46,6 +46,10 @@
                       <div class="col-xs-12 col-sm-9"><h4>{{ form.hours.value }} Hrs</h4></div>
                     </div>
                     <div class="form-group">
+                      <div class="col-xs-12 col-sm-3"><h4>{{ form.type.label_tag }}</h4></div>
+                      <div class="col-xs-12 col-sm-9"><h4 id="story_type">{{ form.type.value }}</h4></div>
+                    </div>
+                    <div class="form-group">
                       <div class="col-xs-12 col-sm-3"><h4>{{ form.points.label_tag }}</h4></div>
                       <div class="col-xs-12 col-sm-9"><h4 id="story_point">{{ form.points.value }}</h4></div>
                     </div>
@@ -259,6 +263,26 @@
                     <div style="visibility: hidden; height: 0px;">{{ form.hours }}</div>
                     {% endif %}
                     
+                    {% check_permission association project "EditType" as can_edit_type %}
+                    {% if can_edit_type %}
+                    {% if form.type.errors %}
+                    <div class="form-group has-error has-feedback">
+                    {% else %}
+                    <div class="form-group">
+                    {% endif %}
+                        <label for="{{ form.type.id_for_label }}" class="col-xs-12 col-sm-3 control-label">Type</label>
+                        <div class="col-xs-12 col-sm-9" id="{{ form.type.id_for_label }}_popover">
+                            {{ form.type }}
+                            {% if form.type.errors %}
+                            <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                            <span id="inputError2Status" class="sr-only">(error)</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <div style="visibility: hidden; height: 0px;">{{ form.type }}</div>
+                    {% endif %}
+
                     {% check_permission association project "SelectStoryStatus" as can_select_status %}
                     {% if can_select_status %}
                     {% if form.status.errors %}
@@ -278,7 +302,7 @@
                     {% else %}
                     <div style="visibility: hidden; height: 0px;">{{ form.status }}</div>
                     {% endif %}
-                    
+
                     {% check_permission association project "EditPoints" as can_edit_points %}
                     {% if can_edit_points %}
                     {% if form.points.errors %}

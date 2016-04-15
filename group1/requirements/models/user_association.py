@@ -37,10 +37,10 @@ class UserAssociation(models.Model):
             #                           "AddUser", "DeleteUser", "ChangePermissions", "EditProject", "DeleteProject", "AddIteration"]
             # =======
             ROLE_CLIENT: [PERM_CREATE_STORY, PERM_EDIT_STORY, "AcceptStory"],
-            ROLE_DEVELOPER: [PERM_CREATE_STORY, PERM_EDIT_STORY, "EditHours", "EditPoints",
+            ROLE_DEVELOPER: [PERM_CREATE_STORY, PERM_EDIT_STORY, "EditHours", "EditPoints", "EditType",
                              "ChangeStoryStatus", "AddTasks", "EditTasks", "EditOwner"],
             ROLE_OWNER: [PERM_CREATE_STORY, PERM_EDIT_STORY, PERM_DELETE_STORY, "AcceptStory",
-                         "EditHours", "EditPoints", "SelectStoryStatus", "AddTasks", "EditTasks",
+                         "EditHours", "EditType", "EditPoints", "SelectStoryStatus", "AddTasks", "EditTasks",
                          "AddUser", "DeleteUser", "ChangePermissions",
                          "PauseStory", "EditAccepted", "EditPaused", "MoveStoryToIteration",
                          "EditProject", "DeleteProject", "AddIteration", "EditIteration", "DeleteIteration", "EditOwner"]

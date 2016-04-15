@@ -13,9 +13,12 @@
 
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="downloadProjectFile('{{file.name}}')">
+                        <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="downloadProjectAttachment('{{projectID}}','{{file.uuid}}')">
                             <i class="glyphicon glyphicon-download-alt"></i>
                         </a>
+                        <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="deleteProjectAttachment('{{projectID}}','{{file.uuid}}')">
+							<i class="fa fa-trash fa-fw"></i>
+						</a>
                         {{file.name}}
                     </li>
                 </ul>
@@ -74,8 +77,4 @@
                 fileTooLarge = false;
             }
         });
-        
-        function downloadProjectFile(fileName){
-            window.location.assign('/req/downprojectattach/{{projectID}}/?file=' + fileName);
-        }
     </script>

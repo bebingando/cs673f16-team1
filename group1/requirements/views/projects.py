@@ -1,10 +1,14 @@
 from django import forms
 from requirements import models
 from requirements.models import project_api
+from requirements.models import files as mdl_attachment
 from requirements.models import user_manager, user_association
 from requirements.models import story as mdl_story
 from requirements.models import task as mdl_task
+from requirements.models import story_comment as mdl_story_comment
+from requirements.models import story_attachment as mdl_story_attachment
 from requirements.models import iteration as mdl_iteration
+from issue_tracker import models as mdl_issue
 from requirements.models.user_association import UserAssociation
 from django.http import HttpResponse, HttpResponseRedirect
 from forms import IterationForm
@@ -58,6 +62,9 @@ def project(request, projectID):
                'project': project,
                'stories': mdl_story.get_stories_for_project(project),
                'tasks': mdl_task.get_all_tasks(),
+               'comments': mdl_story_comment.get_all_comments(),
+               'attachments': mdl_story_attachment.get_all_attachments(),
+               'issues': mdl_issue.get_all_issues(),
                'iterations': iterations,
                'association': association,
                'canOwnProject': request.user.has_perm(PERMISSION_OWN_PROJECT),
@@ -269,7 +276,7 @@ def get_attachments(request, projectID):
 
 @user_can_access_project()
 def upload_attachment(request, projectID):
-
+    
     if 'file' not in request.FILES:
         raise IOError("Missing file")
     if request.FILES['file'].size > 10*1024*1024:
@@ -291,17 +298,52 @@ def upload_attachment(request, projectID):
         f = ProjectFile(file=fileObj,
                         project=projID,
                         name=fname,
-                        UUID=fileUUID)
+                        uuid=fileUUID)
         f.save()
     return redirect(request.POST['referer'])
 
+@login_required(login_url='/signin')
+def issues(request, projectID):
+    # Loads the IssueList template, which contains a list of the issues the user is
+    # associated with, within a project
+    project = project_api.get_project(projectID)
+    if project is None:
+        return redirect('/req/projects')
+
+    iterations = mdl_iteration.get_iterations_for_project(project)
+    association = UserAssociation.objects.get(
+        user=request.user,
+        project=project)
+
+    context = {'projects': project_api.get_projects_for_user(request.user.id),
+               'project': project,
+               'stories': mdl_story.get_stories_for_project(project),
+               'tasks': mdl_task.get_all_tasks(),
+               'comments': mdl_story_comment.get_all_comments(),
+               'attachments': mdl_story_attachment.get_all_attachments(),
+               'issues': mdl_issue.get_all_issues(),
+               'iterations': iterations,
+               'association': association,
+               'canOwnProject': request.user.has_perm(PERMISSION_OWN_PROJECT),
+    }
+    return render(request, 'IssueList.html', context)
+    
+@user_can_access_project()
+def delete_attachment(request, projectID):
+
+    uuid=request.GET.get(
+            'file',
+            '')
+    mdl_attachment.delete(uuid)
+
+    return redirect(request.META['HTTP_REFERER'])
 
 @user_can_access_project()
-def download_file(request, projectID):
+def download_attachment(request, projectID):
 
     file = ProjectFile.objects.get(
-        project__id=projectID,
-        name=request.GET.get(
+        project=projectID,
+        uuid=request.GET.get(
             'file',
             ''))
     response = HttpResponse(file.file)

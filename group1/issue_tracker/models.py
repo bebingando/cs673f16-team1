@@ -81,3 +81,6 @@ class IssueComment(models.Model):
 
     def get_absolute_url(self):
         return reverse('view_issue', kwargs={'pk': self.issue_id})
+    
+def get_all_issues():
+    return Issue.objects.all()
