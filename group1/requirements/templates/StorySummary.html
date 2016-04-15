@@ -53,6 +53,10 @@
                       <div class="col-xs-12 col-sm-3"><h4>{{ form.points.label_tag }}</h4></div>
                       <div class="col-xs-12 col-sm-9"><h4 id="story_point">{{ form.points.value }}</h4></div>
                     </div>
+                    <div class="form-group">
+                      <div class="col-xs-12 col-sm-3"><h4>{{ form.priority.label_tag }}</h4></div>
+                      <div class="col-xs-12 col-sm-9"><h4 id="story_point">{{ form.priority.value }}</h4></div>
+                    </div>
                     {% else %}
                     
                     {% if form.title.errors %}
@@ -318,9 +322,15 @@
                             <span id="inputError2Status" class="sr-only">(error)</span>
                             {% endif %}
                         </div>
+  			<label for="{{ form.priority.id_for_label }}" class="col-xs-12 col-sm-3 control-label">Priority</label>
+                        <div class="col-xs-12 col-sm-9" id="{{ form.priority.id_for_label }}_popover">
+                            {{ form.priority }}
+                        </div>
+
                     </div>
                     {% else %}
                     <div style="visibility: hidden; height: 0px;">{{ form.points }}</div>
+		    <div style="visibility: hidden; height: 0px;">{{ form.priority }}</div>
                     {% endif %}
 
                     {% check_permission association project "PauseStory" as can_pause %}

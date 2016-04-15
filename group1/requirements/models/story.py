@@ -166,7 +166,7 @@ def create_story(project, fields):
                   status=status,
                   points=points,
                   pause=pause,
-                  belongs = 'ICEBOX',
+                  belong = 'ICEBOX',
                   priority = priority
                   )
     story.save()

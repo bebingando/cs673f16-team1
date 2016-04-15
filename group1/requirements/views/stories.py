@@ -34,8 +34,8 @@ def new_story(request, projectID):
         project=project)
     if request.method == 'POST':
         form = StoryForm(request.POST, project=project)
+        
         if form.is_valid():
-            # <<<<<<< HEAD
             story = form.save(commit=False)
             formset = TaskFormSet(request.POST, instance=story)
             if formset.is_valid():

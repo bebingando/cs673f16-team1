@@ -107,7 +107,9 @@
                                                     Story Type: {{story.get_type_display}}
                                                     </br>
                                                     Points: {{story.points }}
-                                                    </br></br>
+                                                    </br>
+						    Priority: {{story.priority}}
+					 	    </br>
                                                     {% for task in tasks%}
                                                     	{% if task.story = story %}
                                                     		Task: {{task}}
@@ -230,7 +232,9 @@
                                                     Hours: {{story.hours }}
                                                     </br>
                                                     Points: {{story.points }}
-                                                    </br></br>
+                                                    </br>
+						    Priority: {{story.priority}}
+					 	    </br>
                                                     {% for task in tasks%}
                                                     	{% if task.story = story %}
                                                     		Task: {{task}}
@@ -376,7 +380,9 @@
                                                     Hours: {{story.hours }}
                                                     </br>
                                                     Points: {{story.points }}
-                                                    </br></br>
+                                                    </br>						    
+						    Priority: {{story.priority}}
+					 	    </br>
                                                     {% for task in tasks%}
                                                     	{% if task.story = story %}
                                                     		Task: {{task}}

@@ -166,8 +166,9 @@ class StoryForm(forms.ModelForm):
             'type',
             'status',
             'points',
-            'pause',
-            'priority')
+            'priority',
+            'pause'
+            )
         widgets = {
             'description': forms.Textarea(attrs={'rows': 5}),
             'reason': forms.Textarea(attrs={'rows': 5}),
