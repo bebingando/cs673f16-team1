@@ -34,6 +34,17 @@ class Story(ProjMgmtBase):
         (POINTS_FIVE, "5 Points"),
     )
     
+    PRIORITY_GREEN = 0
+    PRIORITY_ORANGE = 1
+    PRIORITY_RED = 2
+    
+    PRIORITY_CHOICES = (
+        (PRIORITY_GREEN, "green"),
+        (PRIORITY_ORANGE,"orange"),
+        (PRIORITY_RED,"red"),
+                        
+                        )
+    
     STORY_BELONGS_ICEBOX = 'ICEBOX'
     
     STORY_BELONGS_ITERATION = 'ITERATION'
@@ -58,6 +69,11 @@ class Story(ProjMgmtBase):
         null=True,
         default=None,
         on_delete=models.SET_NULL)
+    
+    priority = models.IntegerField(
+            choices =PRIORITY_CHOICES,
+            max_length = 1,
+            default = PRIORITY_GREEN)
     status = models.IntegerField(
         choices=STATUS_CHOICES,
         max_length=1,
@@ -112,6 +128,7 @@ def create_story(project, fields):
     status = fields.get('status', Story.STATUS_UNSTARTED)
     points = fields.get('points', Story.POINTS_NONE)
     pause = fields.get('pause', False)
+    priority = fields.get('priority', 0)
     if owner is None or owner == '':
         owner = None
     else:
@@ -130,7 +147,8 @@ def create_story(project, fields):
                   status=status,
                   points=points,
                   pause=pause,
-                  belongs = 'ICEBOX'
+                  belongs = 'ICEBOX',
+                  priority = priority
                   )
     story.save()
     return story
