@@ -229,6 +229,8 @@
                                                     </br>
                                                     Hours: {{story.hours }}
                                                     </br>
+                                                    Story Type: {{story.get_type_display}}
+                                                    </br>
                                                     Points: {{story.points }}
                                                     </br></br>
                                                     {% for task in tasks%}
@@ -374,6 +376,8 @@
                                                     Description: {{ story.description }}
                                                     </br>
                                                     Hours: {{story.hours }}
+                                                    </br>
+                                                    Story Type: {{story.get_type_display}}
                                                     </br>
                                                     Points: {{story.points }}
                                                     </br></br>
