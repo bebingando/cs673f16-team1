@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
 from requirements import models
 from requirements.models import project
 from requirements.models import project_api
@@ -185,5 +186,64 @@ class ProjectTestCase(TestCase):
         c = models.story_comment.create_comment(s, comment)
         self.assertEqual('Test comment title', c.__str__())
         self.assertEqual(1, models.story_comment.get_all_comments().count())
-    
         
+    def test_attachments_file_attachment(self):
+        fields = {"title": "title",
+                  "description": "desc",
+                  "reason": "reason",
+                  "test": "test",
+                  "status": 1}
+        s = models.story.create_story(self.__project, fields)
+        self.assertEqual(1, self.__project.story_set.count())
+        models.story_attachment.create(s.id, SimpleUploadedFile('test_it.txt', 'This is some text to add to the file'))
+        attach = story_attachment.get_attachments_for_story(s)
+        self.assertIsNotNone(attach, "File attachment should exist")
+        for a in story_attachment.get_all_attachments():
+            story_attachment.delete(a.uuid)
+        
+        
+    def test_attachments_file_no_attachment(self):
+        fields = {"title": "title",
+                  "description": "desc",
+                  "reason": "reason",
+                  "test": "test",
+                  "status": 1}
+        s = models.story.create_story(self.__project, fields)
+        self.assertEqual(1, self.__project.story_set.count())
+        attach = models.story_attachment.create(s.id, None)
+        self.assertIsNone(attach, "File attachment should NOT exist")
+            
+    def test_attachments_file_no_story(self):
+        attach = models.story_attachment.create(None, SimpleUploadedFile('test_it.txt', 'This is some text to add to the file'))
+        
+        self.assertIsNone(attach, "File attachment should NOT exist")
+    
+    def test_attachments_get_attachments_for_non_story(self):
+       attach = story_attachment.get_attachments_for_story(None)
+       self.assertIsNone(attach, "File attachment should NOT exist")
+    
+    def test_attachments_get_all_attachments(self):
+       attach = story_attachment.get_all_attachments()
+       self.assertEqual(0, attach.count())
+    
+    def test_attachments_file_attachment(self):
+        fields = {"title": "title",
+                  "description": "desc",
+                  "reason": "reason",
+                  "test": "test",
+                  "status": 1}
+        s = models.story.create_story(self.__project, fields)
+        self.assertEqual(1, self.__project.story_set.count())
+        models.story_attachment.create(s.id, SimpleUploadedFile('test_it.txt', 'This is some text to add to the file'))
+        attach = story_attachment.get_attachments_for_story(s)
+        self.assertIsNotNone(attach, "File attachment should exist")
+        a = attach.first()
+        self.assertIsNotNone(a.uuid, "File attachment uuid should exist")
+        self.assertIsNotNone(a.story, "File attachment story should exist")
+        self.assertIsNotNone(a.name, "File attachment name should exist")
+        self.assertIsNotNone(a.file, "File attachment file should exist")
+        self.assertIsNotNone(a.last_updated, "File attachment last_updated should exist")
+        
+        for a in story_attachment.get_all_attachments():
+            story_attachment.delete(a.uuid)  
+            
