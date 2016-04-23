@@ -2,6 +2,7 @@ import datetime
 import os
 import shutil
 import subprocess
+import uuid
 
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile, UploadedFile
@@ -11,6 +12,7 @@ from django.test import RequestFactory
 from django.test import TestCase
 
 from requirements import models
+from requirements.models import files
 from requirements.models import project
 from requirements.models import project_api
 from requirements.models import story
@@ -24,6 +26,7 @@ from requirements.models.user_association import UserAssociation
 from requirements.views.projects import upload_attachment
 from django.core.files.base import File
 from django.test import Client
+from _elementtree import tostring
 
 
 class Obj():
@@ -53,6 +56,8 @@ class ProjectTestCase(TestCase):
         git_root = subprocess.check_output("git rev-parse --show-toplevel", shell=True)
         if (os.path.exists(git_root.rstrip() + '/group1/project_files')):
             shutil.rmtree(git_root.rstrip() + '/group1/project_files')
+        if (os.path.isfile(git_root.rstrip() + '/group1/test.txt')):
+            os.remove(git_root.rstrip() + '/group1/test.txt')
 
     def __clear(self):
         UserAssociation.objects.all().delete
@@ -397,4 +402,33 @@ class ProjectTestCase(TestCase):
         request.user = self.__admin
         request.FILES['file'] = File(upload_file)
         
+        self.assertTrue(ProjectFile.objects.filter(name="test.txt").count()==0, 
+                        "Test was able to upload a file larger than 10 MB")
         
+    def test_get_active_users(self):
+        active_users = str(user_manager.getActiveUsers())
+        self.assertEqual(active_users, "[<User: testUser>, <User: admin>]", 
+                         "Active users not correct")
+    
+    def test_create_delete_project_file(self):
+        
+        fileObj = open('test.txt',"w+")
+        fileObj.write("test")
+        fileObj.close()
+        
+        fileUUID = str(uuid.uuid4())
+        
+        p = Project(title="title", description="desc")
+        p.save()
+
+        upload_file = ProjectFile(file=fileObj,
+                        project=p,
+                        name=fileObj.name,
+                        uuid=fileUUID)
+        
+        self.assertEqual(upload_file.uuid, fileUUID, "Project file creation failed")
+        
+        files.delete(fileUUID)
+        
+        self.assertTrue(ProjectFile.objects.filter(uuid=fileUUID).count()==0, 
+                        "Project file deletion failed")

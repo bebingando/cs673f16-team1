@@ -13,10 +13,8 @@ from django.http import HttpResponse
 
 #     return True
 
-
 def getActiveUsers():
     return User.objects.filter(is_active=True)
-
 
 def __hasRole(projectID, userID, roleName):
     assoc = __getAssoc(projectID, userID)
@@ -25,11 +23,9 @@ def __hasRole(projectID, userID, roleName):
     ua = assoc.first()
     return ua.get_permission(roleName)
 
-
 def __getAssoc(projectID, userID):
     return UserAssociation.objects.filter(
         project__id=projectID, user__id=userID)
-
 
 def isOwner(projectID, userID):
     assoc = __getAssoc(projectID, userID)
@@ -41,7 +37,6 @@ def isOwner(projectID, userID):
 # request and projectID as arguments. The decorator will redirect to
 # a 401 screen if the user making a request does not have the passed in role on
 # the project
-
 
 def user_has_role(role):
     def _my_decorator(view_method):
@@ -57,7 +52,6 @@ def user_has_role(role):
 # request and projectID as arguments. The decorator will redirect to
 # a 401 screen if the user making a request does not own the project
 
-
 def user_owns_project():
     def _my_decorator(view_method):
         def _decorator(request, projectID, *args, **kwargs):
@@ -72,7 +66,6 @@ def user_owns_project():
 # request and projectID as arguments. The decorator will redirect to
 # a 401 screen if the user making a request does not have access to the project
 
-
 def user_can_access_project():
     def _my_decorator(view_method):
         def _decorator(request, projectID, *args, **kwargs):
@@ -83,10 +76,8 @@ def user_can_access_project():
         return wraps(view_method)(_decorator)
     return _my_decorator
 
-
 def canCreateStoryInProject(projectID, userID):
     return __hasRole(projectID, userID, user_association.PERM_CREATE_STORY)
-
 
 def canEditStoryInProject(projectID, userID):
     return __hasRole(projectID, userID, user_association.PERM_EDIT_STORY)
