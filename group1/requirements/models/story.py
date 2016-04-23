@@ -46,14 +46,14 @@ class Story(ProjMgmtBase):
         (POINTS_FIVE, "5 Points"),
     )
     
-    PRIORITY_GREEN = 0
-    PRIORITY_ORANGE = 1
-    PRIORITY_RED = 2
+    PRIORITY_GREEN = "Low"
+    PRIORITY_ORANGE = "Medium"
+    PRIORITY_RED = "High"
     
     PRIORITY_CHOICES = (
-        (PRIORITY_GREEN, "green"),
-        (PRIORITY_ORANGE,"orange"),
-        (PRIORITY_RED,"red"),
+        (PRIORITY_GREEN, "Low"),
+        (PRIORITY_ORANGE,"Medium"),
+        (PRIORITY_RED,"High"),
                         
                         )
     
@@ -83,9 +83,9 @@ class Story(ProjMgmtBase):
         default=None,
         on_delete=models.SET_NULL)
     
-    priority = models.IntegerField(
+    priority = models.CharField(
             choices =PRIORITY_CHOICES,
-            max_length = 1,
+            max_length = 32,
             default = PRIORITY_GREEN)
     type = models.IntegerField(
         choices=TYPE_CHOICES,
@@ -146,7 +146,7 @@ def create_story(project, fields):
     status = fields.get('status', Story.STATUS_UNSTARTED)
     points = fields.get('points', Story.POINTS_NONE)
     pause = fields.get('pause', False)
-    priority = fields.get('priority', 0)
+    priority = fields.get('priority', "Low")
     if owner is None or owner == '':
         owner = None
     else:
