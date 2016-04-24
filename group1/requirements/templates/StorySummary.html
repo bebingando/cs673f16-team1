@@ -322,11 +322,12 @@
                             <span id="inputError2Status" class="sr-only">(error)</span>
                             {% endif %}
                         </div>
-  			<label for="{{ form.priority.id_for_label }}" class="col-xs-12 col-sm-3 control-label">Priority</label>
+                    </div>
+                    <div class="form-group">
+                    	<label for="{{ form.priority.id_for_label }}" class="col-xs-12 col-sm-3 control-label">Priority</label>
                         <div class="col-xs-12 col-sm-9" id="{{ form.priority.id_for_label }}_popover">
                             {{ form.priority }}
                         </div>
-
                     </div>
                     {% else %}
                     <div style="visibility: hidden; height: 0px;">{{ form.points }}</div>
