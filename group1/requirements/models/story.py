@@ -51,11 +51,10 @@ class Story(ProjMgmtBase):
     PRIORITY_RED = "High"
     
     PRIORITY_CHOICES = (
-        (PRIORITY_GREEN, "Low"),
-        (PRIORITY_ORANGE,"Medium"),
         (PRIORITY_RED,"High"),
-                        
-                        )
+        (PRIORITY_ORANGE,"Medium"),
+        (PRIORITY_GREEN, "Low"),
+    )
     
     STORY_BELONGS_ICEBOX = 'ICEBOX'
 

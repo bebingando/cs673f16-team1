@@ -4,6 +4,7 @@ from requirements.views import projects
 from requirements.models import project_api
 from requirements.models import user_manager
 from requirements.models import story as mdl_story
+from requirements.models.story import Story
 from requirements.models import iteration as mdl_iteration
 from requirements.models.user_manager import user_owns_project
 from requirements.models.user_association import UserAssociation
@@ -61,7 +62,7 @@ def backlog(request, projectID, iterationID):
             project=project)
         iterations = project_api.get_iterations_for_project(project)
         iteration = project_api.get_iteration(iterationID)
-        priorities = ["High", "Medium", "Low"]
+        priorities = Story.PRIORITY_CHOICES
         if iteration is not None:
             stories = project_api.get_stories_for_iteration(iteration)
         else:
