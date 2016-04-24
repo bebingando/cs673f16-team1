@@ -61,12 +61,14 @@ def backlog(request, projectID, iterationID):
             project=project)
         iterations = project_api.get_iterations_for_project(project)
         iteration = project_api.get_iteration(iterationID)
+        priorities = ["High", "Medium", "Low"]
         if iteration is not None:
             stories = project_api.get_stories_for_iteration(iteration)
         else:
             stories = project_api.get_stories_with_no_iteration(project)
         context = {'projects': projects,
                    'project': project,
+                   'priorities': priorities,
                    'association': association,
                    'iterations': iterations,
                    'iteration': iteration,

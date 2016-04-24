@@ -13,7 +13,7 @@ class Story(ProjMgmtBase):
 
     TYPE_CHOICES = (
         (TYPE_FEATURE, "Feature"),
-        (TYPE_BUG, "Bug"),
+        (TYPE_BUG, "Bug Fix"),
         (TYPE_CHORE, "Chore"),
         (TYPE_RELEASE, "Release")
     )
@@ -59,7 +59,6 @@ class Story(ProjMgmtBase):
     
     STORY_BELONGS_ICEBOX = 'ICEBOX'
 
-    
     STORY_BELONGS_ITERATION = "ITERATION"
     
     STORY_BELONGS_BACKLOG = "BACKLOG"

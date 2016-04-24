@@ -261,7 +261,9 @@
                                             <h4><strong>Description</strong></h4>
                                         </div>
                                         <div class="col-xs-12 col-sm-9">
-                                            <h5>{{ story.description|linebreaks }}</h5>
+                                            {% for line_desc in story.description_as_list %}
+                                                <h5>{{ line_desc }}</h5>
+                                            {% endfor %}
                                         </div>
                                         </div>
                                     </div>
@@ -271,7 +273,9 @@
                                             <h4><strong>Reason</strong></h4>
                                         </div>
                                         <div class="col-xs-12 col-sm-9">
-                                            <h5>{{ story.reason|linebreaks }}</h5>
+                                            {% for line_reason in story.reason_as_list %}
+                                                <h5>{{ line_reason }}</h5>
+                                            {% endfor %}
                                         </div>
                                         </div>
                                     </div>
@@ -280,10 +284,10 @@
                                     <div class="col-xs-12 col-md-6">
                                         <div class="row">
                                         <div class="col-xs-12 col-sm-3">
-                                            <h4><strong>Test Accept</strong></h4>
+                                            <h4><strong>Story Type</strong></h4>
                                         </div>
                                         <div class="col-xs-12 col-sm-9">
-                                            <h5>{{ story.test|linebreaks }}</h5>
+                                            <h5>{{ story.get_type_display }}</h5>
                                         </div>
                                         </div>
                                     </div>
@@ -296,12 +300,36 @@
                                             <h5>{{ story.hours }} Hrs</h5>
                                         </div>
                                         </div>
+                                    </div>
+                                </div> 
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-6">
+                                        <div class="row">
+                                        <div class="col-xs-12 col-sm-3">
+                                            <h4><strong>Test Accept</strong></h4>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-9">
+                                            {% for line_test in story.test_as_list %}
+                                                <h5>{{ line_test }}</h5>
+                                            {% endfor %}
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-6">
                                         <div class="row">
                                         <div class="col-xs-12 col-sm-3">
                                             <h4><strong>Last Updated</strong></h4>
                                         </div>
                                         <div class="col-xs-12 col-sm-9">
                                             <h5>{{ story.last_updated }}</h5>
+                                        </div>
+                                        </div>
+                                         <div class="row">
+                                        <div class="col-xs-12 col-sm-3">
+                                            <h4><strong>Priority</strong></h4>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <h5>{{ story.priority }}</h5>
                                         </div>
                                         </div>
                                     </div>

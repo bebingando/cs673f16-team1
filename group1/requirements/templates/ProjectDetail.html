@@ -97,7 +97,6 @@
                                                     Last Updated: {{story.last_updated }}
                                                     </br></br>
                                                     {% endif %}
-								                     </br>
                                                     Owner: {{story.owner }}
                                                     </br></br>
                                                     Description: {{ story.description }}
@@ -108,8 +107,9 @@
                                                     </br>
                                                     Points: {{story.points }}
                                                     </br>
-						    Priority: {{story.priority}}
-					 	    </br>
+												    Priority: {{story.priority}}
+											 	    </br>
+											 	    </br>
                                                     {% for task in tasks%}
                                                     	{% if task.story = story %}
                                                     		Task: {{task}}
@@ -224,7 +224,6 @@
                                                     Last Updated: {{story.last_updated }}
                                                     </br></br>
                                                     {% endif %}
-								                     </br>
                                                     Owner: {{story.owner }}
                                                     </br></br>
                                                     Description: {{ story.description }}
@@ -235,8 +234,9 @@
                                                     </br>
                                                     Points: {{story.points }}
                                                     </br>
-						    Priority: {{story.priority}}
-					 	    </br>
+												    Priority: {{story.priority}}
+											 	    </br>
+											 	    </br>
                                                     {% for task in tasks%}
                                                     	{% if task.story = story %}
                                                     		Task: {{task}}
@@ -373,8 +373,8 @@
 								                <div class="panel-body">
                                                     {% if story.last_updated != None %}
                                                     Last Updated: {{story.last_updated }}
+                                                    </br></br>
                                                     {% endif %}
-                                                    </br>
                                                     Owner: {{story.owner }}
                                                     </br></br>
                                                     Description: {{ story.description }}
@@ -385,8 +385,9 @@
                                                     </br>
                                                     Points: {{story.points }}
                                                     </br>						    
-						    Priority: {{story.priority}}
-					 	    </br>
+												    Priority: {{story.priority}}
+											 	    </br>
+											 	    </br>
                                                     {% for task in tasks%}
                                                     	{% if task.story = story %}
                                                     		Task: {{task}}
