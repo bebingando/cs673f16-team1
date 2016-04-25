@@ -4,6 +4,7 @@ from requirements.models import project_api
 from requirements.models import files as mdl_attachment
 from requirements.models import user_manager, user_association
 from requirements.models import story as mdl_story
+from requirements.models.story import Story
 from requirements.models import task as mdl_task
 from requirements.models import story_comment as mdl_story_comment
 from requirements.models import story_attachment as mdl_story_attachment
@@ -57,12 +58,14 @@ def project(request, projectID):
     association = UserAssociation.objects.get(
         user=request.user,
         project=project)
+    priorities = Story.PRIORITY_CHOICES
 
     context = {'projects': project_api.get_projects_for_user(request.user.id),
                'project': project,
                'stories': mdl_story.get_stories_for_project(project),
                'tasks': mdl_task.get_all_tasks(),
                'comments': mdl_story_comment.get_all_comments(),
+               'priorities': priorities,
                'attachments': mdl_story_attachment.get_all_attachments(),
                'issues': mdl_issue.get_all_issues(),
                'iterations': iterations,

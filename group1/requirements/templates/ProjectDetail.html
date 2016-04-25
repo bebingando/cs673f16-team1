@@ -158,8 +158,10 @@
             	    	    <div id="iter_body_backlog" class="panel-collapse collapse in" aria-expanded="true">
 								<div class="panel-body">
 								    <div class="panel-group" id="iter_backlog">
+								    	{% for priority,priority_value in priorities %}
             	    	    	        {% for story in stories %}
             	    	    	        {% if story.belong == "BACKLOG" %}
+            	    	    	        {% if story.priority == priority %}
 								        <div class="panel panel-default">
 								            <div class="panel-heading">
 								                <h4 class="panel-title">
@@ -261,7 +263,9 @@
 								                </div>
 								            </div>
 								        </div>
+								        {% endif %}
             	    	    	        {% endif %}					        
+								        {% endfor %}
 								        {% endfor %}
 									</div>
 								</div>
