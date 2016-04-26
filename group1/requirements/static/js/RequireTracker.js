@@ -232,7 +232,7 @@ function uploadAttachmentsIntoList(event, storyID) {
 	if($('#id_file_'+storyID).val() == ""){
 		event.preventDefault();
 		alert("Please provide a file");
-	}else if ( $('#id_file_'+storyID)[0].files[0].size > 1100000 ){
+	}else if ( $('#id_file_'+storyID)[0].files[0].size > 10485760 ){
 		event.preventDefault();
 		alert("Please provide a file smaller than 10 megabytes");
 	}else{
