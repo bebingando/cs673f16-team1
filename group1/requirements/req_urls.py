@@ -103,6 +103,8 @@ urlpatterns = patterns('',
                        url(r'^deleteattachment/(?P<storyID>\d+)',
                            stories.delete_attachment),
                        url(r'^downloadattachment/(?P<storyID>\d+)',
-                           stories.download_attachment)
+                           stories.download_attachment),
+                       url(r'^makepdf/(?P<projectID>\d+)',
+                           projects.makepdf),
                        )
                        

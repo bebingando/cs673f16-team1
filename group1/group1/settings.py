@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from django.conf import settings
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -27,6 +28,20 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+
+# Email setting, adding by Zhi and Nora
+EMAIL_HOST = 'smtp.live.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'zhidou@hotmail.com'
+EMAIL_HOST_PASSWORD = 'DOUZhi19910617'
+EMAIL_USE_TLS = True
+#EMAIL_USE_SSL = True
+
+
+
+
+
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -36,6 +51,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_jenkins',    
     'rest_framework',
     'requirements',
     'comm',
@@ -51,6 +67,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'group1.middleware.SessionSecurityMiddleware',
 )
 
 ROOT_URLCONF = 'group1.urls'
@@ -99,3 +116,55 @@ CORS_ALLOW_HEADER = (
     'x-csrftoken',
     'accept-encoding',
 )
+
+
+EXPIRE_TIME = getattr(settings, 'SESSION_SECURITY_EXPIRE_AFTER', 30)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+"""
+Django settings for group1 project.
+
+For more information on this file, see
+https://docs.djangoproject.com/en/1.7/topics/settings/
+
+For the full list of settings and their values, see
+https://docs.djangoproject.com/en/1.7/ref/settings/
+"""
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import os
+from django.conf import settings
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'lw_pukawrvc*rfw^x6ccq$%vs3rxtu8+6_lodf)j&jo$mjqq%_'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+TEMPLATE_DEBUG = True
+
+ALLOWED_HOSTS = []
+
+# Email setting, adding by Zhi and Nora
+EMAIL_HOST = 'smtp.live.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'zhidou@hotmail.com'
+EMAIL_HOST_PASSWORD = 'DOUZhi19910617'
+EMAIL_USE_TLS = True
+
+
+
+# session secure added by Zhi Dou and Nora
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
+EXPIRE_TIME = getattr(settings, 'SESSION_SECURITY_EXPIRE_AFTER', 600)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+#SECURE_SSL_REDIRECT = True
+#SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
+
+#os.environ['wsgi.url_scheme'] = 'https'

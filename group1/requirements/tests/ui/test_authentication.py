@@ -29,7 +29,7 @@ class TestLoginFail(unittest.TestCase):
         driver.find_element_by_id("password").send_keys("invalidpass")
         driver.find_element_by_xpath("//button[@type='submit']").click()
         self.assertEqual(
-            "Username or Password is incorrect ! Please try again !",
+            "Username or Password is incorrect ! Please try again ! If you fail more than 2 times, you need to wait 60s for next try!",
             driver.find_element_by_css_selector("div.alert.alert-danger").text)
 
     def test_login_pass(self):

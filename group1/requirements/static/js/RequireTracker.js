@@ -87,6 +87,7 @@ function addTaskIntoList(storyID) {
         data : $(formID).serialize(),
         success : function(data) {
             $(listID).html(data);
+            loadTasks(storyID);
         },
         async: true
 	});
@@ -164,7 +165,8 @@ function addCommentIntoList(storyID) {
             $(listID).html(data);
         },
         async:true
-	});
+    });
+        loadComments(storyID);
 }
 
 function showEditCommentInList(storyID, commentID) {

@@ -86,4 +86,47 @@ cd /c/g1/source/deploy_tools
 ###### note: must activate virtualenv with fabric (you may have fabric installed on your path python, and not require a virtualenv)
 ##### run the fabfile.py script with the following command to upload the project from origin/master to the specified server
 fab deploy:host=pgmvt@dev.3blueprints.com
->>>>>>> 186a968bcd82d7321c94f24c8894ea4fda85d1e7
+
+####JENKINS INSTALLATION:
+(Install Jenkins on local or VM)
+# Add the Jenkins repository to the list of repositories
+$ sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
+
+# Add the repository's public key to your system's trusted keychain
+$ wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+
+# Download the repository index and install
+$ sudo apt-get update
+$ sudo apt-get install jenkin
+
+Open browser and do localhost:8080 (Or IP:8080 if on virtual machine)
+To install plugins:
+  Go to Manage Jenkins and click on available and search for the required plugin
+  Required plugins
+    Github
+    Violations Plugin
+    Cobertura Plugin
+
+#To configure your project:
+Select configure on the main page
+Select freestyle project
+Enter name and description
+Enter the git URL
+Add Git credentials (required to pull from Git)
+Add build triggers, select Poll SCM 
+Paste this into schedule->  */5 * * * *
+In execute Shell just enter ./jenkins_setup.sh
+
+Select post build actions:
+Publish Cobertura Report field (Location of coverage report) 
+  reports/coverage.xml
+  
+Publish Junit Test Report
+  reports/Junit.xml
+
+Report Violations (required violations plugin)
+in pylint enter : group1/pylint.log
+
+Save and Apply.
+Build.
+  

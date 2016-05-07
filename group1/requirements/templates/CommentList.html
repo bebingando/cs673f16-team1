@@ -25,6 +25,7 @@
 						</div>
 						<!-- </div> -->
 					</div>
+                                        <input type="hidden" name="user" value="{{ user.username }}">
 				</form>
 			</div>
 		</div>
@@ -62,6 +63,7 @@
 				<h4 class="list-group-item-heading">
 					{{ acomment.title }}
 					<h6> {{ acomment.last_updated }}<h6>
+                                                <h6> Posted by: {{ acomment.user }}<h6>
 				</h4>
 					
 				

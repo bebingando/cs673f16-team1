@@ -49,14 +49,33 @@ def create_project(user, fields):
 
     title = fields.get('title', '')
     description = fields.get('description', '')
+
     proj = Project(title=title, description=description)
     proj.save()
     association = UserAssociation(
-        user=user,
-        project=proj,
-        role=user_association.ROLE_OWNER)
+            user=user,
+            project=proj,
+            role=user_association.ROLE_OWNER)
     association.save()
+        #return True
     return proj
+
+def duplicate_project(user,fields):
+    if user is None:
+        return None
+    if fields is None:
+        return None
+    try:
+        u = User.objects.get(id=user.id)
+    except ObjectDoesNotExist:
+        return None
+
+    title = fields.get('title','')
+    titlelist = get_projects_for_user(user.id).values_list('title',flat=True)
+    if title in titlelist:
+        return True
+    return False
+
 
 
 def add_user_to_project(projectID, username, user_role):
