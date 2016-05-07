@@ -216,7 +216,6 @@
                                     {{ story.title }} - {{ story.get_status_display }}
                                 </a>
 
-<<<<<<< HEAD
                                 {% check_permission association project "MoveStoryToIteration" as can_move_story %}
                                 {% if can_move_story %}
                                 <div class="btn-group pull-right">
@@ -237,28 +236,6 @@
                                     </ul>
                                 </div>
                                 {% endif %}
-=======
-			                    {% check_permission association project "MoveStoryToIteration" as can_move_story %}
-			                    {% if can_move_story %}
-	    	                    <div class="btn-group pull-right">
-	    	                    	<button class="btn btn-default dropdown-toggle pull-right" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-	    	                    		Move
-	    	                        	<span class="caret"></span>
-	    	                      	</button>
-	    	                      	<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
-	    	                       		{% for iter_local in iterations %}
-	    	                        	{% if not iter_local.title = iteration.title %}
-	    	                        	<li role="presentation">
-	    	                        		<a role="menuitem" tabindex="-1" href="/req/movestorytoiter/{{project.id}}/{{story.id}}/{{iter_local.id}}">{{iter_local.title}}</a>
-	    	                        	</li>
-										{% endif %}
-                                                                                   
-	    	                        	{% endfor %}
-	    	                        	<li role="presentation"><a role="menuitem" tabindex="-1" href="/req/movestorytoicebox/{{project.id}}/{{story.id}}">Icebox</a></li>
-	    	                      	</ul>
-	    	                    </div>
-	    	                    {% endif %}
->>>>>>> team2/master
 
                                 {% check_permission association project "DeleteStory" as can_delete %} 
                                 {% if can_delete %}
