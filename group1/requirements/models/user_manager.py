@@ -5,13 +5,13 @@ import user_association
 from functools import wraps
 from django.http import HttpResponse
 
-# def createUser(request):
+def createUser(request):
 
-#     u = User.objects.create_user(username=request.POST['username'], password=request.POST['password'])
-#     u.is_active = False
-#     u.save()
+     u = User.objects.create_user(username=request.POST['username'], password=request.POST['password'])
+     u.is_active = False
+     u.save()
 
-#     return True
+     return True
 
 def getActiveUsers():
     return User.objects.filter(is_active=True)

@@ -5,13 +5,33 @@
 <div id="wrapper">
 	<div id="page-wrapper">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-lg-9">
 				<h1 class="page-header">
 					{{ project.title }}
 				</h1>
 			</div>
+			<!-- <button type="button" onclick="location.href='/req/makefile/{{ project.id }}'"> Download Report of This Project</button> -->
+			<!--<button type="button" onclick="location.href='/req/makepdf/{{ project.id }}'"> Download PDF Report of This Project</button>-->
 		</div>
+
+		<span class ="row" >
+			<p>
+			<div class="col-lg-6 col-md-6">
+				<div class="progress">
+					<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 60%"><span class="sr-only">60% Complete</span></div>
+				  </div>
+			</div>
+
+			<div class="col-lg-6 col-md-6" align="right" style="margin-bottom:20px">
+				<!--<button type="button" class="btn btn-lg btn-primary" onclick="location.href='/req/makepdf/{{ project.id }}'"> Download PDF Report of This Project</button>-->
+				<a class="btn btn-lg btn-primary" href="javascript:void(0);" onclick="showDialog('/req/makepdf/{{ project.id }}');"> Download PDF Report of This Project</a>
+				<br>
+			</div>
+			</p>
+		</span>
+
 		<div class="row">
+
 			<div class="col-lg-8 col-md-12">
             	<div class="col-md-12">
             		<div class="panel-group" id="proj_icebox">
@@ -48,6 +68,7 @@
 
 								                    {% check_permission association project "MoveStoryToIteration" as can_move_story %}
 								                    {% if can_move_story %}
+                                                                                    
             	    	    	                    <div class="btn-group pull-right">
             	    	    	                    <!--data-move-story attribute used for ui test automation -->
     	    	                    	                <button class="btn btn-default dropdown-toggle pull-right" 
@@ -59,6 +80,7 @@
             	    	    	                      	</button>
             	    	    	                      	<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
             	    	    	                       		{% for iter_local in iterations %}
+                                                                
             	    	    	                        	<li role="presentation">
             	    	    	                        		<a role="menuitem" tabindex="-1" href="/req/movestorytoiter/{{project.id}}/{{story.id}}/{{iter_local.id}}">{{iter_local.title}}</a>
             	    	    	                        	</li>
@@ -66,7 +88,9 @@
             	    	    	                        	<li role="presentation"><a role="menuitem" tabindex="-1" href="/req/movestorytobacklog/{{project.id}}/{{story.id}}">Backlog</a></li>
             	    	    	                      	</ul>
             	    	    	                    </div>
+                                                                                    
             	    	    	                    {% endif %}
+                                                    
 
                                                     {% check_permission association project "DeleteStory" as can_delete %} 
                                                     {% if can_delete %}

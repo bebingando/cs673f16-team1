@@ -26,7 +26,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12 col-sm-3"><h4>{{ form.start_date.label_tag }}</h4></div>
-                        <div class="col-xs-12 col-sm-9"><h4>{{ form.end_date.value|date:"M. d Y" }}</h4></div>
+                        <div class="col-xs-12 col-sm-9"><h4>{{ form.start_date.value|date:"M. d Y" }}</h4></div>
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12 col-sm-3"><h4>{{ form.end_date.label_tag }}</h4></div>
@@ -70,6 +70,11 @@
                         <div class="col-xs-12 col-sm-9" id="{{ form.start_date.id_for_label }}_popover">
                             <div class="input-group date form_datetime">
                                 {{ form.start_date }}
+                                {#This part is adding by Nora and Zhi#}
+                                {% if form.start_date.errors %}
+                                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="padding-right: 60px;"></span>
+                                <span id="inputError2Status" class="sr-only">(error)</span>
+                                {% endif %}
                                 <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>
                             </div>
                         </div>

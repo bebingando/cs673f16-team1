@@ -22,7 +22,76 @@ class TestUserProjectAndIterationPermission(unittest.TestCase):
     def test_user_project_and_iteration_permission(self):
         driver = self.driver
         driver.get(self.base_url + "/")
+        driver.find_element_by_xpath("//a[@href='/signup']").click()
+
+        driver.find_element_by_id("id_first_name").clear()
+        driver.find_element_by_id("id_first_name").send_keys("george")
+        driver.find_element_by_id("id_last_name").clear()
+        driver.find_element_by_id("id_last_name").send_keys("gg")
+        driver.find_element_by_id("id_email").clear()
+        driver.find_element_by_id("id_email").send_keys("george@bu.edu")
+        driver.find_element_by_id("id_username").clear()
+        driver.find_element_by_id("id_username").send_keys("george")
+        driver.find_element_by_id("id_password1").clear()
+        driver.find_element_by_id("id_password1").send_keys("1234")
+        driver.find_element_by_id("id_password2").clear()
+	driver.find_element_by_id("id_password2").send_keys("1234")
+	driver.find_element_by_xpath("//button[@type='submit']").click()
+
+	driver.get(self.base_url + "/")
+        driver.find_element_by_xpath("//a[@href='/signup']").click()
+
+	driver.find_element_by_id("id_first_name").clear()
+        driver.find_element_by_id("id_first_name").send_keys("sam")
+        driver.find_element_by_id("id_last_name").clear()
+        driver.find_element_by_id("id_last_name").send_keys("gg")
+        driver.find_element_by_id("id_email").clear()
+        driver.find_element_by_id("id_email").send_keys("sam@bu.edu")
+        driver.find_element_by_id("id_username").clear()
+        driver.find_element_by_id("id_username").send_keys("SamuelLJackson")
+        driver.find_element_by_id("id_password1").clear()
+        driver.find_element_by_id("id_password1").send_keys("snakes")
+        driver.find_element_by_id("id_password2").clear()
+        driver.find_element_by_id("id_password2").send_keys("snakes")
+	driver.find_element_by_xpath("//button[@type='submit']").click()
+
+	driver.get(self.base_url + "/")
+      
+        driver.find_element_by_link_text("Sign In").click()
+        driver.find_element_by_id("username").clear()
+        driver.find_element_by_id("username").send_keys("admin")
+        driver.find_element_by_id("password").clear()
+        driver.find_element_by_id("password").send_keys("pass")
+        driver.find_element_by_xpath("//button[@type='submit']").click()
+
+        
+	driver.get(self.base_url + "/admin/auth/user/")
+
+        driver.find_element_by_link_text('george').click()
+        driver.find_element_by_xpath("//input[@id='id_is_active']").click()
+        time.sleep(2)
+
+        driver.find_element_by_xpath("//input[@id='id_is_staff']").click()
+        driver.find_element_by_xpath("//input[@id='id_is_superuser']").click()
+
+	driver.find_element_by_xpath("//input[@value='Save']").click()
+        driver.find_element_by_link_text('SamuelLJackson').click()
+        driver.find_element_by_xpath("//input[@id='id_is_active']").click()
+        time.sleep(2)
+
+        driver.find_element_by_xpath("//input[@id='id_is_staff']").click()
+	driver.find_element_by_xpath("//input[@id='id_is_superuser']").click()
+
+        driver.find_element_by_xpath("//input[@value='Save']").click()
+
+
+	driver.find_element_by_link_text("Log out").click()
+        
         driver.get(self.base_url + "/")
+
+	
+	
+	driver.get(self.base_url + "/")
         driver.find_element_by_link_text("Sign In").click()
         driver.find_element_by_id("username").clear()
         driver.find_element_by_id("username").send_keys("admin")
@@ -100,7 +169,7 @@ class TestUserProjectAndIterationPermission(unittest.TestCase):
             time.sleep(1)
         else:
             self.fail("time out")
-        driver.find_element_by_xpath("//tr[1]/td[4]").click()
+        driver.find_element_by_xpath("//tr[6]/td[1]").click()
         driver.find_element_by_xpath(
             "//div[@id='id_end_date_popover']/div/span/i").click()
         for i in range(60):
@@ -114,7 +183,7 @@ class TestUserProjectAndIterationPermission(unittest.TestCase):
         else:
             self.fail("time out")
         driver.find_element_by_xpath(
-            "//div[5]/div[3]/table/tbody/tr[2]/td[4]").click()
+            "//div[5]/div[3]/table/tbody/tr[6]/td[5]").click()
         driver.find_element_by_link_text("Create").click()
         time.sleep(1)
         driver.find_element_by_link_text("administrator").click()
@@ -219,7 +288,25 @@ class TestUserProjectAndIterationPermission(unittest.TestCase):
         driver.find_element_by_link_text("administrator").click()
         driver.find_element_by_link_text("Logout").click()
         driver.find_element_by_link_text("Return to Home").click()
+        driver.get(self.base_url + "/")
+        driver.find_element_by_link_text("Sign In").click()
 
+        driver.find_element_by_id("username").clear()
+        driver.find_element_by_id("username").send_keys("admin")
+        driver.find_element_by_id("password").clear()
+        driver.find_element_by_id("password").send_keys("pass")
+        driver.find_element_by_xpath("//button[@type='submit']").click()
+        driver.get(self.base_url + "/admin/auth/user/")
+        driver.find_element_by_link_text("SamuelLJackson").click()
+        driver.find_element_by_link_text("Delete").click()
+        time.sleep(2)
+
+        driver.find_element_by_xpath("//input[@type='submit']").click()
+        driver.find_element_by_link_text("george").click()
+        driver.find_element_by_link_text("Delete").click()
+        time.sleep(2)
+
+        driver.find_element_by_xpath("//input[@type='submit']").click()
     def is_element_present(self, how, what):
         try:
             self.driver.find_element(by=how, value=what)

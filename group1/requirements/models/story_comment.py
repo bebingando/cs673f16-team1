@@ -1,7 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
 from story import Story
-import datetime
 
 
 class StoryComment(models.Model):
@@ -9,6 +7,7 @@ class StoryComment(models.Model):
     title = models.CharField(default='', max_length=1024)
     comment = models.CharField(default='', max_length=1024)
     last_updated = models.DateTimeField(auto_now=True, null=True)
+    user = models.CharField(default='', max_length=1024)
 
     def __str__(self):
         return self.title
@@ -23,10 +22,10 @@ def get_comments_for_story(story):
     return StoryComment.objects.filter(story_id=story.id)
 
 
-def get_comment(commentID):
+def get_comment(commentid):
     try:
-        return StoryComment.objects.get(id=commentID)
-    except Exception as e:
+        return StoryComment.objects.get(id=commentid)
+    except Exception:
         return None
     
 def get_all_comments():
@@ -40,11 +39,13 @@ def create_comment(story, fields):
 
     title = fields.get('title', '')
     comment = fields.get('comment', '')
+    user = fields.get('user', '')
 
-    aComment = StoryComment(
+    commentinstance = StoryComment(
         story=story,
         title=title,
         comment=comment,
+        user = user,
     )
-    aComment.save()
-    return aComment
+    commentinstance.save()
+    return commentinstance

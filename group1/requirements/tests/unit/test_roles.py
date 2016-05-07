@@ -129,3 +129,12 @@ class RoleTestCase(TestCase):
                 userID=self.__user.id,
                 projectID=self.__project.id),
             False)
+
+    def testIsOwner_IsOwner(self):
+        self.__addUserAsOwner()
+        self.assertEquals(
+            user_manager.isOwner(
+                userID=self.__user.id,
+                projectID=self.__project.id),
+            True)
+ 

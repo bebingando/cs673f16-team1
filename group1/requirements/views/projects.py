@@ -20,13 +20,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from django.template import RequestContext
-from django.shortcuts import render, redirect
+from django.shortcuts import render, render_to_response, redirect
 import datetime
 from requirements.models.user_manager import user_owns_project
 from requirements.models.user_manager import user_can_access_project
 from requirements.models.files import ProjectFile
 from django.utils.encoding import smart_str
 import uuid
+from requirements.models import filemaker
 
 PERMISSION_OWN_PROJECT = 'requirements.own_project'
 
@@ -41,6 +42,7 @@ def list_projects(request):
         'theUser': request.user,
         'associationsWithUser': project_api.get_associations_for_user(request.user.id)
     }
+    list=(str(project_api.get_projects_for_user(request.user.id))).replace("<Project: ","").replace(', ','').replace('[','').replace("]",'').split('>')
     # if request.user.is_authenticated():
     #     logedInUser = request.user
     #     logedInUser.set_unusable_password()
@@ -80,12 +82,21 @@ def project(request, projectID):
 def new_project(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
-        if form.is_valid():
+        name = str(request.POST['title'])
+        #list=(str(project_api.get_projects_for_user(request.user.id))).replace("<Project: ","").replace(', ','').replace('[','').replace("]",'').split('>')
+        #list = project_api.get_projects_for_user(request.user.id).values_list('title',flat=True)
+        #print list
+
+        #if name in list:
+        if project_api.duplicate_project(request.user,request.POST):
+            form.if_dup(1)
+        if form.is_valid() :
             project_api.create_project(request.user, request.POST)
             project = form.save(commit=False)
             # return redirect('/req/projects')
             # return empty string and do the redirect stuff in front-end
             return HttpResponse('')
+
     else:
         form = ProjectForm()
 
@@ -352,3 +363,59 @@ def download_attachment(request, projectID):
     response = HttpResponse(file.file)
     response['Content-Disposition'] = 'attachment; filename=' + file.name
     return response
+
+
+@user_can_access_project()
+def makefile(request,projectID):
+    response = HttpResponse()
+    response['Content-Disposition'] = 'attachment; filename=my.txt'
+    statement = filemaker.make_Statement(projectID)
+    print(statement)
+    response.write(statement)
+    return response
+
+
+@user_can_access_project()
+def makepdf(request,projectID):
+    from django.shortcuts import render, redirect
+    from reportlab.platypus import SimpleDocTemplate
+    from forms import TaskFormSet
+    from forms import PDFForm
+    # print("flag1")
+
+    args={}
+
+    if request.method =='POST':
+        # print("flag2")
+        form = PDFForm(request.POST)
+
+        args['iteration_description']= 'iteration_description' in request.POST
+        args['iteration_duration'] = 'iteration_duration' in request.POST
+        args['story_description'] = 'story_description' in request.POST
+        args['story_reason'] = 'story_reason' in request.POST
+        args['story_test'] = 'story_test' in request.POST
+        args['story_task'] = 'story_task' in request.POST
+        args['story_owner'] = 'story_owner' in request.POST
+        args['story_hours'] = 'story_hours' in request.POST
+        args['story_status'] = 'story_status' in request.POST
+        args['story_points'] = 'story_points' in request.POST
+        args['pie_chart'] = 'pie_chart' in request.POST
+
+        #print(args)
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename=pdf_report.pdf'
+        tempcanvas = SimpleDocTemplate(response)
+
+        filemaker.process_pdf(tempcanvas,projectID, args)
+        return response
+    else:
+        # print("flag3")
+        form = PDFForm()
+    context = {'title': 'Generate and Download Report',
+                   'form': form,
+                   'action': '/req/makepdf/' + projectID,
+                   'button_desc': 'Download'}
+
+
+    return render(request, 'PDFDialog.html', context)
