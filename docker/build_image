@@ -1,0 +1,11 @@
+if [ -d ./resources ]
+then
+	rm -r ./resources
+fi
+
+mkdir resources
+cp -r ../group1/ ./resources/group1
+
+
+docker build -t cs673/team_alpha_project:latest ./
+docker run -it -p 8000:8000 cs673/team_alpha_project:latest
