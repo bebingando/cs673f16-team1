@@ -20,6 +20,13 @@ class IssueViewSet(viewsets.ModelViewSet):
     """
     queryset = it_models.Issue.objects.all()
     serializer_class = serializers.IssueSerializer
+    
+class CommentViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = it_models.Issue.objects.all()
+    serializer_class = serializers.CommentSerializer
 
 
 class IssueViewSetRO(viewsets.ReadOnlyModelViewSet):
