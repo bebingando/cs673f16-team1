@@ -30,6 +30,10 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = it_models.IssueComment
         fields = (
-            'comment',
-            'issue_id'
+            'pk',
+           'comment',
+           'issue_id',
+           'date',
+           'poster'
+           'is_comment'
         )
