@@ -63,8 +63,7 @@ class EditIssue(UpdateView):
                             username = None
                         else:
                             username = form.cleaned_data[field_name].username
-                        text.append('%s: %s -> %s' % (
-                            field_name, assignee, username))
+                        text.append('%s: %s -> %s' % (field_name, assignee, username))
                     elif field_name == 'verifier':
                         if issue.verifier is None:
                             verifier = None
@@ -74,13 +73,13 @@ class EditIssue(UpdateView):
                             username = None
                         else:
                             username = form.cleaned_data[field_name].username
-                        text.append('%s: %s -> %s' % (
-                            field_name, verifier, username))
+                        text.append('%s: %s -> %s' % (field_name, verifier, username))
                     else:
-                        text.append('%s: %s -> %s' % (
-                            field_name,
-                            getattr(issue, field_name),
-                            form.cleaned_data[field_name]))
+                        text.append('%s: %s -> %s' % (field_name,
+                                                      getattr(issue, field_name),
+                                                      form.cleaned_data[field_name]
+                                                      )
+                                    )
 
             current_issue.save()
             new_comment = it_models.IssueComment(comment='\n'.join(text),
@@ -105,11 +104,9 @@ class ViewIssue(DetailView, FormMixin):
     def get_context_data(self, **kwargs):
         context = super(ViewIssue, self).get_context_data(**kwargs)
         form_class = self.get_form_class()
-        context['comment_list'] = it_models.IssueComment.objects.filter(
-            issue_id=self.object).order_by('-date')
+        context['comment_list'] = it_models.IssueComment.objects.filter(issue_id=self.object).order_by('-date')
         # context['form'] = forms.CommentForm
         context['form'] = self.get_form(form_class)
-
         AddUserCountsToContext(context, self.request.user)
         return context
 
@@ -238,12 +235,16 @@ def AddUserCountsToContext(context, user):
       user: The use object provided with the request.
     """
     context['Asscount'] = it_models.Issue.objects.filter(
-        assignee=user).filter(
-            status__in=[x[0] for x in it_models.OPEN_STATUSES]).count()
+        assignee=user
+    ).filter(status__in=[x[0] for x in it_models.OPEN_STATUSES]).count()
     context['Repcount'] = it_models.Issue.objects.filter(
-        reporter=user).order_by('-pk').count()
+        reporter=user
+    ).order_by('-pk').count()
     context['Clocount'] = it_models.Issue.objects.filter(
-        status__in=[x[0] for x in it_models.CLOSED_STATUSES]).order_by(
-            '-closed_date').count()
+        status__in=[x[0] for x in it_models.CLOSED_STATUSES]
+    ).order_by(
+        '-closed_date'
+    ).count()
     context['Vercount'] = it_models.Issue.objects.filter(
-        verifier=user).order_by('-pk').count()
+        verifier=user
+    ).order_by('-pk').count()
