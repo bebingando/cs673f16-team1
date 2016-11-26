@@ -1,6 +1,0 @@
-eclipse.preferences.version=1
-encoding//group1/requirements/migrations/0001_initial.py=utf-8
-encoding//group1/requirements/tests/ui/test_authentication.py=utf-8
-encoding//group1/requirements/tests/ui/test_iterations.py=utf-8
-encoding//group1/requirements/tests/ui/test_projects.py=utf-8
-encoding//group1/requirements/tests/ui/test_user_project_and_iteration_permission.py=utf-8
