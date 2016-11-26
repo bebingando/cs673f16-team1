@@ -1,57 +1,55 @@
 {% extends "SideBarBase.html" %}
 {% load require_tags %}
 {% block content2 %}
-
 <div id="wrapper">
-	<div id="page-wrapper">
-		<div class="row">
-			<div class="col-lg-12">
-				<h1 class="page-header">
-					{{ project.title }}
-				</h1>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-8 col-md-12">
-            	<div class="col-md-12">
-            		<div class="panel-group" id="proj_issuelist">
-            	    	<div class="panel panel-primary">
-							<div class="panel-heading">
-								<h2 class="panel-title">
-									<i class="fa fa-list fa-fw"></i>
-									<a data-toggle="collapse" data-parent="" href="#iter_body_issuelist" aria-expanded="true">
-									Issues
-									</a>
-								</h2>
-							</div>
-            	    	    <!-- Icebox -->
-            	    	    <div id="iter_body_issuelist" class="panel-collapse collapse in" aria-expanded="true">
-								<div class="panel-body">
-								    <div class="panel-group" id="iter_issuelist">
-            	    	    	        {% for issue in issues %}
-            	    	    	        <li><a href="/issue_tracker/issue/view/{{ issue.id }}/"><i class="fa fa-fw fa-road"></i> {{ issue }} </a></li>
-								       	</a>
-								       	Description: {{ issue.description }}
-								       	<br>
-								       	Status: {{ issue.status }}
-								       	<br>
-								       	Priority: {{ issue.priority }}
-								       	<br>
-								       	<br>
-								        {% endfor %}
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-            	</div>
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    {{ project.title }}
+                </h1>
             </div>
-		</div>
-	</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-12">
+                <div class="col-md-12">
+                    <div class="panel-group" id="proj_issuelist">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    <i class="fa fa-list fa-fw"></i>
+                                    <a data-toggle="collapse" data-parent="" href="#iter_body_issuelist" aria-expanded="true">
+                                    Issues
+                                    </a>
+                                </h2>
+                            </div>
+                            <!-- Icebox -->
+                            <div id="iter_body_issuelist" class="panel-collapse collapse in" aria-expanded="true">
+                                <div class="panel-body">
+                                    <div class="panel-group" id="iter_issuelist">
+                                        {% for issue in issues %}
+                                        <li><a href="/issue_tracker/issue/view/{{ issue.id }}/"><i class="fa fa-fw fa-road"></i> {{ issue }} </a></li>
+                                        </a>
+                                        Description: {{ issue.description }}
+                                        <br>
+                                        Status: {{ issue.status }}
+                                        <br>
+                                        Priority: {{ issue.priority }}
+                                        <br>
+                                        <br>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
 <script type="text/javascript">
-	var winHeight = $(window).outerHeight();
-	$("#page-wrapper").css('min-height',winHeight);
+    var winHeight = $(window).outerHeight();
+    $("#page-wrapper").css('min-height',winHeight);
 </script>
 {% endblock content2 %}

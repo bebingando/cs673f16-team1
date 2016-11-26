@@ -1,114 +1,96 @@
 {% extends "SideBarBase.html" %}
 {% load require_tags %}
 {% block content2 %}
-
 <div id="wrapper">
-	<div id="page-wrapper">
-		<div class="row">
-			<div class="col-lg-12">
-				<h1 class="page-header">
-					{{ project.title }}
-				</h1>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-8 col-md-12">
-            	<div class="col-md-12">
-            		<div class="panel-group" id="proj_backlog">
-            	    	<div class="panel panel-primary">
-							<div class="panel-heading">
-								<h2 class="panel-title">
-									<i class="fa fa-list fa-fw"></i>
-									<a data-toggle="collapse" data-parent="" href="#iter_body_icebox" aria-expanded="true">
-									Backlog
-									</a>
-									<a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/req/newbacklog/{{ project.id }}');">
-										<i class="glyphicon glyphicon-plus"></i>
-									</a>
-								</h2>
-							</div>
-            	    	    <!-- Backlog -->
-            	    	    <div id="iter_body_backlog" class="panel-collapse collapse in" aria-expanded="true">
-				<div class="panel-body">
-					<div class="panel-group" id="backlog_box">
-            	    	    	        {% for backlog in backlogs %}
-
-						 <div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-								                    <!--data-story attribute used for ui test automation -->
-								 <a  data-toggle="collapse" 
-								     data-parent=""
-								     data-story="{{ backlog.storyTitle }}" 
-								     href="#" 
-								     aria-expanded="true" 
-								     class="">
-								     {{ backlog.storyTitle }} - {{ backlog.storyStatus }}
-								     </a>
-
-
-
-            	    	    	                    	<div class="btn-group pull-right">
-            	    	    	                    <!--data-move-story attribute used for ui test automation -->
-    	    	                    	                	<button class="btn btn-default dropdown-toggle pull-right" 
-        	    	    	                    	            type="button" id="dropdownMenu1"
-        	    	    	                    	            data-move-story="empty" 
-        	    	    	                    	            data-toggle="dropdown" aria-expanded="true">
-            	    	    	                        	    Move
-            	    	    	                        	    <span class="caret"></span>
-            	    	    	                      	</button>
-
-            	    	    	                    	</div>
-
-
-
-
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    {{ project.title }}
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-12">
+                <div class="col-md-12">
+                    <div class="panel-group" id="proj_backlog">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    <i class="fa fa-list fa-fw"></i>
+                                    <a data-toggle="collapse" data-parent="" href="#iter_body_icebox" aria-expanded="true">
+                                    Backlog
+                                    </a>
+                                    <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/req/newbacklog/{{ project.id }}');">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+                                </h2>
+                            </div>
+                            <!-- Backlog -->
+                            <div id="iter_body_backlog" class="panel-collapse collapse in" aria-expanded="true">
+                                <div class="panel-body">
+                                    <div class="panel-group" id="backlog_box">
+                                        {% for backlog in backlogs %}
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <!--data-story attribute used for ui test automation -->
+                                                    <a  data-toggle="collapse"
+                                                        data-parent=""
+                                                        data-story="{{ backlog.storyTitle }}"
+                                                        href="#"
+                                                        aria-expanded="true"
+                                                        class="">
+                                                    {{ backlog.storyTitle }} - {{ backlog.storyStatus }}
+                                                    </a>
+                                                    <div class="btn-group pull-right">
+                                                        <!--data-move-story attribute used for ui test automation -->
+                                                        <button class="btn btn-default dropdown-toggle pull-right"
+                                                            type="button" id="dropdownMenu1"
+                                                            data-move-story="empty"
+                                                            data-toggle="dropdown" aria-expanded="true">
+                                                        Move
+                                                        <span class="caret"></span>
+                                                        </button>
+                                                    </div>
                                                     <!--data-del-story attribute used for ui test automation -->
-						    	           <a   class="btn btn-link pull-right" 
-						    	            href="javascript:void(0);" 
-						    	            data-del-story="{{ backlog.storyTitle }}"
-						    	            onclick="showDialog('/req/deletebacklog/{{ project.id }}/{{ backlog.id }}');">
-            	    	    	                    	<i class="fa fa-trash-o fa-fw"></i>Delete
-            	    	    	                    	</a>
-
-
-
-						<!--data-edit-story attribute used for ui test automation -->
-            	    	    	                    	<a   class="btn btn-link pull-right" 
-            	    	    	                         href="javascript:void(0);"
-            	    	    	                         data-edit-story="{{ backlog.storyTitle }}"
-            	    	    	                         onclick="showDialog('/req/editbacklog/{{ project.id }}/{{ backlog.id }}');">
-            	    	    	                    	<i class="fa fa-edit fa-fw"></i>Edit
-            	    	    	                    </a> 
-
-								     </h4>
-							</div>
-								            <div id="backlog_{{ backlog.id }}" class="panel-collapse collapse in" aria-expanded="true">
-								                <div class="panel-body">
-        
-
-								            </div>
-								            </div>
-					</div> 
-
-								        {% endfor %}
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-            		</div>
-		</div>
-	</div>
+                                                    <a   class="btn btn-link pull-right"
+                                                        href="javascript:void(0);"
+                                                        data-del-story="{{ backlog.storyTitle }}"
+                                                        onclick="showDialog('/req/deletebacklog/{{ project.id }}/{{ backlog.id }}');">
+                                                    <i class="fa fa-trash-o fa-fw"></i>Delete
+                                                    </a>
+                                                    <!--data-edit-story attribute used for ui test automation -->
+                                                    <a   class="btn btn-link pull-right"
+                                                        href="javascript:void(0);"
+                                                        data-edit-story="{{ backlog.storyTitle }}"
+                                                        onclick="showDialog('/req/editbacklog/{{ project.id }}/{{ backlog.id }}');">
+                                                    <i class="fa fa-edit fa-fw"></i>Edit
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="backlog_{{ backlog.id }}" class="panel-collapse collapse in" aria-expanded="true">
+                                                <div class="panel-body">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
 <script type="text/javascript">
-	var winHeight = $(window).outerHeight();
-	$("#page-wrapper").css('min-height',winHeight);
+    var winHeight = $(window).outerHeight();
+    $("#page-wrapper").css('min-height',winHeight);
 
-	$(function() {
-		loadUsersInProject({{ project.id }});
-	});
+    $(function() {
+    	loadUsersInProject({{ project.id }});
+    });
 </script>
 {% endblock content2 %}

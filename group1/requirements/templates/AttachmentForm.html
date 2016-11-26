@@ -1,37 +1,35 @@
 {% load staticfiles %}
 <div class="panel-body">
-	<div class="list_group">
-
-		{% if newform %}
-		<div class="list-group-item">
-			<div class="list-group-item-text">
-			<form id="newattachment_{{ story.id }}" class="form-horizontal" href="javascript:void(0);" action="/req/uploadattachmentsTolist/{{ story.id }}" onsubmit="uploadAttachmentsIntoList(event,'{{ story.id }}')" method="post"
-				enctype="multipart/form-data">
-				{% csrf_token %}
+    <div class="list_group">
+        {% if newform %}
+        <div class="list-group-item">
+            <div class="list-group-item-text">
+                <form id="newattachment_{{ story.id }}" class="form-horizontal" href="javascript:void(0);" action="/req/uploadattachmentsTolist/{{ story.id }}" onsubmit="uploadAttachmentsIntoList(event,'{{ story.id }}')" method="post"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
                     <h4>Upload File (max size 10m) </h4>
-                    
                     <input type="file" id="id_file_{{ story.id }}" name="file_{{ story.id }}"\>
-                    	<p><button type="submit" class="btn btn-link" style="color:#5cb85c">
-                    		<i class="fa fa-cloud-upload"></i>
-                    		Upload
-        				</button></p>
-              </form>
-			</div>
-		</div>
-		{% endif %}
-		{% for attachmentitem in attachments %}
-		<div class="list-group-item">
-				<h4 class="list-group-item-heading">
-				<a class="btn btn-link" href="javascript:void(0);" onclick="downloadAttachmentInList('{{ story.id }}','{{ attachmentitem.uuid }}');">
-					<i class="fa fa-cloud-download fa-fw"></i>{{ attachmentitem.name }}</a>
-					<h6> {{ attachmentitem.last_updated }}
-					<a class="btn btn-link pull-right" href="javascript:void(0);" onclick="deleteAttachmentInList('{{ story.id }}','{{ attachmentitem.uuid }}');">
-						<i class="fa fa-trash fa-fw"></i>Delete</a>
-					</h6>
-				</h4>
-		</div>
-		{% endfor %}
-	</div>
+                    <p><button type="submit" class="btn btn-link" style="color:#5cb85c">
+                        <i class="fa fa-cloud-upload"></i>
+                        Upload
+                        </button>
+                    </p>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+        {% for attachmentitem in attachments %}
+        <div class="list-group-item">
+            <h4 class="list-group-item-heading">
+                <a class="btn btn-link" href="javascript:void(0);" onclick="downloadAttachmentInList('{{ story.id }}','{{ attachmentitem.uuid }}');">
+                <i class="fa fa-cloud-download fa-fw"></i>{{ attachmentitem.name }}</a>
+                <h6> {{ attachmentitem.last_updated }}
+                    <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="deleteAttachmentInList('{{ story.id }}','{{ attachmentitem.uuid }}');">
+                    <i class="fa fa-trash fa-fw"></i>Delete</a>
+                </h6>
+            </h4>
+        </div>
+        {% endfor %}
+    </div>
 </div>
-<script type="text/javascript">
-</script>
+<script type="text/javascript"></script>

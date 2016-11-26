@@ -1,152 +1,120 @@
 {% if confirm_message %}
-    <div class="modal-dialog modal-md">
-    {% else %}
-    <div class="modal-dialog">
+<div class="modal-dialog modal-md">
+{% else %}
+<div class="modal-dialog">
     {% endif %}
-      	<div class="modal-content">
-	        <div class="modal-header">
-	        	<a class="btn close" aria-label="Close" href="javascript:void(0);" onclick="closeDialog();">
-	        		<span aria-hidden="true">×</span>
-	        	</a>
-	        	<h4 class="modal-title" id="dialogModalLabel">{{ title }}</h4>
-	        </div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <a class="btn close" aria-label="Close" href="javascript:void(0);" onclick="closeDialog();">
+            <span aria-hidden="true">×</span>
+            </a>
+            <h4 class="modal-title" id="dialogModalLabel">{{ title }}</h4>
+        </div>
+        <form id="PDFForm" class="form-horizontal" action="{{ action }}" method="post">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 control-label">iteration_description</label>
+                    <div class="col-xs-12 col-sm-9" id="iteration_description">
+                        {{ form.iteration_description}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 control-label">iteration_duration</label>
+                    <div class="col-xs-12 col-sm-9" id="iteration_duration">
+                        {{ form.iteration_duration}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 control-label">story_description</label>
+                    <div class="col-xs-12 col-sm-9" id="story_description">
+                        {{ form.story_description}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 control-label">story_reason</label>
+                    <div class="col-xs-12 col-sm-9" id="story_reason">
+                        {{ form.story_reason}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 control-label">story_test</label>
+                    <div class="col-xs-12 col-sm-9" id="story_test">
+                        {{ form.story_test}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 control-label">story_task</label>
+                    <div class="col-xs-12 col-sm-9" id="story_task">
+                        {{ form.story_task}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 control-label">story_owner</label>
+                    <div class="col-xs-12 col-sm-9" id="story_owner">
+                        {{ form.story_owner}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 control-label">story_hours</label>
+                    <div class="col-xs-12 col-sm-9" id="story_hours">
+                        {{ form.story_hours}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 control-label">story_status</label>
+                    <div class="col-xs-12 col-sm-9" id="story_status">
+                        {{ form.story_status}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 control-label">story_points</label>
+                    <div class="col-xs-12 col-sm-9" id="story_pointsn">
+                        {{ form.story_points}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 control-label">pie_chart</label>
+                    <div class="col-xs-12 col-sm-9" id="pie_chart">
+                        {{ form.pie_chart}}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-default" href="javascript:void(0);" onclick="closeDialog();">Close</a>
+                <a class="btn btn-primary" href="javascript:void(0);" onclick="downloadPDF();">{{ button_desc }}</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    HTMLElement.prototype.click = function() {
+     			var evt = this.ownerDocument.createEvent('MouseEvents');
+     			evt.initMouseEvent('click', true, true, this.ownerDocument.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+     			this.dispatchEvent(evt);
+    }
 
+          function downloadPDF() {
+              $.ajax({
+                  type: "POST",
+                  cache: false,
+                  url: $("#PDFForm").attr('action'),
+                  data: $("#PDFForm").serialize(),
+                  success: function(data) {
+                      if (data != "") {
+    				var blob=new Blob([data]);
+    				var link=document.createElement('a');
+    				link.href=window.URL.createObjectURL(blob);
+    				link.download="report.pdf";
+    				link.click();
+    				closeDialog();
+                      } else {
+                          location.reload(true);
+                      };
 
+                  },
+                  async: true
+              });
+          }
 
-	        <form id="PDFForm" class="form-horizontal" action="{{ action }}" method="post">
-	        	{% csrf_token %}
-	        	<div class="modal-body">
-	        		<div class="form-group">
-	        			<label class="col-xs-12 col-sm-3 control-label">iteration_description</label>
-                        <div class="col-xs-12 col-sm-9" id="iteration_description">
-                            {{ form.iteration_description}}
-                        </div>
-	        		</div>
-
-
-	        		<div class="form-group">
-	        			<label class="col-xs-12 col-sm-3 control-label">iteration_duration</label>
-                        <div class="col-xs-12 col-sm-9" id="iteration_duration">
-                            {{ form.iteration_duration}}
-                        </div>
-	        		</div>
-
-					<div class="form-group">
-	        			<label class="col-xs-12 col-sm-3 control-label">story_description</label>
-                        <div class="col-xs-12 col-sm-9" id="story_description">
-                            {{ form.story_description}}
-                        </div>
-	        		</div>
-
-					<div class="form-group">
-	        			<label class="col-xs-12 col-sm-3 control-label">story_reason</label>
-                        <div class="col-xs-12 col-sm-9" id="story_reason">
-                            {{ form.story_reason}}
-                        </div>
-	        		</div>
-
-					<div class="form-group">
-	        			<label class="col-xs-12 col-sm-3 control-label">story_test</label>
-                        <div class="col-xs-12 col-sm-9" id="story_test">
-                            {{ form.story_test}}
-                        </div>
-	        		</div>
-
-					<div class="form-group">
-	        			<label class="col-xs-12 col-sm-3 control-label">story_task</label>
-                        <div class="col-xs-12 col-sm-9" id="story_task">
-                            {{ form.story_task}}
-                        </div>
-	        		</div>
-
-					<div class="form-group">
-	        			<label class="col-xs-12 col-sm-3 control-label">story_owner</label>
-                        <div class="col-xs-12 col-sm-9" id="story_owner">
-                            {{ form.story_owner}}
-                        </div>
-	        		</div>
-
-					<div class="form-group">
-	        			<label class="col-xs-12 col-sm-3 control-label">story_hours</label>
-                        <div class="col-xs-12 col-sm-9" id="story_hours">
-                            {{ form.story_hours}}
-                        </div>
-	        		</div>
-
-					<div class="form-group">
-	        			<label class="col-xs-12 col-sm-3 control-label">story_status</label>
-                        <div class="col-xs-12 col-sm-9" id="story_status">
-                            {{ form.story_status}}
-                        </div>
-	        		</div>
-
-					<div class="form-group">
-	        			<label class="col-xs-12 col-sm-3 control-label">story_points</label>
-                        <div class="col-xs-12 col-sm-9" id="story_pointsn">
-                            {{ form.story_points}}
-                        </div>
-	        		</div>
-
-					<div class="form-group">
-	        			<label class="col-xs-12 col-sm-3 control-label">pie_chart</label>
-                        <div class="col-xs-12 col-sm-9" id="pie_chart">
-                            {{ form.pie_chart}}
-                        </div>
-	        		</div>
-
-
-
-
-
-
-
-
-
-
-
-	        	</div>
-
-
-        		<div class="modal-footer">
-        		  	<a class="btn btn-default" href="javascript:void(0);" onclick="closeDialog();">Close</a>
-
-        		  	<a class="btn btn-primary" href="javascript:void(0);" onclick="downloadPDF();">{{ button_desc }}</a>
-
-        		</div>
-	        </form>
-
-      	</div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-
-
-	<script type="text/javascript">
-		HTMLElement.prototype.click = function() {
-   			var evt = this.ownerDocument.createEvent('MouseEvents');
-   			evt.initMouseEvent('click', true, true, this.ownerDocument.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
-   			this.dispatchEvent(evt);
-		}
-
-        function downloadPDF() {
-            $.ajax({
-                type: "POST",
-                cache: false,
-                url: $("#PDFForm").attr('action'),
-                data: $("#PDFForm").serialize(),
-                success: function(data) {
-                    if (data != "") {
-						var blob=new Blob([data]);
-						var link=document.createElement('a');
-						link.href=window.URL.createObjectURL(blob);
-						link.download="report.pdf";
-						link.click();
-						closeDialog();
-                    } else {
-                        location.reload(true);
-                    };
-
-                },
-                async: true
-            });
-        }
-
-	</script>
+</script>
