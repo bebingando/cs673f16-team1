@@ -19,15 +19,14 @@ class SessionSecurityMiddleware(object):
 
         if delta >= timedelta(seconds=expire_session):
             logout(request)
-            context = {'confirm_message': 'Time out! you should log in again!',
-               'button_desc': 'Sign in'}
+            context = {'confirm_message': 'Time out! you should log in again!', 'button_desc': 'Sign in'}
             return render(request, 'TimeOut.html', context)
         else:
             self.set_last_activity(request.session, now)
 
     def get_last_activity(self, session):
         try:
-            return datetime.strptime(session['last_activity_time'],'%Y-%m-%dT%H:%M:%S.%f')
+            return datetime.strptime(session['last_activity_time'], '%Y-%m-%dT%H:%M:%S.%f')
         except AttributeError:
             return datetime.now()
 
