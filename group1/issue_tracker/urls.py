@@ -8,6 +8,7 @@ from django.contrib import admin
 from issue_tracker import views as it_views
 from issue_tracker import viewsets as it_viewsets
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken import views
 
 admin.autodiscover()
 
@@ -16,6 +17,7 @@ router = DefaultRouter()
 router.register(r'users', it_viewsets.UserViewSet, base_name='users')
 router.register(r'issues', it_viewsets.IssueViewSet, base_name='issues')
 router.register(r'issue', it_viewsets.IssueViewSetRO, base_name='issue')
+router.register(r'comments', it_viewsets.CommentViewSet, base_name='comments')
 
 urlpatterns = patterns(
     '',
@@ -46,4 +48,12 @@ urlpatterns = patterns(
     url(r'^issue/view/(?P<pk>\d+)/$', login_required(it_views.ViewIssue.as_view()), name='view_issue'),
     url(r'^issue/edit/(?P<pk>\d+)/$', login_required(it_views.EditIssue.as_view()), name='edit_issue'),
     url(r'^issue/search/$', login_required(it_views.SearchIssues.as_view()), name='search'),
+
+    #for interaction with issue comments via api:
+
+    url(r'^Comments/$', it_views.CommentList.as_view(),name='comment-list'),
+    url(r'^Comments/(?P<pk>[0-9]+)/$', it_views.CommentDetail.as_view(),name='comment-detail'),
+
+
+
 )
