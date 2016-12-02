@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from requirements.models.project import Project
 
+
 OPEN_STATUSES = (
     ('Open-New', 'New',),
     ('Open-Assigned', 'Assigned',),
@@ -66,7 +67,7 @@ class Issue(models.Model):
 
 class IssueComment(models.Model):
     comment = models.TextField(max_length=2000)
-    issue_id = models.ForeignKey(Issue, related_name='comments', blank=True, null=True)
+    issue_id = models.ForeignKey(Issue, related_name='comments', blank=False, null=False) #order them by issue PK -DG
     date = models.DateTimeField(auto_now_add=True, editable=False)
     poster = models.ForeignKey(User, related_name='comments', blank=True, null=True)
     is_comment = models.BooleanField(default=True)
