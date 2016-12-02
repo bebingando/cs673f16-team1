@@ -63,3 +63,19 @@ class IssueCommentSerializer(serializers.HyperlinkedModelSerializer):
             'poster',
             'is_comment'
         )
+
+#This class is for serializing the comments alone. In which case we don't need to have an issue serialized.
+class CommentSerializer(serializers.HyperlinkedModelSerializer):
+
+
+
+    class Meta:
+        model = IssueComment
+        fields = (
+            'pk',
+            'comment',
+            'issue_id',
+            'date',
+            'poster',
+            'is_comment'
+        )
