@@ -1,2 +1,1 @@
-cp ../../dependencies.txt ./
 docker build -t team_alpha_project_prereqs:0.0.1 ./

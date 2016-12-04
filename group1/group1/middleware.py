@@ -24,13 +24,15 @@ class SessionSecurityMiddleware(object):
         else:
             self.set_last_activity(request.session, now)
 
-    def get_last_activity(self, session):
+    @staticmethod
+    def get_last_activity(session):
         try:
             return datetime.strptime(session['last_activity_time'], '%Y-%m-%dT%H:%M:%S.%f')
         except AttributeError:
             return datetime.now()
 
-    def set_last_activity(self, session, now):
+    @staticmethod
+    def set_last_activity(session, now):
         session['last_activity_time'] = now.strftime('%Y-%m-%dT%H:%M:%S.%f')
 
 

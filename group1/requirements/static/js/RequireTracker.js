@@ -36,10 +36,10 @@ function getStoryPointHtml(point) {
 }
 
 function loadIterationList(projectID, iterationID) {
-	var listUrl = "/req/iterations/" + projectID;
+	var listUrl = "/requirements/iterations/" + projectID;
 	var listID = "#proj_" + projectID + "_iters";
 	if (iterationID != null) {
-		listUrl = "/req/iterationswithselection/" + projectID + "/" + iterationID;
+		listUrl = "/requirements/iterationswithselection/" + projectID + "/" + iterationID;
 	};
 	$.ajax({
 		type: "GET",
@@ -53,7 +53,7 @@ function loadIterationList(projectID, iterationID) {
 }
 
 function loadUsersInProject(projectID) {
-	var taskUrl = "/req/usersinproject/" + projectID;
+	var taskUrl = "/requirements/usersinproject/" + projectID;
 	var jquerySearchID = "#userlist_" + projectID;
 	$.ajax({
 		url: taskUrl,
@@ -65,7 +65,7 @@ function loadUsersInProject(projectID) {
 }
 
 function loadTasks(storyID) {
-	var taskUrl = "/req/tasks/" + storyID;
+	var taskUrl = "/requirements/tasks/" + storyID;
 	var jquerySearchID = "#task_" + storyID;
 	$.ajax({
 		url: taskUrl,
@@ -77,7 +77,7 @@ function loadTasks(storyID) {
 }
 
 function addTaskIntoList(storyID) {
-	var addTaskUrl = "/req/addtaskintolist/" + storyID;
+	var addTaskUrl = "/requirements/addtaskintolist/" + storyID;
 	var formID = "#newtask_form_" + storyID;
 	var listID = "#task_" + storyID
 	$.ajax({
@@ -94,7 +94,7 @@ function addTaskIntoList(storyID) {
 }
 
 function showEditTaskInList(storyID, taskID) {
-	var showEditTaskUrl = "/req/edittaskinlist/" + storyID + "/" + taskID;
+	var showEditTaskUrl = "/requirements/edittaskinlist/" + storyID + "/" + taskID;
 	var listID = "#task_" + storyID;
 	$.ajax({
 		type: "GET",
@@ -108,7 +108,7 @@ function showEditTaskInList(storyID, taskID) {
 }
 
 function saveEditTaskInList(storyID, taskID) {
-	var showEditTaskUrl = "/req/edittaskinlist/" + storyID + "/" + taskID;
+	var showEditTaskUrl = "/requirements/edittaskinlist/" + storyID + "/" + taskID;
 	var formID = "#edittask_form_" + storyID;
 	var listID = "#task_" + storyID;
 	$.ajax({
@@ -124,7 +124,7 @@ function saveEditTaskInList(storyID, taskID) {
 }
 
 function removeTaskFromList(storyID, taskID) {
-	var removeTaskUrl = "/req/removetaskfromlist/" + storyID + "/" + taskID;
+	var removeTaskUrl = "/requirements/removetaskfromlist/" + storyID + "/" + taskID;
 	var formID = "#removetask_form_" + storyID;
 	var listID = "#task_" + storyID;
 	$.ajax({
@@ -140,7 +140,7 @@ function removeTaskFromList(storyID, taskID) {
 }
 
 function loadComments(storyID) {
-	var commentUrl = "/req/comments/" + storyID;
+	var commentUrl = "/requirements/comments/" + storyID;
 	var jquerySearchID = "#comment_" + storyID;
 	$.ajax({
 		url: commentUrl,
@@ -153,7 +153,7 @@ function loadComments(storyID) {
 
 
 function addCommentIntoList(storyID) {
-	var addCommentUrl = "/req/addcommentintolist/" + storyID;
+	var addCommentUrl = "/requirements/addcommentintolist/" + storyID;
 	var formID = "#newcomment_form_" + storyID;
 	var listID = "#comment_" + storyID
 	$.ajax({
@@ -170,7 +170,7 @@ function addCommentIntoList(storyID) {
 }
 
 function showEditCommentInList(storyID, commentID) {
-	var showEditCommentUrl = "/req/editcommentinlist/" + storyID + "/" + commentID;
+	var showEditCommentUrl = "/requirements/editcommentinlist/" + storyID + "/" + commentID;
 	var listID = "#comment_" + storyID;
 	$.ajax({
 		type: "GET",
@@ -184,7 +184,7 @@ function showEditCommentInList(storyID, commentID) {
 }
 
 function saveEditCommentInList(storyID, commentID) {
-	var showEditCommentUrl = "/req/editcommentinlist/" + storyID + "/" + commentID;
+	var showEditCommentUrl = "/requirements/editcommentinlist/" + storyID + "/" + commentID;
 	var formID = "#editcomment_form_" + storyID;
 	var listID = "#comment_" + storyID;
 	$.ajax({
@@ -200,7 +200,7 @@ function saveEditCommentInList(storyID, commentID) {
 }
 
 function removeCommentFromList(storyID, commentID) {
-	var removeCommentUrl = "/req/removecommentfromlist/" + storyID + "/" + commentID;
+	var removeCommentUrl = "/requirements/removecommentfromlist/" + storyID + "/" + commentID;
 	var formID = "#removecomment_form_" + storyID;
 	var listID = "#comment_" + storyID;
 	$.ajax({
@@ -217,7 +217,7 @@ function removeCommentFromList(storyID, commentID) {
 
 
 function loadAttachments(storyID) {
-	var attachmentUrl = "/req/loadattachments/" + storyID;
+	var attachmentUrl = "/requirements/loadattachments/" + storyID;
 	var jquerySearchID = "#attachment_" + storyID;
 	$.ajax({
 		url: attachmentUrl,
@@ -258,16 +258,16 @@ function uploadAttachmentsIntoList(event, storyID) {
 }
 
 function downloadAttachmentInList(storyID, attachmentUUID) {
-    window.location.assign('/req/downloadattachment/' + storyID + '/?file=' + attachmentUUID);
+    window.location.assign('/requirements/downloadattachment/' + storyID + '/?file=' + attachmentUUID);
 }
 
 function deleteAttachmentInList(storyID, attachmentUUID) {
-    window.location.assign('/req/deleteattachment/' + storyID + '/?file=' + attachmentUUID);
+    window.location.assign('/requirements/deleteattachment/' + storyID + '/?file=' + attachmentUUID);
 }
 
 function deleteProjectAttachment(projectID, fileUUID) {
-	window.location.assign('/req/deleteprojectattachment/' + projectID + '/?file=' + fileUUID);
+	window.location.assign('/requirements/deleteprojectattachment/' + projectID + '/?file=' + fileUUID);
 }
 function downloadProjectAttachment(projectID, fileUUID){
-	window.location.assign('/req/downloadprojectattachment/' + projectID + '/?file=' + fileUUID);
+	window.location.assign('/requirements/downloadprojectattachment/' + projectID + '/?file=' + fileUUID);
 }

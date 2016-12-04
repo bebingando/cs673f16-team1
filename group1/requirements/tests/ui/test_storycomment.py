@@ -29,7 +29,7 @@ class TestIterations(unittest.TestCase):
         driver.find_element_by_id("password").send_keys("pass")
         driver.find_element_by_xpath("//button[@type='submit']").click()
         driver.find_element_by_xpath(
-            "//a[@onclick=\"showDialog('/req/newproject');\"]").click()
+            "//a[@onclick=\"showDialog('/requirements/newproject');\"]").click()
         
         driver.find_element_by_id("id_title").clear()
         driver.find_element_by_id("id_title").send_keys(

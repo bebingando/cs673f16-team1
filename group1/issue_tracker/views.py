@@ -107,14 +107,11 @@ class CommentList(generics.ListCreateAPIView):
         serializer.save(poster=self.request.user)
 
 
-
-
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
 
     model = it_models.IssueComment
     queryset = it_models.IssueComment.objects.all()
     serializer_class = it_serializers.CommentSerializer
-
 
 
 class ViewIssue(DetailView, FormMixin):
@@ -133,7 +130,6 @@ class ViewIssue(DetailView, FormMixin):
 
     def get_success_url(self):
         return reverse('view_issue', kwargs={'pk': self.object.pk})
-
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
@@ -173,8 +169,6 @@ class ViewIssue(DetailView, FormMixin):
 
            return Response({'detail': 'POST answer', 'token': token[0].key})
    """
-
-
 
     def form_valid(self, form):
         new_comment = form.save(commit=False)

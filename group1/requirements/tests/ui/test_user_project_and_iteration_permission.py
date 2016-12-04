@@ -108,7 +108,7 @@ class TestUserProjectAndIterationPermission(unittest.TestCase):
         driver.find_element_by_id("password").send_keys("admin")
         driver.find_element_by_xpath("//button[@type='submit']").click()
         driver.find_element_by_xpath(
-            "//a[@onclick=\"showDialog('/req/newproject');\"]").click()
+            "//a[@onclick=\"showDialog('/requirements/newproject');\"]").click()
         for i in range(60):
             try:
                 if self.is_element_present(By.ID, "id_title"):

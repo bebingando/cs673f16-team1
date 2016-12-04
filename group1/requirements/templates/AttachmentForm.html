@@ -4,7 +4,7 @@
         {% if newform %}
         <div class="list-group-item">
             <div class="list-group-item-text">
-                <form id="newattachment_{{ story.id }}" class="form-horizontal" href="javascript:void(0);" action="/req/uploadattachmentsTolist/{{ story.id }}" onsubmit="uploadAttachmentsIntoList(event,'{{ story.id }}')" method="post"
+                <form id="newattachment_{{ story.id }}" class="form-horizontal" href="javascript:void(0);" action="/requirements/uploadattachmentsTolist/{{ story.id }}" onsubmit="uploadAttachmentsIntoList(event,'{{ story.id }}')" method="post"
                     enctype="multipart/form-data">
                     {% csrf_token %}
                     <h4>Upload File (max size 10m) </h4>

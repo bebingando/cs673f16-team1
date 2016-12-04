@@ -22,7 +22,7 @@
                 </li>
             </ul>
             {% endfor %}
-            <form id="attachmentForm" class="form-horizontal" action="/req/uploadprojectattachment/{{ projectID }}" method="post"
+            <form id="attachmentForm" class="form-horizontal" action="/requirements/uploadprojectattachment/{{ projectID }}" method="post"
                 enctype="multipart/form-data">
                 {% csrf_token %}
                 <h4>Upload File (max size 10m)</h4>

@@ -12,30 +12,6 @@ from django.shortcuts import render, render_to_response, redirect
 from requirements.models.ip import IPaddress
 
 
-# def create_user(request):
-# 	if userManager.createUser(request) :
-# 		return HttpResponse("Your request has been submitted. It will need to be approved by an administrator.")
-# 	else:
-# 		#TODO refactor to use @user_passes_test
-# 		return HttpResponse("Failed to create user")
-
-
-# def members(request):
-#     return render(request, 'Members.html')
-
-# def registration(request):
-#     if request.method =='POST':
-#         form =  RegistrationForm(request.POST)
-#         if form.is_valid():
-#             user_manager.createUser(request)
-#             return HttpResponseRedirect('/thankYou/')
-#     else:
-#         form =  RegistrationForm()
-#     return render(request, 'registration.html', {'form': form})
-
-# def thank_you(request):
-#     return render(request, 'ThankYou.html')
-
 def signin(request):
     logout(request)
     username = password = ''
@@ -49,20 +25,18 @@ def signin(request):
         password = request.POST['password']
         next = request.POST['next']
 
-        #get IP address
+        # get IP address
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
             ip1 = x_forwarded_for.split(',')[-1].strip()
         else:
             ip1 = request.META.get("REMOTE_ADDR")
 
-        #get latest time
+        # get latest time
         now = timezone.now()
         t = now - datetime.timedelta(seconds=60)
-        wrong_times = IPaddress.objects.filter(ip = ip1).count()
-        latest_time = IPaddress.objects.filter(last_time__gte = t )
-        #print 'wrong times: '+ str(wrong_times)
-        #print 'latest time: '+str(latest_time)
+        wrong_times = IPaddress.objects.filter(ip=ip1).count()
+        latest_time = IPaddress.objects.filter(last_time__gte=t)
 
         # if input wrong pwd more than 3 times, the ip will be blocked for 60s
         if wrong_times >= 3 and latest_time:
@@ -71,7 +45,7 @@ def signin(request):
         else:
             # if input wrong but, this time is 60s after last time, first clear the record of this IP
             if not latest_time:
-                IPaddress.objects.filter(ip = ip1).all().delete()
+                IPaddress.objects.filter(ip=ip1).all().delete()
                 wrong_times = 0
                 print IPaddress.objects.all()
             user = authenticate(username=username, password=password)
@@ -79,10 +53,10 @@ def signin(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    IPaddress.objects.all().filter(ip = ip1).delete()
+                    IPaddress.objects.all().filter(ip=ip1).delete()
                     print IPaddress.objects.all()
                     if next == '':
-                        return HttpResponseRedirect('/req/projects')
+                        return HttpResponseRedirect('/requirements/projects')
                     else:
                         return HttpResponseRedirect(next)
             else:
@@ -92,23 +66,27 @@ def signin(request):
                 else:
                     ip1 = request.META.get("REMOTE_ADDR")
 
-                #IP address : '+str(ip1)+ "
+                # IP address : '+str(ip1)+ "
                 if wrong_times == 2:
                     errormsg0 = ''
                     errormsg1 = 'you have tried many times, please signin after 60s later.'
                 else:
                     errormsg0 = 'Username or Password is incorrect ! Please try again !'
-                    errormsg1 = ' If you fail more than ' +str(2-wrong_times)+ ' times, you need to wait 60s for next try!'
+                    errormsg1 = ' If you fail more than ' + str(
+                        2 - wrong_times) + ' times, you need to wait 60s for next try!'
                 errormsg = errormsg0 + errormsg1
-                ipform = IPaddress(ip = ip1,last_time = now)
+                ipform = IPaddress(ip=ip1, last_time=now)
                 ipform.save(force_insert=True)
-                #print IPaddress.objects.all()
 
-    return render_to_response('SignIn.html',
-                              {'errorMsg': errormsg,
-                               'next': next,
-                               'isUserSigningInUpOrOut': 'true'},
-                              context_instance=RequestContext(request))
+    return render_to_response(
+        'SignIn.html',
+        {
+            'errorMsg': errormsg,
+            'next': next,
+            'isUserSigningInUpOrOut': 'true'
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 def signup(request):
@@ -117,11 +95,23 @@ def signup(request):
         if form.is_valid():
             form.save(commit=True)
             return render(
-                request, 'SignUpFinish.html', {'form': form, 'isUserSigningInUpOrOut': 'true'})
+                request,
+                'SignUpFinish.html',
+                {
+                    'form': form,
+                    'isUserSigningInUpOrOut': 'true'
+                }
+            )
     else:
         form = SignUpForm()
     return render(
-        request, 'SignUp.html', {'form': form, 'isUserSigningInUpOrOut': 'true'})
+        request,
+        'SignUp.html',
+        {
+            'form': form,
+            'isUserSigningInUpOrOut': 'true'
+        }
+    )
 
 
 @login_required
@@ -147,7 +137,7 @@ def changepasswd(request):
         'form': form,
         'title': 'Change Password',
         'confirm_message': 'After confirming changes. System will automatically logout !',
-        'action': '/req/changepasswd',
+        'action': '/requirements/changepasswd',
         'button_desc': 'Confirm Change & Logout',
     }
     return render(request, 'ChangePasswd.html', context)
@@ -167,7 +157,7 @@ def userprofile(request):
     context = {
         'form': form,
         'title': 'Change User Profile',
-        'action': '/req/userprofile',
+        'action': '/requirements/userprofile',
         'button_desc': 'Change Profile'
     }
     return render(request, 'UserProfile.html', context)

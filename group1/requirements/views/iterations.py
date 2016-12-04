@@ -25,7 +25,7 @@ def iteration(request, projectID, iterationID):
         projects = project_api.get_projects_for_user(request.user.id)
         project = project_api.get_project(projectID)
         if project is None:
-            return redirect('/req/projects')
+            return redirect('/requirements/projects')
         association = UserAssociation.objects.get(
             user=request.user,
             project=project)
@@ -48,15 +48,16 @@ def iteration(request, projectID, iterationID):
         return render(request, 'IterationDetail.html', context)
     else:
         # return HttpResponse("You cannot access project " + proj)
-        return redirect('/req/projects')
-    
+        return redirect('/requirements/projects')
+
+
 @login_required(login_url='/signin')
 def backlog(request, projectID, iterationID):
     if project_api.can_user_access_project(request.user.id, projectID):
         projects = project_api.get_projects_for_user(request.user.id)
         project = project_api.get_project(projectID)
         if project is None:
-            return redirect('/req/projects')
+            return redirect('/requirements/projects')
         association = UserAssociation.objects.get(
             user=request.user,
             project=project)
@@ -79,7 +80,7 @@ def backlog(request, projectID, iterationID):
         return render(request, 'BacklogDetail.html', context)
     else:
         # return HttpResponse("You cannot access project " + proj)
-        return redirect('/req/projects')
+        return redirect('/requirements/projects')
 
 
 @login_required(login_url='/signin')
@@ -91,14 +92,14 @@ def new_iteration(request, projectID):
         if form.is_valid():
             mdl_iteration.create_iteration(project, request.POST)
             form.save(commit=False)
-            # return redirect('/req/projectdetail/' + projectID)
+            # return redirect('/requirements/projectdetail/' + projectID)
             # return empty string and do the redirect stuff in front-end
             return HttpResponse('')
     else:
         form = IterationForm()
     context = {
         'title': 'Create New Iteration',
-        'action': '/req/newiteration/' + projectID,
+        'action': '/requirements/newiteration/' + projectID,
         'form': form,
         'button_desc': 'Create',
     }
@@ -111,21 +112,21 @@ def edit_iteration(request, projectID, iterationID):
     project = project_api.get_project(projectID)
     iteration = mdl_iteration.get_iteration(iterationID)
     if project is None or iteration is None or iteration.project != project:
-        # return redirect('/req/projectdetail/' + projectID)
+        # return redirect('/requirements/projectdetail/' + projectID)
         # return empty string and do the redirect stuff in front-end
         return HttpResponse('')
     if request.method == "POST":
         form = IterationForm(request.POST, instance=iteration)
         if form.is_valid():
             form.save(commit=True)
-            # return redirect('/req/projectdetail/' + projectID)
+            # return redirect('/requirements/projectdetail/' + projectID)
             # return empty string and do the redirect stuff in front-end
             return HttpResponse('')
     else:
         form = IterationForm(instance=iteration)
     context = {
         'title': 'Edit Iteration',
-        'action': '/req/edititeration/' + projectID + '/' + iterationID,
+        'action': '/requirements/edititeration/' + projectID + '/' + iterationID,
         'form': form,
         'button_desc': 'Save Changes'
     }
@@ -138,12 +139,12 @@ def delete_iteration(request, projectID, iterationID):
     project = project_api.get_project(projectID)
     iteration = mdl_iteration.get_iteration(iterationID)
     if project is None or iteration is None or iteration.project != project:
-        # return redirect('/req/projectdetail/' + projectID)
+        # return redirect('/requirements/projectdetail/' + projectID)
         # return empty string and do the redirect stuff in front-end
         return HttpResponse('')
     if request.method == "POST":
         iteration.delete()
-        # return redirect('/req/projectdetail/' + projectID)
+        # return redirect('/requirements/projectdetail/' + projectID)
         # return empty string and do the redirect stuff in front-end
         return HttpResponse('')
     else:
@@ -151,7 +152,7 @@ def delete_iteration(request, projectID, iterationID):
     context = {
         'title': 'Edit Iteration',
         'confirm_message': 'This is an irreversible procedure ! You will lose all information about this iteration and stories it contains !',
-        'action': '/req/deleteiteration/' + projectID + '/' + iterationID,
+        'action': '/requirements/deleteiteration/' + projectID + '/' + iterationID,
         'form': form,
         'button_desc': 'Delete'
     }

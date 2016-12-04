@@ -18,13 +18,14 @@ import datetime
 
 
 class SignUpForm(UserCreationForm):
-    ROLES = (  
-   	 	('cli', 'Client'),
-    		('own', 'Owner'),
-    		('dev', 'Developer')
-		)
+    ROLES = (
+        ('cli', 'Client'),
+        ('own', 'Owner'),
+        ('dev', 'Developer')
+    )
     email = forms.EmailField(required=True)
-    role = forms.ChoiceField(choices=ROLES, required=True )
+    role = forms.ChoiceField(choices=ROLES, required=True)
+
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
         for name, field in self.fields.items():
@@ -42,7 +43,8 @@ class SignUpForm(UserCreationForm):
             'role',
             'username',
             'password1',
-            'password2')
+            'password2'
+        )
 
     def save(self, commit=True):
         user = super(SignUpForm, self).save(commit=False)
@@ -89,7 +91,6 @@ class IterationForm(forms.ModelForm):
             else:
                 field.widget.attrs.update({'class': 'form-control'})
 
-
     #   add by Zhi and Nora, to constraint the Iteration begin time
     def clean_start_date(self):
         self.startdate = self.cleaned_data['start_date']
@@ -135,29 +136,29 @@ class ProjectForm(forms.ModelForm):
 
 
 class SelectAccessLevelForm(forms.Form):
-    # Dropdown list to select from one of the current access levels for a
-    # project.
-    user_role = forms.ChoiceField(choices=(
-        (user_association.ROLE_CLIENT, "Client"),
-        (user_association.ROLE_DEVELOPER,
-         "Developer"),
-        (user_association.ROLE_OWNER,
-         "Owner"),
-    ), widget=Select(attrs={'class': 'form-control'}))
+    # Dropdown list to select from one of the current access levels for a project.
+    user_role = forms.ChoiceField(
+        choices=(
+            (user_association.ROLE_CLIENT, "Client"),
+            (user_association.ROLE_DEVELOPER, "Developer"),
+            (user_association.ROLE_OWNER, "Owner"),
+        ),
+        widget=Select(attrs={'class': 'form-control'})
+    )
 
 
 class StoryForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        self.project = kwargs.pop(
-            'project',
-            None)  # retrive the parameter project, then call the superclass init
+        # retrieve the parameter project, then call the superclass init
+        self.project = kwargs.pop('project', None)
         super(StoryForm, self).__init__(*args, **kwargs)
         # change the origin field 'owner' to ChoiceField
         self.fields['owner'] = forms.ModelChoiceField(
             queryset=self.project.users.all(),
             empty_label='None',
-            required=False)
+            required=False
+        )
         # add 'form-control' into all element's class attrtribute
         for name, field in self.fields.items():
             if 'class' in field.widget.attrs:
@@ -168,8 +169,7 @@ class StoryForm(forms.ModelForm):
     def clean_hours(self):
         data = self.cleaned_data['hours']
         if data <= 0:
-            raise forms.ValidationError(
-                'Hours should be greater than 0 !')
+            raise forms.ValidationError('Hours should be greater than 0 !')
         return data
 
     class Meta:
@@ -186,7 +186,7 @@ class StoryForm(forms.ModelForm):
             'points',
             'priority',
             'pause'
-            )
+        )
         widgets = {
             'description': forms.Textarea(attrs={'rows': 5}),
             'reason': forms.Textarea(attrs={'rows': 5}),
@@ -198,9 +198,13 @@ class FileForm(forms.Form):
     file = forms.FileField(
         widget=ClearableFileInput(
             attrs={
-                'class': 'form-control'}))
+                'class': 'form-control'
+            }
+        )
+    )
 
-# class registrationForm(forms.Form):
+
+# class RegistrationForm(forms.Form):
 # 	firstName = forms.CharField(label='First Name:', max_length=100)
 # 	lastName = forms.CharField(label='Last Name:', max_length=100)
 # 	emailAddress=forms.CharField(label='Email Address:', max_length=100)
@@ -258,12 +262,14 @@ class AttachmentForm(FileForm):
 
     def __init__(self, *args, ** kwargs):
         super(AttachmentForm, self).__init__(*args, **kwargs)
+
     class Meta:
         model = StoryAttachment
         fields = ('name',)
         widgets = {
             'name': forms.Textarea(attrs={'rows': 1}),
         }
+
 
 class PDFForm(forms.ModelForm):
     def __init__(self, *args, ** kwargs):

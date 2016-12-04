@@ -1,4 +1,4 @@
-from issue_tracker.models import User, Issue, IssueComment
+from models import User, Issue, IssueComment
 from requirements.models.project import Project
 from rest_framework import routers, serializers, viewsets
 

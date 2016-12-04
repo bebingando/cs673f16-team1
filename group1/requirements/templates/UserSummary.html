@@ -11,7 +11,7 @@
                 </a>
                 <h4 class="modal-title" id="userModalLabel">{{ title }}</h4>
             </div>
-            <form class="form-horizontal" action ="/req/addusertoproject/{{ project.id }}/{{ activeUser.username }}" method="post">
+            <form class="form-horizontal" action ="/requirements/addusertoproject/{{ project.id }}/{{ activeUser.username }}" method="post">
                 {% csrf_token %}
                 <div class="modal-body">
                     {% if confirm_message %}
@@ -31,7 +31,7 @@
                         <li class="list-group-item">
                             <i class="glyphicon glyphicon-user fa-fw"></i> {{ auser.username }}
                             <span>
-                            <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="addOrRemoveUser('/req/removeuserfromproject/{{ project.id }}/{{ auser.username }}')">
+                            <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="addOrRemoveUser('/requirements/removeuserfromproject/{{ project.id }}/{{ auser.username }}')">
                             <i class="fa fa-trash-o fa-fw"></i>
                             Delete
                             </a>
@@ -55,7 +55,7 @@
                                     <i class="glyphicon glyphicon-user fa-fw"></i> {{ auser.username }}
                                     <span>
                                         <!-- data-user-name below for UI TEST-->
-                                        <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="addOrRemoveUser('/req/addusertoproject/{{ project.id }}/{{ auser.username }}')
+                                        <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="addOrRemoveUser('/requirements/addusertoproject/{{ project.id }}/{{ auser.username }}')
                                             "
                                             data-user-name ="{{ auser.username}}" >
                                         <i class="glyphicon glyphicon-plus fa-fw"></i>

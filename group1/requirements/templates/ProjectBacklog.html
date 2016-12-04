@@ -21,7 +21,7 @@
                                     <a data-toggle="collapse" data-parent="" href="#iter_body_icebox" aria-expanded="true">
                                     Backlog
                                     </a>
-                                    <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/req/newbacklog/{{ project.id }}');">
+                                    <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/requirements/newbacklog/{{ project.id }}');">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     </a>
                                 </h2>
@@ -57,14 +57,14 @@
                                                     <a   class="btn btn-link pull-right"
                                                         href="javascript:void(0);"
                                                         data-del-story="{{ backlog.storyTitle }}"
-                                                        onclick="showDialog('/req/deletebacklog/{{ project.id }}/{{ backlog.id }}');">
+                                                        onclick="showDialog('/requirements/deletebacklog/{{ project.id }}/{{ backlog.id }}');">
                                                     <i class="fa fa-trash-o fa-fw"></i>Delete
                                                     </a>
                                                     <!--data-edit-story attribute used for ui test automation -->
                                                     <a   class="btn btn-link pull-right"
                                                         href="javascript:void(0);"
                                                         data-edit-story="{{ backlog.storyTitle }}"
-                                                        onclick="showDialog('/req/editbacklog/{{ project.id }}/{{ backlog.id }}');">
+                                                        onclick="showDialog('/requirements/editbacklog/{{ project.id }}/{{ backlog.id }}');">
                                                     <i class="fa fa-edit fa-fw"></i>Edit
                                                     </a>
                                                 </h4>

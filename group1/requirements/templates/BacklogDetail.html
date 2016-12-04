@@ -6,8 +6,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="/req/projects">Dashboard</a></li>
-                    <li><a href="/req/projectdetail/{{ project.id }}">{{ project.title }}</a></li>
+                    <li><a href="/requirements/projects">Dashboard</a></li>
+                    <li><a href="/requirements/projectdetail/{{ project.id }}">{{ project.title }}</a></li>
                     <li class="active" style="font-size: xx-large;">
                         Backlog
                     </li>
@@ -39,24 +39,24 @@
                                     <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
                                         {% for iter_local in iterations %}
                                         <li role="presentation">
-                                            <a role="menuitem" tabindex="-1" href="/req/movestorytoiter/{{project.id}}/{{story.id}}/{{iter_local.id}}">{{iter_local.title}}</a>
+                                            <a role="menuitem" tabindex="-1" href="/requirements/movestorytoiter/{{project.id}}/{{story.id}}/{{iter_local.id}}">{{iter_local.title}}</a>
                                         </li>
                                         {% endfor %}
                                         <li role="presentation">
-                                            <a role="menuitem" tabindex="-1" href="/req/movestorytoicebox/{{project.id}}/{{story.id}}/{{iter_local.id}}">Icebox</a>
+                                            <a role="menuitem" tabindex="-1" href="/requirements/movestorytoicebox/{{project.id}}/{{story.id}}/{{iter_local.id}}">Icebox</a>
                                         </li>
                                     </ul>
                                 </div>
                                 {% endif %}
                                 {% check_permission association project "DeleteStory" as can_delete %}
                                 {% if can_delete %}
-                                <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/req/deletestory/{{ project.id }}/{{ story.id }}');">
+                                <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/requirements/deletestory/{{ project.id }}/{{ story.id }}');">
                                 <i class="fa fa-trash-o fa-fw"></i>Delete
                                 </a>
                                 {% endif %}
                                 {% check_permission association project "EditStory" as can_edit %}
                                 {% if can_edit %}
-                                <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/req/editstory/{{ project.id }}/{{ story.id }}');">
+                                <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/requirements/editstory/{{ project.id }}/{{ story.id }}');">
                                 <i class="fa fa-edit fa-fw"></i>Edit
                                 </a>
                                 {% endif %}

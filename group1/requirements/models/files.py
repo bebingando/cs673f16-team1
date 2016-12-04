@@ -2,9 +2,12 @@ from django.db import models
 from project import Project
 import os
 
-# A file attached to a project
 
 class ProjectFile(models.Model):
+    """
+    A file attached to a project
+    """
+
     file = models.FileField(upload_to='project_files')
     project = models.ForeignKey(Project)
     
@@ -16,7 +19,8 @@ class ProjectFile(models.Model):
         
     def does_attachment_exist(self):
         return bool(self.file)
-    
+
+
 def delete(fileUUID):
     try:
         attachment = ProjectFile.objects.filter(uuid=fileUUID)

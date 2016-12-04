@@ -40,7 +40,7 @@
     </div>
 </div>
 {% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/Jumbotron.css">
+<link href="{% static "css/Jumbotron.css" %}" rel="stylesheet" type="text/css">
 <script type="text/javascript">
     {% for field in form %}
     {% if field.errors %}

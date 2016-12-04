@@ -87,15 +87,12 @@ class Story(ProjMgmtBase):
             default = PRIORITY_GREEN)
     type = models.IntegerField(
         choices=TYPE_CHOICES,
-        max_length=1,
         default=TYPE_FEATURE)
     status = models.IntegerField(
         choices=STATUS_CHOICES,
-        max_length=1,
         default=STATUS_UNSTARTED)
     points = models.IntegerField(
         choices=POINTS_CHOICES,
-        max_length=1,
         default=POINTS_NONE)
     pause = models.BooleanField(default=False)
 

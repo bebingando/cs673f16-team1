@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-6" align="right" style="margin-bottom:20px">
-                <a class="btn btn-lg btn-primary" href="javascript:void(0);" onclick="showDialog('/req/makepdf/{{ project.id }}');"> Download PDF Report of This Project</a>
+                <a class="btn btn-lg btn-primary" href="javascript:void(0);" onclick="showDialog('/requirements/makepdf/{{ project.id }}');"> Download PDF Report of This Project</a>
                 <br>
             </div>
             </p>
@@ -34,7 +34,7 @@
                                     <a data-toggle="collapse" data-parent="" href="#iter_body_icebox" aria-expanded="true">
                                     Icebox
                                     </a>
-                                    <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/req/newstory/{{ project.id }}');">
+                                    <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/requirements/newstory/{{ project.id }}');">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     </a>
                                 </h2>
@@ -71,10 +71,10 @@
                                                         <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
                                                             {% for iter_local in iterations %}
                                                             <li role="presentation">
-                                                                <a role="menuitem" tabindex="-1" href="/req/movestorytoiter/{{project.id}}/{{story.id}}/{{iter_local.id}}">{{iter_local.title}}</a>
+                                                                <a role="menuitem" tabindex="-1" href="/requirements/movestorytoiter/{{project.id}}/{{story.id}}/{{iter_local.id}}">{{iter_local.title}}</a>
                                                             </li>
                                                             {% endfor %}
-                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/req/movestorytobacklog/{{project.id}}/{{story.id}}">Backlog</a></li>
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/requirements/movestorytobacklog/{{project.id}}/{{story.id}}">Backlog</a></li>
                                                         </ul>
                                                     </div>
                                                     {% endif %}
@@ -84,7 +84,7 @@
                                                     <a   class="btn btn-link pull-right"
                                                         href="javascript:void(0);"
                                                         data-del-story="{{ story.title }}"
-                                                        onclick="showDialog('/req/deletestory/{{ project.id }}/{{ story.id }}');">
+                                                        onclick="showDialog('/requirements/deletestory/{{ project.id }}/{{ story.id }}');">
                                                     <i class="fa fa-trash-o fa-fw"></i>Delete
                                                     </a>
                                                     {% endif %}
@@ -94,7 +94,7 @@
                                                     <a   class="btn btn-link pull-right"
                                                         href="javascript:void(0);"
                                                         data-edit-story="{{ story.title }}"
-                                                        onclick="showDialog('/req/editstory/{{ project.id }}/{{ story.id }}');">
+                                                        onclick="showDialog('/requirements/editstory/{{ project.id }}/{{ story.id }}');">
                                                     <i class="fa fa-edit fa-fw"></i>Edit
                                                     </a>
                                                     {% endif %}
@@ -195,10 +195,10 @@
                                                         <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
                                                             {% for iter_local in iterations %}
                                                             <li role="presentation">
-                                                                <a role="menuitem" tabindex="-1" href="/req/movestorytoiter/{{project.id}}/{{story.id}}/{{iter_local.id}}">{{iter_local.title}}</a>
+                                                                <a role="menuitem" tabindex="-1" href="/requirements/movestorytoiter/{{project.id}}/{{story.id}}/{{iter_local.id}}">{{iter_local.title}}</a>
                                                             </li>
                                                             {% endfor %}
-                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/req/movestorytoicebox/{{project.id}}/{{story.id}}">Icebox</a></li>
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/requirements/movestorytoicebox/{{project.id}}/{{story.id}}">Icebox</a></li>
                                                         </ul>
                                                     </div>
                                                     {% endif %}
@@ -208,7 +208,7 @@
                                                     <a   class="btn btn-link pull-right"
                                                         href="javascript:void(0);"
                                                         data-del-story="{{ story.title }}"
-                                                        onclick="showDialog('/req/deletestory/{{ project.id }}/{{ story.id }}');">
+                                                        onclick="showDialog('/requirements/deletestory/{{ project.id }}/{{ story.id }}');">
                                                     <i class="fa fa-trash-o fa-fw"></i>Delete
                                                     </a>
                                                     {% endif %}
@@ -218,7 +218,7 @@
                                                     <a   class="btn btn-link pull-right"
                                                         href="javascript:void(0);"
                                                         data-edit-story="{{ story.title }}"
-                                                        onclick="showDialog('/req/editstory/{{ project.id }}/{{ story.id }}');">
+                                                        onclick="showDialog('/requirements/editstory/{{ project.id }}/{{ story.id }}');">
                                                     <i class="fa fa-edit fa-fw"></i>Edit
                                                     </a>
                                                     {% endif %}
@@ -291,7 +291,7 @@
                                     {% check_permission association project "DeleteIteration" as can_delete_iter %}
                                     {% if can_delete_iter %}
                                     <!-- data-del-iterations added for ui testing-->
-                                    <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/req/deleteiteration/{{ project.id }}/{{ iteration.id }}');"
+                                    <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/requirements/deleteiteration/{{ project.id }}/{{ iteration.id }}');"
                                         data-del-iteration = "{{ iteration.title}}">
                                     <i class="glyphicon glyphicon-remove"></i>
                                     </a>
@@ -299,7 +299,7 @@
                                     {% check_permission association project "EditIteration" as can_edit_iter %}
                                     {% if can_edit_iter %}
                                     <!-- data-edit-iterations added for ui testing-->
-                                    <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/req/edititeration/{{ project.id }}/{{ iteration.id }}');"
+                                    <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/requirements/edititeration/{{ project.id }}/{{ iteration.id }}');"
                                         data-edit-iteration = "{{ iteration.title}}">
                                     <i class="glyphicon glyphicon-edit"></i>
                                     </a>
@@ -340,12 +340,12 @@
                                                             {% for iter_local in iterations %}
                                                             {% if not iter_local == iteration %}
                                                             <li role="presentation">
-                                                                <a role="menuitem" tabindex="-1" href="/req/movestorytoiter/{{project.id}}/{{story.id}}/{{iter_local.id}}/{{"ITERATION"}}">{{iter_local.title}}</a>
+                                                                <a role="menuitem" tabindex="-1" href="/requirements/movestorytoiter/{{project.id}}/{{story.id}}/{{iter_local.id}}/{{"ITERATION"}}">{{iter_local.title}}</a>
                                                             </li>
                                                             {% endif %}
                                                             {% endfor %}
-                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/req/movestorytoicebox/{{project.id}}/{{story.id}}">Icebox</a></li>
-                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/req/movestorytobacklog/{{project.id}}/{{story.id}}">Backlog</a></li>
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/requirements/movestorytoicebox/{{project.id}}/{{story.id}}">Icebox</a></li>
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/requirements/movestorytobacklog/{{project.id}}/{{story.id}}">Backlog</a></li>
                                                         </ul>
                                                     </div>
                                                     {% endif %}
@@ -354,7 +354,7 @@
                                                     <a class="btn btn-link pull-right"
                                                         href="javascript:void(0);"
                                                         data-del-story="{{ story.title }}"
-                                                        onclick="showDialog('/req/deletestory/{{ project.id }}/{{ story.id }}');">
+                                                        onclick="showDialog('/requirements/deletestory/{{ project.id }}/{{ story.id }}');">
                                                     <i class="fa fa-trash-o fa-fw"></i>
                                                     Delete
                                                     </a>
@@ -364,7 +364,7 @@
                                                     <a class="btn btn-link pull-right"
                                                         href="javascript:void(0);"
                                                         data-edit-story="{{ story.title }}"
-                                                        onclick="showDialog('/req/editstory/{{ project.id }}/{{ story.id }}');">
+                                                        onclick="showDialog('/requirements/editstory/{{ project.id }}/{{ story.id }}');">
                                                     <i class="fa fa-edit fa-fw"></i>Edit
                                                     </a>
                                                     {% endif %}
@@ -432,13 +432,13 @@
                                 User List
                                 {% check_permission association project "DeleteUser" as can_del_user %}
                                 {% if can_del_user %}
-                                <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/req/removeuserfromproject/{{ project.id }}/0');">
+                                <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/requirements/removeuserfromproject/{{ project.id }}/0');">
                                 <i class="glyphicon glyphicon-minus"></i>
                                 </a>
                                 {% endif %}
                                 {% check_permission association project "AddUser" as can_add_user %}
                                 {% if can_add_user %}
-                                <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/req/addusertoproject/{{ project.id }}/0');">
+                                <a class="btn btn-link pull-right" href="javascript:void(0);" onclick="showDialog('/requirements/addusertoproject/{{ project.id }}/0');">
                                 <i class="glyphicon glyphicon-plus"></i>
                                 </a>
                                 {% endif %}

@@ -4,7 +4,7 @@
     {% else %}
 <li>
     {% endif %}
-    <a href="/req/iterationdetail/{{ project.id }}/{{ aiteration.id }}">
+    <a href="/requirements/iterationdetail/{{ project.id }}/{{ aiteration.id }}">
     <i class="fa fa-fw fa-calendar"></i>
     {{ aiteration.title }}
     </a>
@@ -14,7 +14,7 @@
 <li>
     <a  href="javascript:void(0);"
         data-new-iter="{{ project.title }}"
-        onclick="showDialog('/req/newiteration/{{ project.id }}');">
+        onclick="showDialog('/requirements/newiteration/{{ project.id }}');">
     <i class="fa fa-fw fa-plus"></i>
     New Iteration
     </a>
