@@ -53,7 +53,10 @@ urlpatterns = patterns(
 
     url(r'^Comments/$', it_views.CommentList.as_view(),name='comment-list'),
     url(r'^Comments/(?P<pk>[0-9]+)/$', it_views.CommentDetail.as_view(),name='comment-detail'),
-
+    
 
 
 )
+if settings.DEBUG:
+    urlpatterns += static(settings.ATTACHMENT_URL )
+
