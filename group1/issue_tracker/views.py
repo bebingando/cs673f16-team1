@@ -6,12 +6,15 @@ from django.http import HttpResponseForbidden
 from django.views.generic import DetailView
 from django.views.generic import UpdateView
 from django.views.generic import ListView
+from rest_framework import generics
+from rest_framework.generics import UpdateAPIView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import FormView
 from django.views.generic.edit import FormMixin
 from issue_tracker import forms
 from issue_tracker import models as it_models
 from issue_tracker import filters
+from issue_tracker import serializers as it_serializers
 from django.core.urlresolvers import reverse
 
 
@@ -63,8 +66,7 @@ class EditIssue(UpdateView):
                             username = None
                         else:
                             username = form.cleaned_data[field_name].username
-                        text.append('%s: %s -> %s' % (
-                            field_name, assignee, username))
+                        text.append('%s: %s -> %s' % (field_name, assignee, username))
                     elif field_name == 'verifier':
                         if issue.verifier is None:
                             verifier = None
@@ -74,13 +76,13 @@ class EditIssue(UpdateView):
                             username = None
                         else:
                             username = form.cleaned_data[field_name].username
-                        text.append('%s: %s -> %s' % (
-                            field_name, verifier, username))
+                        text.append('%s: %s -> %s' % (field_name, verifier, username))
                     else:
-                        text.append('%s: %s -> %s' % (
-                            field_name,
-                            getattr(issue, field_name),
-                            form.cleaned_data[field_name]))
+                        text.append('%s: %s -> %s' % (field_name,
+                                                      getattr(issue, field_name),
+                                                      form.cleaned_data[field_name]
+                                                      )
+                                    )
 
             current_issue.save()
             new_comment = it_models.IssueComment(comment='\n'.join(text),
@@ -97,6 +99,43 @@ class EditIssue(UpdateView):
         return context
 
 
+class CommentList(generics.ListCreateAPIView):
+
+    queryset = it_models.IssueComment.objects.all()
+    serializer_class = it_serializers.CommentSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(poster=self.request.user)
+
+
+
+
+class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
+
+    model = it_models.IssueComment
+    queryset = it_models.IssueComment.objects.all()
+    serializer_class = it_serializers.CommentSerializer
+
+class EditStatus(generics.UpdateAPIView):
+    model = it_models.Issue    
+    fields = ['status', 'id',]    
+    queryset = it_models.Issue.objects.all()    
+    serializer_class = it_serializers.IssueSerializer
+
+class EditPriority(generics.UpdateAPIView):
+    model = it_models.Issue    
+    fields = ['priority', 'id',]    
+    queryset = it_models.Issue.objects.all()    
+    serializer_class = it_serializers.IssueSerializer  
+
+class EditIssueMultipleFields(generics.UpdateAPIView):
+    model = it_models.Issue    
+    fields = ['status', 'priority', 'id',]    
+    queryset = it_models.Issue.objects.all()    
+    serializer_class = it_serializers.IssueSerializer    
+
+
+
 class ViewIssue(DetailView, FormMixin):
     model = it_models.Issue
     template_name = 'issue_detail.html'
@@ -105,16 +144,15 @@ class ViewIssue(DetailView, FormMixin):
     def get_context_data(self, **kwargs):
         context = super(ViewIssue, self).get_context_data(**kwargs)
         form_class = self.get_form_class()
-        context['comment_list'] = it_models.IssueComment.objects.filter(
-            issue_id=self.object).order_by('-date')
+        context['comment_list'] = it_models.IssueComment.objects.filter(issue_id=self.object).order_by('-date')
         # context['form'] = forms.CommentForm
         context['form'] = self.get_form(form_class)
-
         AddUserCountsToContext(context, self.request.user)
         return context
 
     def get_success_url(self):
         return reverse('view_issue', kwargs={'pk': self.object.pk})
+
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
@@ -126,6 +164,36 @@ class ViewIssue(DetailView, FormMixin):
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
+
+        """
+   # to use token authentication but I can't seem to make it work for now -DG
+       def post(self, request, format=None):
+           try:
+               data = request.DATA
+           except ParseError as error:
+               return Response(
+                   'Invalid JSON - {0}'.format(error.detail),
+                   status=status.HTTP_400_BAD_REQUEST
+               )
+           if "user" not in data or "password" not in data:
+               return Response(
+                   'Wrong credentials',
+                   status=status.HTTP_401_UNAUTHORIZED
+               )
+
+           user = User.objects.first()
+           if not user:
+               return Response(
+                   'No default user, please create one',
+                   status=status.HTTP_404_NOT_FOUND
+               )
+
+           token = Token.objects.get_or_create(user=user)
+
+           return Response({'detail': 'POST answer', 'token': token[0].key})
+   """
+
+
 
     def form_valid(self, form):
         new_comment = form.save(commit=False)
@@ -238,12 +306,17 @@ def AddUserCountsToContext(context, user):
       user: The use object provided with the request.
     """
     context['Asscount'] = it_models.Issue.objects.filter(
-        assignee=user).filter(
-            status__in=[x[0] for x in it_models.OPEN_STATUSES]).count()
+        assignee=user
+    ).filter(status__in=[x[0] for x in it_models.OPEN_STATUSES]).count()
     context['Repcount'] = it_models.Issue.objects.filter(
-        reporter=user).order_by('-pk').count()
+        reporter=user
+    ).order_by('-pk').count()
     context['Clocount'] = it_models.Issue.objects.filter(
-        status__in=[x[0] for x in it_models.CLOSED_STATUSES]).order_by(
-            '-closed_date').count()
+        status__in=[x[0] for x in it_models.CLOSED_STATUSES]
+    ).order_by(
+        '-closed_date'
+    ).count()
     context['Vercount'] = it_models.Issue.objects.filter(
-        verifier=user).order_by('-pk').count()
+        verifier=user
+    ).order_by('-pk').count()
+

@@ -1,7 +1,7 @@
 from django.contrib.auth import models as auth_models
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, filters, response
-from response import Response
+from rest_framework import viewsets, filters
+from rest_framework.response import Response
 from issue_tracker import models as it_models
 from issue_tracker import serializers
 
@@ -20,6 +20,14 @@ class IssueViewSet(viewsets.ModelViewSet):
     """
     queryset = it_models.Issue.objects.all()
     serializer_class = serializers.IssueSerializer
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows comments to be viewed or edited.
+    """
+    queryset = it_models.IssueComment.objects.all()
+    serializer_class = serializers.CommentSerializer
 
 
 class IssueViewSetRO(viewsets.ReadOnlyModelViewSet):
@@ -41,14 +49,14 @@ class IssueViewSetRO(viewsets.ReadOnlyModelViewSet):
         'verifier'
     )
 
-class IssueViewSetSingle(viewsets.ReadOnlyModelViewSet):
-    """
-    Obtain a single issue that matches the issue ID provided
-    """
-    queryset = it_models.Issue.objects.all()
+class IssueStatusViewSet(viewsets.ModelViewSet):    
+    queryset = it_models.Issue.objects.all()    
     serializer_class = serializers.IssueSerializer
 
-    def retrieve(self, request, pk=None):
-        """Return a single Issue"""
-        user = get_object_or_404(queryset, pk=pk)
-        return Response(serializer.data)
+class IssuePriorityViewSet(viewsets.ModelViewSet):    
+    queryset = it_models.Issue.objects.all()    
+    serializer_class = serializers.IssueSerializer   
+
+class EditIssueMultipleFieldsViewSet(viewsets.ModelViewSet):    
+    queryset = it_models.Issue.objects.all()    
+    serializer_class = serializers.IssueSerializer        
