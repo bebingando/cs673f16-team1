@@ -71,6 +71,7 @@ class IssueComment(models.Model):
     date = models.DateTimeField(auto_now_add=True, editable=False)
     poster = models.ForeignKey(User, related_name='comments', blank=True, null=True)
     is_comment = models.BooleanField(default=True)
+    uploadedfile = models.FileField(null=True, blank=True, upload_to='issue_tracker/static')
 
     def __unicode__(self):
         return str(self.pk)

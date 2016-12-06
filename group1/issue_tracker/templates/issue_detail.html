@@ -83,12 +83,13 @@
             <pre>{{ issue.description }}</pre>
         </div>
     </div>
-    <form action="" method="POST">
+    <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <p class="text-warning" style="color: #A70303;"><b>Add Comment: </b></p>
         {{ form.comment.errors }}
         <label for="{{ form.comment.id_for_label }}"></label>
         {{ form.comment }}
+        <input type="file"  name="uploadedfile" />
         <br><br>
         <input type="submit" value="Post Comment" class="btn btn-primary" style="background-color: #A70303"/><br><br>
         <div style="border: solid black;">
@@ -97,6 +98,7 @@
             {% for comment in comment_list %}
             <a href="#{{ forloop.revcounter }}" style="color: #B22222;">#{{ forloop.revcounter }}</a>,
             <a href="mailto:{{ comment.poster.email }}" style="color: #B22222;">{{ comment.poster.first_name }} {{ comment.poster.last_name }} ({{ comment.poster }})</a>, <i>{{comment.date}}</i><br/>
+            <a href="../../../../{{ comment.uploadedfile }}" target="_self"> {{ comment.uploadedfile }} </a>
             {% if comment.is_comment%}
             <pre style=>{{ comment.comment }}</pre>
             {% else %}
