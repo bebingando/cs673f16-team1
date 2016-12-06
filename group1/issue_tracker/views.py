@@ -89,7 +89,7 @@ class EditIssue(UpdateView):
                                                  poster=self.request.user,
                                                  date=datetime.datetime.now(),
                                                  is_comment=False,
-                                                uploadedfile=self.request.FILES)
+                                                uploadedfile=self.request.FILES.get("uploadedfile", None))
             new_comment.save()
         return HttpResponseRedirect(self.object.get_absolute_url())
 
@@ -183,7 +183,7 @@ class ViewIssue(DetailView, FormMixin):
         new_comment.poster = self.request.user
         new_comment.date = datetime.datetime.now()
         new_comment.is_comment = True
-        new_comment.uploadedfile = self.request.FILES
+        new_comment.uploadedfile = self.request.FILES.get("uploadedfile", None)
         new_comment.save()
         return super(ViewIssue, self).form_valid(form)
         # return HttpResponseRedirect(new_comment.get_absolute_url())
