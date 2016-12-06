@@ -1,8 +1,13 @@
 import json
+import re
+
+from issue_tracker.serializers import IssueSerializer
+from issue_tracker import models as it_models
+
 from channels import Channel
 from channels.auth import channel_session_user_from_http, channel_session_user
 
-from .settings import MSG_TYPE_LEAVE, MSG_TYPE_ENTER, NOTIFY_USERS_ON_ENTER_OR_LEAVE_ROOMS
+from .settings import MSG_TYPE_LEAVE, MSG_TYPE_ENTER, NOTIFY_USERS_ON_ENTER_OR_LEAVE_ROOMS, MSG_TYPE_MUTED
 from .models import Room
 from .utils import get_room_or_error, catch_client_error
 from .exceptions import ClientError
@@ -109,5 +114,25 @@ def chat_send(message):
         raise ClientError("ROOM_ACCESS_DENIED")
     # Find the room they're sending to, check perms
     room = get_room_or_error(message["room"], message.user)
-    # Send the message along
-    room.send_message(message["message"], message.user)
+    # Intercept the message, check for special key prefixes
+    # First, look for the /new-issue prefix
+    new_issue_pattern = re.compile(r"/new-issue")
+    new_issue_match = new_issue_pattern.match(message["message"])
+    if new_issue_match:
+        print "Chat input matched prefix '/new-issue'"
+        title_pattern = re.compile(r".*(title|name)=\'(?P<title>[^\']+)\'")
+        title_match = title_pattern.match(message["message"])
+        if title_match:
+            print "Chat input matched parameter on 'title' or 'name'"
+            # Do special handling
+            title = title_match.group('title')
+            new_issue = it_models.Issue(title=title,reporter=message.user)
+            new_issue.save()
+            print "New issue #{0} ({1}) submitted via chat client by user {2}".format(new_issue.pk, new_issue.title, message.user.username)
+            issue_submit_msg = "{0} submitted a new issue to the tracker: Issue #{1}, Title: {2}".format(message.user.username, new_issue.pk, new_issue.title)
+            room.send_message(issue_submit_msg, message.user, MSG_TYPE_MUTED)
+        else:
+            raise ClientError("Invalid parameters used with the /new-issue command. Try <title='foo'> or <name='bar'>")
+    else:
+        # Send the message along
+        room.send_message(message["message"], message.user)
