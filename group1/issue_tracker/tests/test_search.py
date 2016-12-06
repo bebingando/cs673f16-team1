@@ -6,7 +6,6 @@ import os
 
 
 class SearchIssuesTestCase(unittest.TestCase):
-    """Tests for the search issues page."""
 
     def setUp(self):
         dir = os.path.dirname(__file__)
@@ -25,6 +24,7 @@ class SearchIssuesTestCase(unittest.TestCase):
         self.driver.quit()
 
     def create_testable_issue(self):
+        """Creates an Issue to Search for."""
         self.driver.get(self.base_url + '/issue_tracker/issue/create')
         self.driver.find_element_by_id('username').send_keys(
             self.username)
@@ -46,8 +46,7 @@ class SearchIssuesTestCase(unittest.TestCase):
             '.btn-primary[value="Create"]').click()
 
     def test_search_single_field(self):
-        """Common use cases for the search page"""
-
+        """Searches for Issue using single field."""
         self.create_testable_issue()
         destination = self.driver.current_url
         # goes to the search page
@@ -68,6 +67,7 @@ class SearchIssuesTestCase(unittest.TestCase):
         self.assertEqual(self.driver.current_url, destination)
 
     def test_search_multiple_fields(self):
+        """Searches for Issue using multiple fields."""
         self.create_testable_issue()
         destination = self.driver.current_url
 

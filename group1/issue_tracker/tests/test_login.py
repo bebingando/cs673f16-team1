@@ -2,8 +2,6 @@ from selenium import webdriver
 import unittest
 import os
 
-#A test case to make sure a user can log directly into the Issue Tracker directly
-
 
 class LoginTestCase(unittest.TestCase):
 
@@ -22,7 +20,7 @@ class LoginTestCase(unittest.TestCase):
         cls.driver.quit()
         
     def test_login(self):
-        #Verify login for a normal user works.
+        """Test user can log in."""
         self.driver.get(self.base_url+"/issue_tracker/issue/create")
         self.driver.find_element_by_id("username").clear()
         self.driver.find_element_by_id("username").send_keys(self.username)

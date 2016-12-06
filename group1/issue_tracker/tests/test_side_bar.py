@@ -22,8 +22,7 @@ class TestSideBar(unittest.TestCase):
         cls.driver.quit()
 
     def test_sidebar(self):
-        """Test the sidebar elements are all present."""
-
+        """Test the sidebar elements are all present and links function."""
         self.driver.get(self.base_url+"/issue_tracker")
         self.driver.find_element_by_id("username").send_keys(
             self.username)
@@ -42,7 +41,6 @@ class TestSideBar(unittest.TestCase):
         self.assertTrue("PROJECT MANAGEMENT" in self.driver.find_element_by_css_selector("nav.navbar-default.navbar-side li:nth-child(7)").text)
         self.assertTrue("COMMUNICATION" in self.driver.find_element_by_css_selector("nav.navbar-default.navbar-side li:nth-child(8)").text)
         self.assertTrue("Admin Site" in self.driver.find_element_by_css_selector("nav.navbar-default.navbar-side li:nth-child(9)").text)
-
         self.driver.find_element_by_css_selector("a[href*='issue/create']").click()
         time.sleep(1)
         self.assertTrue("issue_tracker/issue/create/" in self.driver.current_url)
