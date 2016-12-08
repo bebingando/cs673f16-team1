@@ -67,11 +67,11 @@ class Issue(models.Model):
 
 class IssueComment(models.Model):
     comment = models.TextField(max_length=2000)
-    issue_id = models.ForeignKey(Issue, related_name='comments', blank=False, null=False) #order them by issue PK -DG
+    issue_id = models.ForeignKey(Issue, related_name='comments', blank=True, null=True) 
+    
     date = models.DateTimeField(auto_now_add=True, editable=False)
     poster = models.ForeignKey(User, related_name='comments', blank=True, null=True)
     is_comment = models.BooleanField(default=True)
-    uploadedfile = models.FileField(null=True, blank=True, upload_to='issue_tracker/static')
 
     def __unicode__(self):
         return str(self.pk)

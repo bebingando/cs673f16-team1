@@ -48,3 +48,15 @@ class IssueViewSetRO(viewsets.ReadOnlyModelViewSet):
         'assignee',
         'verifier'
     )
+
+class IssueStatusViewSet(viewsets.ModelViewSet):
+    queryset = it_models.Issue.objects.all()
+    serializer_class = serializers.IssueSerializer
+
+class IssuePriorityViewSet(viewsets.ModelViewSet):
+    queryset = it_models.Issue.objects.all()
+    serializer_class = serializers.IssueSerializer
+
+class EditIssueMultipleFieldsViewSet(viewsets.ModelViewSet):
+    queryset = it_models.Issue.objects.all()
+    serializer_class = serializers.IssueSerializer
