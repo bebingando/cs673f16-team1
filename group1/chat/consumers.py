@@ -115,24 +115,120 @@ def chat_send(message):
     # Find the room they're sending to, check perms
     room = get_room_or_error(message["room"], message.user)
     # Intercept the message, check for special key prefixes
-    # First, look for the /new-issue prefix
-    new_issue_pattern = re.compile(r"/new-issue")
-    new_issue_match = new_issue_pattern.match(message["message"])
-    if new_issue_match:
-        print "Chat input matched prefix '/new-issue'"
-        title_pattern = re.compile(r".*(title|name)=\'(?P<title>[^\']+)\'")
-        title_match = title_pattern.match(message["message"])
-        if title_match:
-            print "Chat input matched parameter on 'title' or 'name'"
-            # Do special handling
-            title = title_match.group('title')
-            new_issue = it_models.Issue(title=title,reporter=message.user)
-            new_issue.save()
-            print "New issue #{0} ({1}) submitted via chat client by user {2}".format(new_issue.pk, new_issue.title, message.user.username)
-            issue_submit_msg = "{0} submitted a new issue to the tracker: Issue #{1}, Title: {2}".format(message.user.username, new_issue.pk, new_issue.title)
-            room.send_message(issue_submit_msg, message.user, MSG_TYPE_MUTED)
-        else:
-            raise ClientError("Invalid parameters used with the /new-issue command. Try <title='foo'> or <name='bar'>")
+    muted_text = parse_for_special_actions(message)
+    if muted_text:
+        # Send the muted message
+        room.send_message(muted_text, message.user, MSG_TYPE_MUTED)
     else:
         # Send the message along
         room.send_message(message["message"], message.user)
+
+def parse_for_special_actions(message):
+    def raise_error(alternatives):
+        raise ClientError("Invalid parameters used with the {0} command. Requires {1}.".format(command, alternatives))
+
+    def new_issue():
+        pattern = re.compile(r".*(title|name)=\'(?P<title>[^\']+)\'")
+        match = pattern.match(message_text)
+        if match:
+            title = match.group('title')
+            issue = it_models.Issue(title=title,reporter=message.user)
+            issue.save()
+            m = "{0} submitted a new issue to the tracker: Issue #{1}, Title: {2}".format(message.user.username, issue.pk, issue.title)
+            print m
+            return m
+        else:
+            raise_error("""title='foo'"" or ""name='bar'""")
+
+    def issue_comment():
+        pattern = re.compile(r".*issue=(?P<issue_id>[0-9]+).*comment=\'(?P<comment>[^\']+)\'")
+        match = pattern.match(message_text)
+        if match and len(match.groups()) == 2:
+            issue_id = match.group('issue_id')
+            comment = match.group('comment')
+            issue = it_models.Issue.objects.get(id=issue_id)
+            issue_comment = it_models.IssueComment(comment=comment, issue_id=issue, poster=message.user)
+            issue_comment.save()
+            m = "{0} added a comment to issue #{1}: {2}".format(message.user.username, issue.pk, issue_comment.comment)
+            print m
+            return m
+        else:
+            raise_error("""issue=id"" and ""comment='comment text'""")
+
+    def issue_status():
+        pattern = re.compile(r".*issue=(?P<id>[0-9]+).*status=\'(?P<status>[^\']+)\'")
+        match = pattern.match(message_text)
+        if match and len(match.groups()) == 2:
+            id = match.group('id')
+            status = match.group('status')
+            ok_statuses = [s[0] for s in it_models.STATUSES]
+            if not status in ok_statuses:
+                raise_error("status to be one of: {0}".format(", ".join(ok_statuses)))
+            issue = it_models.Issue.objects.get(id=id)
+            issue.status = status
+            issue.save(update_fields=['status'])
+            m = "{0} updated status of issue #{1} to: {2}".format(message.user.username, issue.pk, issue.status)
+            print m
+            return m
+        else:
+            raise_error("""issue=id"" and ""status='valid status'""")
+
+    def issue_priority():
+        pattern = re.compile(r".*issue=(?P<id>[0-9]+).*priority=\'(?P<priority>[^\']+)\'")
+        match = pattern.match(message_text)
+        m = None
+        if match and len(match.groups()) == 2:
+            id = match.group('id')
+            priority = match.group('priority')
+            ok_priorities = [p[0] for p in it_models.PRIORITIES]
+            if not priority in ok_priorities:
+                raise_error("priority to be one of: {0}".format(", ".join(ok_priorities)))
+            issue = it_models.Issue.objects.get(id=id)
+            issue.priority = priority
+            issue.save(update_fields=['priority'])
+            m = "{0} updated priority of issue #{1} to: {2}".format(message.user.username, issue.pk, issue.priority)
+            print m
+        else:
+            raise_error("""issue=id"" and ""priority='valid priority'""")
+        return m
+
+    def issue_type():
+        pattern = re.compile(r".*issue=(?P<id>[0-9]+).*type=\'(?P<type>[^\']+)\'")
+        match = pattern.match(message_text)
+        m = None
+        if match and len(match.groups()) == 2:
+            id = match.group('id')
+            issue_type = match.group('type')
+            ok_types = [t[0] for t in it_models.TYPES]
+            if not issue_type in ok_types:
+                raise_error("type to be one of: {0}".format(", ".join(ok_types)))
+            issue = it_models.Issue.objects.get(id=id)
+            issue.issue_type = issue_type
+            issue.save(update_fields=['issue_type'])
+            m = "{0} updated type of issue #{1} to: {2}".format(message.user.username, issue.pk, issue.issue_type)
+            print m
+        else:
+            raise_error("""issue=id"" and ""type='valid type'""")
+        return m
+
+    message_text = message["message"]
+    command_pattern = re.compile(r"^/[a-zA-Z0-9-]+")
+    command_match = command_pattern.match(message_text)
+    if command_match:
+        command = command_match.group()
+        print "Command found in chat input: {0}".format(command)
+        if command == "/new-issue":
+            return new_issue()
+        elif command == "/issue-comment":
+            return issue_comment()
+        elif command == "/set-issue-status":
+            return issue_status()
+        elif command == "/set-issue-priority":
+            return issue_priority()
+        elif command == "/set-issue-type":
+            return issue_type()
+        else:
+            raise ClientError("Invalid command: {0}".format(command))
+    else:
+        return None
+
