@@ -61,5 +61,5 @@ urlpatterns = patterns(
     url(r'^issue/EditIssueMultipleFields/(?P<pk>\d+)/$', login_required(it_views.EditIssueMultipleFields.as_view()), name='EditIssueMultipleFields')
 )
 if settings.DEBUG:
-    urlpatterns += static(settings.ATTACHMENT_URL )
+    urlpatterns += static(settings.MEDIA_URL )
 
