@@ -9,7 +9,6 @@ from django.contrib import admin
 import views as it_views
 import viewsets as it_viewsets
 from rest_framework.routers import DefaultRouter
-from rest_framework.authtoken import views
 
 admin.autodiscover()
 

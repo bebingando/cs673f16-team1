@@ -18,7 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'lw_pukawrvc*rfw^x6ccq$%vs3rxtu8+6_lodf)j&jo$mjqq%_'
 DEBUG = True        # SECURITY WARNING: don't run with debug turned on in production!
 TEMPLATE_DEBUG = True
-ALLOWED_HOSTS = ['172.19.0.3', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['172.20.0.3', 'localhost', '127.0.0.1']
 
 # email settings
 EMAIL_HOST = 'smtp.gmail.com'
@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_jenkins',
     'rest_framework',
+    'rest_framework.authtoken',
     'requirements',
     'issue_tracker',
     'channels',
@@ -143,3 +144,12 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 EXPIRE_TIME = getattr(settings, 'SESSION_SECURITY_EXPIRE_AFTER', 600)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
