@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.views.generic.base import RedirectView
 
 from requirements.views import projects
 from requirements.views import stories
@@ -7,6 +8,7 @@ from requirements.views import users
 
 urlpatterns = patterns(
     '',
+    url(r'^$', RedirectView.as_view(url='projects')),
     url(r'^changepasswd', users.changepasswd),
     url(r'^userprofile', users.userprofile),
 

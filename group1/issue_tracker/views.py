@@ -7,6 +7,7 @@ from django.views.generic import DetailView
 from django.views.generic import UpdateView
 from django.views.generic import ListView
 from rest_framework import generics
+from rest_framework.generics import UpdateAPIView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import FormView
 from django.views.generic.edit import FormMixin
@@ -88,8 +89,7 @@ class EditIssue(UpdateView):
                                                  issue_id=self.object,
                                                  poster=self.request.user,
                                                  date=datetime.datetime.now(),
-                                                 is_comment=False,
-                                                uploadedfile=self.request.FILES.get("uploadedfile", None))
+                                                 is_comment=False)
             new_comment.save()
         return HttpResponseRedirect(self.object.get_absolute_url())
 
@@ -108,11 +108,32 @@ class CommentList(generics.ListCreateAPIView):
         serializer.save(poster=self.request.user)
 
 
+
+
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
 
     model = it_models.IssueComment
     queryset = it_models.IssueComment.objects.all()
     serializer_class = it_serializers.CommentSerializer
+
+class EditStatus(generics.UpdateAPIView):
+    model = it_models.Issue    
+    fields = ['status', 'id',]    
+    queryset = it_models.Issue.objects.all()    
+    serializer_class = it_serializers.IssueSerializer
+
+class EditPriority(generics.UpdateAPIView):
+    model = it_models.Issue    
+    fields = ['priority', 'id',]    
+    queryset = it_models.Issue.objects.all()    
+    serializer_class = it_serializers.IssueSerializer  
+
+class EditIssueMultipleFields(generics.UpdateAPIView):
+    model = it_models.Issue    
+    fields = ['status', 'priority', 'id',]    
+    queryset = it_models.Issue.objects.all()    
+    serializer_class = it_serializers.IssueSerializer    
+
 
 
 class ViewIssue(DetailView, FormMixin):
@@ -131,6 +152,7 @@ class ViewIssue(DetailView, FormMixin):
 
     def get_success_url(self):
         return reverse('view_issue', kwargs={'pk': self.object.pk})
+
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
@@ -171,13 +193,14 @@ class ViewIssue(DetailView, FormMixin):
            return Response({'detail': 'POST answer', 'token': token[0].key})
    """
 
+
+
     def form_valid(self, form):
         new_comment = form.save(commit=False)
         new_comment.issue_id = self.object
         new_comment.poster = self.request.user
         new_comment.date = datetime.datetime.now()
         new_comment.is_comment = True
-        new_comment.uploadedfile = self.request.FILES.get("uploadedfile", None)
         new_comment.save()
         return super(ViewIssue, self).form_valid(form)
         # return HttpResponseRedirect(new_comment.get_absolute_url())
@@ -296,3 +319,4 @@ def AddUserCountsToContext(context, user):
     context['Vercount'] = it_models.Issue.objects.filter(
         verifier=user
     ).order_by('-pk').count()
+

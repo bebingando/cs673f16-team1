@@ -19,6 +19,10 @@ router.register(r'issues', it_viewsets.IssueViewSet, base_name='issues')
 router.register(r'issue', it_viewsets.IssueViewSetRO, base_name='issue')
 router.register(r'comments', it_viewsets.CommentViewSet, base_name='comments')
 
+router.register(r'status', it_viewsets.IssueStatusViewSet, base_name='status')
+router.register(r'priority', it_viewsets.IssuePriorityViewSet, base_name='priority')
+router.register(r'ModifyMultipleIssueFields', it_viewsets.EditIssueMultipleFieldsViewSet, base_name='ModifyMultipleFields')
+
 urlpatterns = patterns(
     '',
     url(r'^$', login_required(it_views.AssigneeListIssuesView.as_view()), name='issue_index'),
@@ -51,6 +55,10 @@ urlpatterns = patterns(
     #for interaction with issue comments via api:
     url(r'^Comments/$', it_views.CommentList.as_view(),name='comment-list'),
     url(r'^Comments/(?P<pk>[0-9]+)/$', it_views.CommentDetail.as_view(), name='comment-detail'),
+
+    url(r'^issue/status/(?P<pk>\d+)/$', login_required(it_views.EditStatus.as_view()), name='issues_status'),
+    url(r'^issue/priority/(?P<pk>\d+)/$', login_required(it_views.EditPriority.as_view()), name='issues_priority'),
+    url(r'^issue/EditIssueMultipleFields/(?P<pk>\d+)/$', login_required(it_views.EditIssueMultipleFields.as_view()), name='EditIssueMultipleFields')
 )
 if settings.DEBUG:
     urlpatterns += static(settings.ATTACHMENT_URL )
