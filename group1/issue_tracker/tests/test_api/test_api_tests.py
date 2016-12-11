@@ -4,7 +4,8 @@ import unittest
 
 
 class RESTAPITests(unittest.TestCase):
-    """Test for REST API. Can only be run on live server"""
+    """Test for REST API. Can only be run against a live server and the database must be populated with
+    test data using the 'python manage.py populate_demo_data' command"""
 
     @classmethod
     def setUpClass(cls):
@@ -60,30 +61,30 @@ class RESTAPITests(unittest.TestCase):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.json(), {'detail': 'Authentication credentials were not provided.'})
 
-    # def test_modifyMultipleIssueFields(self):
-    #     """Edits multiple fields on an issue"""
-    #     response = self.request.get(self.base_url + '/issue_tracker/api/ModifyMultipleIssueFields/1',
-    #                                 headers=self.header)
-    #     self.assertEqual(response.status_code, 200)
-    #     json_response = json.dumps(response.json())
-    #     json_data = json.loads(json_response)
-    #     if json_data['status'] == 'Open-Accepted':
-    #         status = 'Open-New'
-    #     else:
-    #         status = 'Open-Accepted'
-    #     if json_data['priority'] == 'High':
-    #         priority = 'Medium'
-    #     else:
-    #         priority = 'High'
-    #     data = {'priority': priority,
-    #             'status': status}
-    #     response2 = self.request.patch(self.base_url + '/issue_tracker/api/ModifyMultipleIssueFields/1', json=data,
-    #                                    headers=self.header)
-    #     self.assertEqual(response2.status_code, 200)
-    #     json_response2 = json.dumps(response2.json())
-    #     json_data2 = json.loads(json_response2)
-    #     self.assertEqual(json_data2['status'], status)
-    #     self.assertEqual(json_data2['priority'], priority)
+    def test_modifyMultipleIssueFields(self):
+        """Edits multiple fields on an issue"""
+        response = self.request.get(self.base_url + '/issue_tracker/api/ModifyMultipleIssueFields/1',
+                                    headers=self.header)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.dumps(response.json())
+        json_data = json.loads(json_response)
+        if json_data['status'] == 'Open-Accepted':
+            status = 'Open-New'
+        else:
+            status = 'Open-Accepted'
+        if json_data['priority'] == 'High':
+            priority = 'Medium'
+        else:
+            priority = 'High'
+        data = {'priority': priority,
+                'status': status}
+        response2 = self.request.patch(self.base_url + '/issue_tracker/api/ModifyMultipleIssueFields/1/', json=data,
+                                       headers=self.header)
+        self.assertEqual(response2.status_code, 200)
+        json_response2 = json.dumps(response2.json())
+        json_data2 = json.loads(json_response2)
+        self.assertEqual(json_data2['status'], status)
+        self.assertEqual(json_data2['priority'], priority)
 
     def test_status(self):
         """Checks that status endpoint is reachable"""
