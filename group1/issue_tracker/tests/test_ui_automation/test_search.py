@@ -9,7 +9,7 @@ class SearchIssuesTestCase(unittest.TestCase):
 
     def setUp(self):
         dir = os.path.dirname(__file__)
-        filename = os.path.join(dir, 'chromedriver/chromedriver.exe')
+        filename = os.path.join(dir, '../chromedriver/chromedriver.exe')
         self.driver = webdriver.Chrome(filename)
         self.driver.implicitly_wait(30)
         self.base_url = "http://127.0.0.1:8000"

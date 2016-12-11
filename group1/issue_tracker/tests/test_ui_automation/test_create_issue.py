@@ -9,7 +9,7 @@ class CreateIssueTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         dir = os.path.dirname(__file__)
-        filename = os.path.join(dir, 'chromedriver/chromedriver.exe')
+        filename = os.path.join(dir, '../chromedriver/chromedriver.exe')
         cls.driver = webdriver.Chrome(filename)
         cls.driver.implicitly_wait(30)
         cls.base_url = "http://127.0.0.1:8000"
