@@ -73,6 +73,7 @@ removing a container: **docker rm CONTAINER_TAG**
 ### Building Docker container composition (Windows)
 #### **Run Docker and Creat Image** [Version 1.12.1]
 If running the latest version follow these instructions, if not, skip to 4.2
+
 1) Click Docker icon
 2) Powershell window will be opened, navigate to the directory you placed to project in. 
 3) Open the subfolder 'docker'
@@ -85,6 +86,7 @@ If running the latest version follow these instructions, if not, skip to 4.2
 7) Open browser and navigate to 127.0.0.1:8000
 
 #### **Run Docker and Creat Image** (Older Docker version)
+
 1) Click Docker icon
 2) Powershell window will be opened, navigate to the directory you placed to project in. 
 3) Open the subfolder 'docker'
@@ -100,6 +102,7 @@ If running the latest version follow these instructions, if not, skip to 4.2
 ##### navigate to http://localhost:8000 in a browser
 .
 #### Login Credentials, API interfaces
+
 1) Superuser: **test**, Password: **testpw**
 2) Navigate to Issue Tracker
 3) You can access Admin page through Admin option on page. 
