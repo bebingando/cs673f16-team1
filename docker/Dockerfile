@@ -2,7 +2,7 @@
 # when container is run, http://localhost should be accessible from web browser
 
 # start with prereqs v0.0.1
-FROM cs673/team_alpha_project_prereqs:latest
+FROM cs673/team_alpha_project_prereqs:0.0.1
 
 MAINTAINER Anthony Valencia anthonysvalencia@gmail.com
 
@@ -30,6 +30,11 @@ RUN python manage.py makemigrations
 # run database migration
 RUN python manage.py migrate
 
+RUN python manage.py populate_demo_data --issues 10 --projects 5
+
 # set default entry point to run server
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+
+# RUN python manage.py collectstatic
 

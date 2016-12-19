@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 from django.conf import settings
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import os
+from django.conf import settings
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -56,7 +60,8 @@ INSTALLED_APPS = (
     'requirements',
     'comm',
     'issue_tracker',
-    'corsheaders'
+    'corsheaders',
+        'storages',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -130,10 +135,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
-from django.conf import settings
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -168,3 +169,29 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 #CSRF_COOKIE_SECURE = True
 
 #os.environ['wsgi.url_scheme'] = 'https'
+
+# when boto uploads files to S3, sets properties so when served by S3, includes those HTTP headers in response
+# HTTP headers will tell browsers to cache files for specified time
+AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
+    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+    'Cache-Control': 'max-age=94608000',
+}
+
+# AWS settings
+AWS_STORAGE_BUCKET_NAME = 'cs673'
+AWS_ACCESS_KEY_ID = 'AKIAJ4K2XB3J24N6UJ7A'
+AWS_SECRET_ACCESS_KEY = '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'
+
+# Tell django-storages that when coming up with the URL for an item in S3 storage, keep it simple - just use this domain
+# plus the path. (If this isn't set, things get complicated).  This controls how the `static` template tag from
+# `staticfiles` gets expanded, if you're using it.  We also use it in the next setting.
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+# Tell the staticfiles app to use S3Boto storage when writing the collected static files (when you run `collectstatic`).
+STATICFILES_LOCATION = 'static'
+STATICFILES_STORAGE = 'group1.custom_storages.StaticStorage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
+
+MEDIAFILES_LOCATION = 'media'
+MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+DEFAULT_FILE_STORAGE = 'group1.custom_storages.MediaStorage'

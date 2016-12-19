@@ -12,3 +12,5 @@ django-jenkins==0.18.1
 pylint==1.5.5
 reportlab==2.7
 coverage==4.0.3
+django-storages==1.5.1
+boto==2.43.0

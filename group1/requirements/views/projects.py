@@ -31,6 +31,7 @@ from requirements.models import filemaker
 
 PERMISSION_OWN_PROJECT = 'requirements.own_project'
 
+
 @login_required(login_url='/signin')
 def list_projects(request):
     # Loads the DashBoard template, which contains a list of the project the user is
@@ -42,7 +43,7 @@ def list_projects(request):
         'theUser': request.user,
         'associationsWithUser': project_api.get_associations_for_user(request.user.id)
     }
-    list=(str(project_api.get_projects_for_user(request.user.id))).replace("<Project: ","").replace(', ','').replace('[','').replace("]",'').split('>')
+    list = (str(project_api.get_projects_for_user(request.user.id))).replace("<Project: ", "").replace(', ', '').replace('[', '').replace("]", '').split('>')
     # if request.user.is_authenticated():
     #     logedInUser = request.user
     #     logedInUser.set_unusable_password()
@@ -307,7 +308,7 @@ def upload_attachment(request, projectID):
         fileUUID = str(uuid.uuid4())
         
         #rename file object to have UUID as name to avoid conflicts when retrieving files
-        fileObj.name=fileUUID
+        fileObj.name = fileUUID
         
         f = ProjectFile(file=fileObj,
                         project=projID,
